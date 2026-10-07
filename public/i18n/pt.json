@@ -1,0 +1,79 @@
+{
+  "common": {
+    "loading": "Carregando..."
+  },
+  "dialog": {
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "confirm": "Confirmar",
+    "save": "Salvar"
+  },
+  "filters": {
+    "clear": "Limpar"
+  },
+  "language": {
+    "select": "Idioma"
+  },
+  "table": {
+    "actions": "Opções",
+    "empty": "Não há dados para mostrar.",
+    "next": "Próxima",
+    "pageInfo": "Página {{page}} de {{total}}",
+    "pageSize": "Por página:",
+    "previous": "Anterior"
+  },
+  "styleGuide": {
+    "title": "Guia de estilo",
+    "howTo": {
+      "title": "As cores são alteradas em um só lugar",
+      "description": "O FundTrack usa as mesmas cores do InvenTrack, no modo claro e escuro. Todas estão no arquivo abaixo: altere um valor ali e todo o aplicativo é atualizado."
+    },
+    "brandScale": "Escala da marca",
+    "semanticTokens": "Cores por função",
+    "semanticHint": "Os componentes usam apenas estes nomes, nunca uma cor fixa.",
+    "statusColors": "Cores de status",
+    "statusHint": "Para o status das diferenças e os erros. Ficam iguais com qualquer cor de marca.",
+    "usage": {
+      "background": "Fundo da tela",
+      "surface": "Cartões, menu e diálogos",
+      "foreground": "Texto principal",
+      "mutedForeground": "Texto secundário",
+      "border": "Bordas e linhas",
+      "primary": "Botão principal e destaques",
+      "primaryForeground": "Texto sobre a cor principal"
+    },
+    "status": {
+      "success": "Sem diferença / Resolvida",
+      "warning": "Pendente",
+      "info": "Justificada",
+      "danger": "Falta dinheiro",
+      "neutral": "Não apresentou"
+    },
+    "buttons": "Botões",
+    "primaryButton": "Salvar contagem",
+    "dangerButton": "Fechar período",
+    "disabledButton": "Desabilitado",
+    "withTooltip": "Com ajuda",
+    "tooltipText": "Texto de ajuda",
+    "hintTitle": "O que é o saldo ACMS?",
+    "hintBody": "É o saldo do fundo local no fechamento do mês, conforme o ACMS.",
+    "form": "Formulário",
+    "table": "Tabela",
+    "fields": {
+      "church": "Igreja",
+      "cash": "Dinheiro (Bs)",
+      "type": "Tipo",
+      "countDate": "Data da contagem",
+      "signedByPastor": "Assinado pelo pastor",
+      "submitted": "Apresentou contagem"
+    }
+  },
+  "login": {
+    "title": "Entrar",
+    "welcomeTitle": "Bem-vindo de volta",
+    "welcomeDescription": "Controle as contagens do fundo local de cada igreja da missão em um só lugar, de forma simples e segura.",
+    "email": "E-mail",
+    "password": "Senha",
+    "submit": "Entrar"
+  }
+}

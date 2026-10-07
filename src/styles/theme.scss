@@ -1,0 +1,71 @@
+/*
+ * =====================================================================
+ * TEMA DE FUNDTRACK: el único lugar donde se definen los colores.
+ *
+ * Usa los mismos colores que InvenTrack (CheckInvoice.Web) en modo claro
+ * y oscuro. Cambiar un valor aquí cambia toda la aplicación: los
+ * componentes nunca usan colores fijos (bg-blue-600, #hex), solo los
+ * tokens de abajo (bg-surface, text-foreground, bg-primary, text-danger...).
+ * =====================================================================
+ */
+
+/* "static": Tailwind publica todas las variables aunque ninguna clase las use todavía, así
+   cualquier tono de la escala está disponible también como var(--color-...). */
+@theme static {
+  /* Tipografía del sistema */
+  --font-sans: 'Open Sans', ui-sans-serif, system-ui, sans-serif;
+
+  /* Escala de marca de InvenTrack, de más claro (100) a más oscuro (900) */
+  --color-brand-100: #dedee6;
+  --color-brand-200: #cecece;
+  --color-brand-300: #7c8594;
+  --color-brand-400: #2e4566;
+  --color-brand-500: #1d3456;
+  --color-brand-600: #152c4c;
+  --color-brand-700: #12253f;
+  --color-brand-800: #091c38;
+  --color-brand-900: #061930;
+
+  /* Tokens semánticos (modo claro): lo que usan los componentes. Salen de la escala de marca,
+     igual que en InvenTrack: background y surface son tintes claros de brand-100, primary es
+     el azul intermedio del degradado del login (brand-500). */
+  --color-background: color-mix(in srgb, var(--color-brand-100) 35%, white);
+  --color-surface: var(--color-brand-100);
+  --color-foreground: var(--color-brand-900);
+  --color-muted-foreground: var(--color-brand-400);
+  --color-border: var(--color-brand-300);
+  --color-primary: var(--color-brand-500);
+  --color-primary-foreground: #ffffff;
+
+  /* Colores de estado: fuera de la paleta a propósito, para que se lean claro. danger es el
+     mismo de InvenTrack (errores de validación); FundTrack agrega success, warning e info para
+     los estados de las diferencias del arqueo. */
+  --color-success: #15803d; /* sin diferencia o diferencia resuelta */
+  --color-warning: #b45309; /* diferencia pendiente */
+  --color-info: #0369a1;    /* diferencia justificada */
+  --color-danger: #b91c1c;  /* falta dinero, errores de validación */
+
+  /* Escala exclusiva para modo oscuro de InvenTrack, de más claro (100) a más oscuro (500) */
+  --color-dark-100: #e0e0e0;
+  --color-dark-200: #bfbfbf;
+  --color-dark-300: #353a3e;
+  --color-dark-400: #222526;
+  --color-dark-500: #1a1a1a;
+}
+
+/* Modo oscuro: se activa con la clase .dark en <html> (la pone ThemeService). Solo cambia a
+   qué tono apunta cada token; los componentes no se enteran. */
+.dark {
+  --color-background: var(--color-dark-500);
+  --color-surface: var(--color-dark-400);
+  --color-foreground: var(--color-dark-100);
+  --color-muted-foreground: var(--color-dark-200);
+  --color-border: var(--color-dark-300);
+  --color-primary: var(--color-dark-300);
+  --color-primary-foreground: var(--color-dark-100);
+
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-info: #38bdf8;
+  --color-danger: #f87171;
+}

@@ -1,0 +1,79 @@
+{
+  "common": {
+    "loading": "Loading..."
+  },
+  "dialog": {
+    "cancel": "Cancel",
+    "close": "Close",
+    "confirm": "Confirm",
+    "save": "Save"
+  },
+  "filters": {
+    "clear": "Clear"
+  },
+  "language": {
+    "select": "Language"
+  },
+  "table": {
+    "actions": "Options",
+    "empty": "No data to display.",
+    "next": "Next",
+    "pageInfo": "Page {{page}} of {{total}}",
+    "pageSize": "Per page:",
+    "previous": "Previous"
+  },
+  "styleGuide": {
+    "title": "Style guide",
+    "howTo": {
+      "title": "Colors are changed in a single place",
+      "description": "FundTrack uses the same colors as InvenTrack, in light and dark mode. They are all in the file below: change a value there and the whole app updates."
+    },
+    "brandScale": "Brand scale",
+    "semanticTokens": "Colors by purpose",
+    "semanticHint": "Components only use these names, never a fixed color.",
+    "statusColors": "Status colors",
+    "statusHint": "For difference statuses and errors. They stay the same with any brand color.",
+    "usage": {
+      "background": "Screen background",
+      "surface": "Cards, menu and dialogs",
+      "foreground": "Main text",
+      "mutedForeground": "Secondary text",
+      "border": "Borders and lines",
+      "primary": "Main button and highlights",
+      "primaryForeground": "Text on the main color"
+    },
+    "status": {
+      "success": "No difference / Resolved",
+      "warning": "Pending",
+      "info": "Justified",
+      "danger": "Money missing",
+      "neutral": "Not submitted"
+    },
+    "buttons": "Buttons",
+    "primaryButton": "Save count",
+    "dangerButton": "Close period",
+    "disabledButton": "Disabled",
+    "withTooltip": "With help",
+    "tooltipText": "Help text",
+    "hintTitle": "What is the ACMS balance?",
+    "hintBody": "It is the local fund balance at month close, as shown in ACMS.",
+    "form": "Form",
+    "table": "Table",
+    "fields": {
+      "church": "Church",
+      "cash": "Cash (Bs)",
+      "type": "Type",
+      "countDate": "Count date",
+      "signedByPastor": "Signed by the pastor",
+      "submitted": "Count submitted"
+    }
+  },
+  "login": {
+    "title": "Sign in",
+    "welcomeTitle": "Welcome back",
+    "welcomeDescription": "Track the local fund counts of every church in the mission from one place, simply and securely.",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in"
+  }
+}

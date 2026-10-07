@@ -1,0 +1,79 @@
+{
+  "common": {
+    "loading": "Cargando..."
+  },
+  "dialog": {
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "save": "Guardar"
+  },
+  "filters": {
+    "clear": "Limpiar"
+  },
+  "language": {
+    "select": "Idioma"
+  },
+  "table": {
+    "actions": "Opciones",
+    "empty": "No hay datos para mostrar.",
+    "next": "Siguiente",
+    "pageInfo": "Página {{page}} de {{total}}",
+    "pageSize": "Por página:",
+    "previous": "Anterior"
+  },
+  "styleGuide": {
+    "title": "Guía de estilo",
+    "howTo": {
+      "title": "Los colores se cambian en un solo lugar",
+      "description": "FundTrack usa los mismos colores de InvenTrack, en modo claro y oscuro. Todos están en el archivo de abajo: cambia un valor ahí y se actualiza toda la aplicación."
+    },
+    "brandScale": "Escala de marca",
+    "semanticTokens": "Colores por función",
+    "semanticHint": "Los componentes usan solo estos nombres, nunca un color fijo.",
+    "statusColors": "Colores de estado",
+    "statusHint": "Para el estado de las diferencias y los errores. Son iguales con cualquier color de marca.",
+    "usage": {
+      "background": "Fondo de la pantalla",
+      "surface": "Tarjetas, menú y diálogos",
+      "foreground": "Texto principal",
+      "mutedForeground": "Texto secundario",
+      "border": "Bordes y líneas",
+      "primary": "Botón principal y destacados",
+      "primaryForeground": "Texto sobre el color principal"
+    },
+    "status": {
+      "success": "Sin diferencia / Resuelta",
+      "warning": "Pendiente",
+      "info": "Justificada",
+      "danger": "Falta dinero",
+      "neutral": "No presentó"
+    },
+    "buttons": "Botones",
+    "primaryButton": "Guardar arqueo",
+    "dangerButton": "Cerrar período",
+    "disabledButton": "Deshabilitado",
+    "withTooltip": "Con ayuda",
+    "tooltipText": "Texto de ayuda",
+    "hintTitle": "¿Qué es el saldo ACMS?",
+    "hintBody": "Es el saldo del fondo local al cierre del mes, tal como figura en el ACMS.",
+    "form": "Formulario",
+    "table": "Tabla",
+    "fields": {
+      "church": "Iglesia",
+      "cash": "Efectivo (Bs)",
+      "type": "Tipo",
+      "countDate": "Fecha del arqueo",
+      "signedByPastor": "Firmado por el pastor",
+      "submitted": "Presentó arqueo"
+    }
+  },
+  "login": {
+    "title": "Iniciar sesión",
+    "welcomeTitle": "Bienvenido de nuevo",
+    "welcomeDescription": "Controla los arqueos del fondo local de cada iglesia de la misión desde un solo lugar, de forma simple y segura.",
+    "email": "Correo",
+    "password": "Contraseña",
+    "submit": "Entrar"
+  }
+}

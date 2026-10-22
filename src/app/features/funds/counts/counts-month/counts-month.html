@@ -1,0 +1,181 @@
+@let s = summary();
+
+<div class="flex flex-col gap-5">
+  <div class="flex flex-col gap-1">
+    <h1 class="text-xl font-semibold text-foreground">{{ 'nav.localFundCounts' | translate }}</h1>
+    <p class="text-sm text-muted-foreground">{{ 'funds.counts.subtitle' | translate }}</p>
+  </div>
+
+  <!-- Filtros: misma caja y botón Limpiar que app-filters -->
+  <div class="flex flex-wrap items-end gap-3 rounded-md border border-border bg-surface p-3">
+    <div class="min-w-[10rem] flex-1">
+      <app-select
+        [label]="'funds.filters.period' | translate"
+        [options]="periodOptions()"
+        [ngModel]="selectedPeriod()"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="onPeriodChange($event)"
+      />
+    </div>
+    <div class="min-w-[10rem] flex-1">
+      <app-select
+        [label]="'funds.filters.region' | translate"
+        [options]="regionOptions()"
+        [ngModel]="selectedRegion() ?? ''"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="onRegionChange($event)"
+      />
+    </div>
+    <div class="min-w-[10rem] flex-1">
+      <app-select
+        [label]="'funds.filters.district' | translate"
+        [options]="districtOptions()"
+        [ngModel]="selectedDistrict() ?? ''"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="onDistrictChange($event)"
+      />
+    </div>
+    <div class="min-w-[10rem] flex-1">
+      <app-select
+        [label]="'funds.filters.statusLabel' | translate"
+        [options]="statusOptions()"
+        [ngModel]="selectedStatus()"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="selectedStatus.set($event)"
+      />
+    </div>
+    <div class="min-w-[10rem] flex-1">
+      <app-input
+        [label]="'funds.filters.search' | translate"
+        [placeholder]="'funds.filters.searchPlaceholder' | translate"
+        [ngModel]="search()"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="search.set($event ?? '')"
+      />
+    </div>
+    <div class="flex flex-col gap-1">
+      <span class="invisible text-sm font-medium">&nbsp;</span>
+      <button
+        type="button"
+        class="rounded-md border border-border px-4 py-2 text-sm text-foreground transition-colors hover:bg-brand-300"
+        (click)="clearFilters()"
+      >
+        {{ 'filters.clear' | translate }}
+      </button>
+      <span class="invisible min-h-4 text-xs">&nbsp;</span>
+    </div>
+  </div>
+
+  @if (errorCode()) {
+    <div class="rounded-lg border border-border">
+      <app-error-state [code]="errorCode()!" [actionLabel]="'common.retry' | translate" (action)="loadRows()" />
+    </div>
+  } @else if (!loading() && !periods().length) {
+    <div class="rounded-lg border border-border bg-surface px-4 py-10 text-center text-sm text-muted-foreground">{{ 'funds.counts.noPeriods' | translate }}</div>
+  } @else {
+  @if (period()?.status === 'closed') {
+    <p class="rounded-md border border-info/30 bg-info/10 px-3 py-2 text-sm text-info">{{ 'funds.counts.closedPeriod' | translate }}</p>
+  }
+
+  <!-- Contadores del mes -->
+  <div class="flex flex-wrap gap-2 text-sm">
+    <span class="rounded-md border border-border bg-surface px-3 py-1.5 text-foreground">
+      {{ 'funds.counts.registered' | translate: { done: s.registered, total: s.total } }}
+    </span>
+    <app-badge>{{ 'funds.status.missing' | translate }}: {{ s.missing }}</app-badge>
+    <app-badge tone="danger">{{ 'funds.status.notSubmitted' | translate }}: {{ s.notSubmitted }}</app-badge>
+    <app-badge tone="warning">{{ 'funds.counts.withDifference' | translate }}: {{ s.withDifference }}</app-badge>
+  </div>
+
+  <!-- Tabla del mes -->
+  <div class="overflow-x-auto rounded-lg border border-border bg-surface">
+    <table class="w-full min-w-[72rem] text-sm">
+      <thead>
+        <tr class="border-b border-border text-left text-xs text-muted-foreground">
+          <th class="px-3 py-2 font-medium">{{ 'funds.columns.code' | translate }}</th>
+          <th class="px-3 py-2 font-medium">{{ 'funds.columns.church' | translate }}</th>
+          <th class="px-3 py-2 font-medium">{{ 'funds.columns.type' | translate }}</th>
+          <th class="px-3 py-2 text-right font-medium">{{ 'funds.columns.acms' | translate }}</th>
+          <th class="px-3 py-2 text-right font-medium">{{ 'funds.columns.funds' | translate }}</th>
+          <th class="px-3 py-2 text-right font-medium">{{ 'funds.columns.documents' | translate }}</th>
+          <th class="px-3 py-2 text-right font-medium">{{ 'funds.columns.custody' | translate }}</th>
+          <th class="px-3 py-2 text-right font-medium">{{ 'funds.columns.difference' | translate }}</th>
+          <th class="px-3 py-2 font-medium">{{ 'funds.columns.status' | translate }}</th>
+          <th class="px-3 py-2"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (loading()) {
+          @for (_ of [1, 2, 3, 4, 5, 6]; track $index) {
+            <tr class="border-b border-border/60">
+              <td colspan="10" class="px-3 py-2"><app-skeleton height="1.5rem" /></td>
+            </tr>
+          }
+        } @else {
+        @for (group of groups(); track group.districtId) {
+          <tr class="border-b border-border bg-background">
+            <td colspan="10" class="px-3 py-2">
+              <span class="font-semibold text-foreground">{{ group.district }}</span>
+              <span class="text-muted-foreground"> · {{ group.region }}</span>
+              @if (group.pastor) {
+                <span class="text-muted-foreground"> · {{ 'funds.counts.pastor' | translate }}: {{ group.pastor }}</span>
+              }
+            </td>
+          </tr>
+
+          @for (row of group.rows; track row.churchId) {
+            @let count = row.localFundCount;
+            @let status = countStatus(count, 'month');
+            <tr class="cursor-pointer border-b border-border/60 text-foreground transition-colors hover:bg-background" (click)="openCount(row)">
+              <td class="px-3 py-2 text-muted-foreground">{{ row.churchCode }}</td>
+              <td class="px-3 py-2">
+                <div class="flex items-center gap-2">
+                  <span class="font-medium">{{ row.churchName }}</span>
+                  @if (row.filialCount) {
+                    <app-badge>{{ 'funds.counts.filials' | translate: { count: row.filialCount } }}</app-badge>
+                  }
+                </div>
+              </td>
+              <td class="px-3 py-2 text-muted-foreground">{{ row.churchType }}</td>
+
+              @if (count && count.submissionStatus === 'submitted') {
+                <td class="px-3 py-2 text-right whitespace-nowrap" [class.text-danger]="count.acmsBalance < 0">{{ count.acmsBalance | money }}</td>
+                <td class="px-3 py-2 text-right whitespace-nowrap">{{ count.totalAmount - count.documentsTotal | money }}</td>
+                <td class="px-3 py-2 text-right whitespace-nowrap">{{ count.documentsTotal | money }}</td>
+                <td class="px-3 py-2 text-right font-medium whitespace-nowrap">{{ count.totalAmount | money }}</td>
+                <td class="px-3 py-2 text-right font-medium whitespace-nowrap" [class]="differenceClass(count.difference)">
+                  {{ count.difference | money: true }}
+                </td>
+              } @else if (count) {
+                <td class="px-3 py-2 text-right whitespace-nowrap">{{ count.acmsBalance | money }}</td>
+                <td colspan="4" class="px-3 py-2 text-center text-xs text-muted-foreground italic">{{ 'funds.status.notSubmitted' | translate }}</td>
+              } @else {
+                <td colspan="5" class="px-3 py-2 text-center text-xs text-muted-foreground italic">{{ 'funds.counts.noCountYet' | translate }}</td>
+              }
+
+              <td class="px-3 py-2"><app-badge [tone]="status.tone">{{ status.labelKey | translate }}</app-badge></td>
+              <td class="px-3 py-2 text-right">
+                @if (count || canEdit()) {
+                  <button
+                    type="button"
+                    class="rounded-md px-3 py-1 text-xs font-medium whitespace-nowrap transition-colors"
+                    [class]="count ? 'border border-border text-foreground hover:bg-background' : 'bg-primary text-primary-foreground'"
+                    (click)="$event.stopPropagation(); openCount(row)"
+                  >
+                    {{ (count ? 'funds.counts.open' : 'funds.counts.register') | translate }}
+                  </button>
+                }
+              </td>
+            </tr>
+          }
+        } @empty {
+          <tr>
+            <td colspan="10" class="px-3 py-10 text-center text-muted-foreground">{{ 'table.empty' | translate }}</td>
+          </tr>
+        }
+        }
+      </tbody>
+    </table>
+  </div>
+  }
+</div>

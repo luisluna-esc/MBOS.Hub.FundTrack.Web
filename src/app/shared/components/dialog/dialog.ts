@@ -13,9 +13,13 @@ export class Dialog {
   readonly cancelLabel = input<string | null>(null);
   readonly showCancel = input(true);
   readonly size = input<'default' | 'large'>('default');
+  /** Botón opcional entre Cancelar y Guardar (por ejemplo Imprimir); sin etiqueta no se muestra. */
+  readonly extraLabel = input<string | null>(null);
+  readonly extraDisabled = input(false);
 
   readonly save = output<void>();
   readonly cancel = output<void>();
+  readonly extra = output<void>();
 
   protected readonly containerClass = computed(() => {
     const width = this.size() === 'large' ? 'w-[min(96vw,90rem)]' : 'w-[min(96vw,64rem)]';

@@ -1,0 +1,71 @@
+<app-dialog
+  [title]="'funds.followUp.title' | translate: { church: count.churchName }"
+  [saveDisabled]="!!nextStatus && saveDisabled()"
+  [saveLabel]="(nextStatus ? 'funds.followUp.markAs.' + nextStatus : 'dialog.close') | translate"
+  [showCancel]="!!nextStatus"
+  (save)="onSave()"
+  (cancel)="onCancel()"
+>
+  <div class="flex flex-col gap-5">
+    <!-- Resumen del arqueo -->
+    <div class="grid grid-cols-2 gap-3 rounded-lg border border-border bg-surface p-4 text-sm md:grid-cols-4">
+      <div class="flex flex-col">
+        <span class="text-xs text-muted-foreground">{{ 'funds.filters.period' | translate }}</span>
+        <span class="font-medium text-foreground">{{ data.periodLabel }}</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-xs text-muted-foreground">{{ 'funds.columns.acms' | translate }}</span>
+        <span class="font-medium text-foreground">Bs {{ count.acmsBalance | money }}</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-xs text-muted-foreground">{{ 'funds.columns.custody' | translate }}</span>
+        <span class="font-medium text-foreground">Bs {{ count.totalAmount | money }}</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-xs text-muted-foreground">{{ 'funds.columns.difference' | translate }}</span>
+        <span class="font-semibold" [class]="differenceClass(count.difference)">Bs {{ count.difference | money: true }}</span>
+        <app-badge class="self-start" [tone]="status.tone">{{ status.labelKey | translate }}</app-badge>
+      </div>
+    </div>
+
+    <!-- Historial -->
+    <div class="flex flex-col gap-3">
+      <h3 class="text-sm font-semibold text-foreground">{{ 'funds.followUp.history' | translate }}</h3>
+      @if (loading()) {
+        <app-skeleton height="3rem" />
+      }
+      @for (item of history(); track item.differenceFollowUpId) {
+        <div class="flex gap-3 text-sm">
+          <span class="mt-1.5 size-2 shrink-0 rounded-full bg-info"></span>
+          <div class="flex flex-col gap-0.5">
+            <span class="font-medium text-foreground">
+              {{ 'funds.dialog.statusChange' | translate: { from: ('funds.status.' + item.previousStatus | translate), to: ('funds.status.' + item.newStatus | translate) } }}
+            </span>
+            <span class="text-foreground">{{ item.justification }}</span>
+            <span class="text-xs text-muted-foreground">{{ item.appUserFullName }} · {{ dateTime(item.followedUpAt) }}</span>
+          </div>
+        </div>
+      } @empty {
+        @if (!loading()) {
+          <p class="text-sm text-muted-foreground">{{ 'funds.dialog.noFollowUps' | translate }}</p>
+        }
+      }
+    </div>
+
+    <!-- Siguiente paso -->
+    @if (nextStatus) {
+      <div class="flex flex-col gap-2 rounded-lg border border-border p-4">
+        <p class="text-sm text-foreground">{{ 'funds.followUp.hint.' + nextStatus | translate }}</p>
+        <app-textarea
+          [formControl]="justification"
+          [label]="'funds.followUp.justification' | translate"
+          [required]="true"
+          [maxLength]="1000"
+          [rows]="4"
+        />
+      </div>
+    } @else if (count.differenceStatus === 'resolved') {
+      <p class="text-sm text-muted-foreground">{{ 'funds.followUp.done' | translate }}</p>
+    }
+  </div>
+</app-dialog>

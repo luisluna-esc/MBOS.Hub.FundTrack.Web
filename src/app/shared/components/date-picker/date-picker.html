@@ -5,6 +5,7 @@
     </label>
   }
 
+  <div class="flex w-full items-center gap-1.5">
   <button
     #origin="cdkOverlayOrigin"
     cdkOverlayOrigin
@@ -37,6 +38,16 @@
       <rect x="3.5" y="4.5" width="17" height="16" rx="2" stroke="currentColor" stroke-width="1.5" />
     </svg>
   </button>
+
+  @if (errorDisplay() === 'icon') {
+    <!-- Espacio fijo aunque no haya error, igual que app-input en tablas. -->
+    <div class="flex w-5 shrink-0 justify-center">
+      @if (showError) {
+        <app-info-hint tone="danger" label="Ver error">{{ errorMessage }}</app-info-hint>
+      }
+    </div>
+  }
+  </div>
 
   <ng-template
     cdkConnectedOverlay
@@ -154,11 +165,13 @@
     </div>
   </ng-template>
 
-  @if (showError) {
-    <p class="min-h-4 text-xs text-danger">{{ errorMessage }}</p>
-  } @else if (hint()) {
-    <p class="min-h-4 text-xs text-muted-foreground">{{ hint() }}</p>
-  } @else {
-    <p class="min-h-4 text-xs" aria-hidden="true">&nbsp;</p>
+  @if (errorDisplay() === 'text') {
+    @if (showError) {
+      <p class="min-h-4 text-xs text-danger">{{ errorMessage }}</p>
+    } @else if (hint()) {
+      <p class="min-h-4 text-xs text-muted-foreground">{{ hint() }}</p>
+    } @else {
+      <p class="min-h-4 text-xs" aria-hidden="true">&nbsp;</p>
+    }
   }
 </div>

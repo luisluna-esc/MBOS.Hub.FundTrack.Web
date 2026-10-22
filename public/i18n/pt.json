@@ -1,6 +1,12 @@
 {
   "common": {
-    "loading": "Carregando..."
+    "loading": "Carregando...",
+    "logout": "Sair",
+    "saved": "Salvo com sucesso.",
+    "deleted": "Excluído com sucesso.",
+    "saveError": "Não foi possível salvar.",
+    "loadError": "Não foi possível carregar as informações.",
+    "retry": "Tentar novamente"
   },
   "dialog": {
     "cancel": "Cancelar",
@@ -74,6 +80,620 @@
     "welcomeDescription": "Controle as contagens do fundo local de cada igreja da missão em um só lugar, de forma simples e segura.",
     "email": "E-mail",
     "password": "Senha",
-    "submit": "Entrar"
+    "submit": "Entrar",
+    "error": "Não foi possível entrar."
+  },
+  "layout": {
+    "collapseMenu": "Recolher menu",
+    "expandMenu": "Expandir menu",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu"
+  },
+  "nav": {
+    "home": "Início",
+    "funds": "Contagens",
+    "localFundCounts": "Registro de contagens",
+    "differences": "Diferenças",
+    "catalogs": "Catálogos",
+    "regions": "Regiões",
+    "districts": "Distritos",
+    "pastors": "Pastores",
+    "churches": "Igrejas",
+    "periods": "Períodos",
+    "admin": "Administração",
+    "users": "Usuários",
+    "roles": "Funções",
+    "auditLogs": "Auditoria",
+    "reports": "Relatórios",
+    "reportLocalFund": "Fundo local anual",
+    "reportPending": "Pendentes do mês",
+    "reportDifferences": "Diferenças por status",
+    "reportCompliance": "Cumprimento",
+    "reportNegativeAcms": "Saldo ACMS negativo",
+    "reportRegionSummary": "Resumo por região ou distrito",
+    "reportCorrections": "Correções",
+    "reportChurchMovements": "Movimentações de igrejas",
+    "reportLocalFundCount": "Conferência do fundo local"
+  },
+  "placeholder": {
+    "description": "Esta tela ainda está em construção.",
+    "comingSoon": "Em breve"
+  },
+  "months": {
+    "1": "Janeiro",
+    "2": "Fevereiro",
+    "3": "Março",
+    "4": "Abril",
+    "5": "Maio",
+    "6": "Junho",
+    "7": "Julho",
+    "8": "Agosto",
+    "9": "Setembro",
+    "10": "Outubro",
+    "11": "Novembro",
+    "12": "Dezembro"
+  },
+  "home": {
+    "title": "Início",
+    "period": "Mês",
+    "open": "Aberto",
+    "closed": "Fechado",
+    "overdue": "Vencido",
+    "dueDate": "prazo {{date}}",
+    "overdueTitle": "Meses abertos com o prazo vencido:",
+    "byRegion": "Resumo por região",
+    "cards": {
+      "progress": "Contagens registradas",
+      "progressDetail": "{{done}} de {{total}} igrejas e grupos",
+      "missing": "Faltam registrar",
+      "notSubmitted": "Não apresentaram: {{count}}",
+      "differences": "Diferenças pendentes",
+      "negativeAcms": "Saldo ACMS negativo",
+      "negativeAcmsDetail": "Igrejas que gastaram mais do que tinham"
+    },
+    "amounts": {
+      "acms": "Saldo ACMS do mês",
+      "counted": "Contado",
+      "difference": "Diferença",
+      "differenceHint": "Contagem menos ACMS: negativo falta, positivo sobra"
+    },
+    "status": {
+      "pending": "Pendente",
+      "resolved": "Resolvida"
+    },
+    "columns": {
+      "region": "Região",
+      "active": "Ativas",
+      "progress": "Avanço",
+      "submitted": "Apresentaram",
+      "notSubmitted": "Não apresentaram",
+      "missing": "Faltam",
+      "differences": "Diferenças",
+      "acms": "Saldo ACMS",
+      "counted": "Contado",
+      "difference": "Diferença",
+      "total": "Total"
+    }
+  },
+  "funds": {
+    "sampleOnly": "Visualização de exemplo: ainda não é salvo.",
+    "status": {
+      "missing": "Não registrada",
+      "notSubmitted": "Não apresentou",
+      "noDifference": "Sem diferença",
+      "none": "Sem diferença",
+      "pending": "Pendente",
+      "resolved": "Resolvida",
+      "withDifference": "Com diferença"
+    },
+    "filters": {
+      "period": "Mês",
+      "region": "Região",
+      "district": "Distrito",
+      "statusLabel": "Status",
+      "search": "Buscar",
+      "searchPlaceholder": "Igreja ou código",
+      "allRegions": "Todas as regiões",
+      "allDistricts": "Todos os distritos",
+      "status": {
+        "all": "Todos",
+        "missing": "Não registrada",
+        "notSubmitted": "Não apresentou",
+        "withDifference": "Com diferença",
+        "ok": "Sem diferença"
+      }
+    },
+    "columns": {
+      "code": "Código",
+      "church": "Igreja",
+      "type": "Tipo",
+      "acms": "Saldo ACMS",
+      "cash": "Dinheiro",
+      "bank": "Banco",
+      "counted": "Contagem",
+      "difference": "Diferença",
+      "status": "Status",
+      "attachments": "Anexos",
+      "funds": "Conferência",
+      "documents": "Documentos",
+      "custody": "Total sob custódia"
+    },
+    "fields": {
+      "acms_balance": "Saldo ACMS",
+      "cash_amount": "Dinheiro",
+      "bank_amount": "Banco",
+      "total_amount": "Total sob custódia"
+    },
+    "counts": {
+      "subtitle": "Contagem do fundo local de cada igreja e grupo no mês. As filiais vão dentro da contagem da igreja mãe.",
+      "registered": "Registradas: {{done}} de {{total}}",
+      "withDifference": "Com diferença",
+      "pastor": "Pastor",
+      "filials": "+{{count}} filiais",
+      "noCountYet": "A contagem ainda não foi registrada",
+      "open": "Ver",
+      "register": "Registrar",
+      "noPeriods": "Ainda não há períodos. Crie-os em Catálogos, Períodos, com Gerar ano.",
+      "closedPeriod": "Este período está fechado: suas conferências não são mais editadas. Para corrigir um valor, abra a conferência e registre uma correção."
+    },
+    "dialog": {
+      "newTitle": "Registrar contagem: {{church}}",
+      "editTitle": "Contagem: {{church}}",
+      "save": "Salvar contagem",
+      "district": "Distrito",
+      "includesFilials": "Inclui as filiais:",
+      "submitted": "A igreja apresentou sua contagem",
+      "acms": "Saldo ACMS no fechamento do mês",
+      "notSubmittedHint": "É registrada como Não apresentou. Só o saldo ACMS é salvo.",
+      "differenceWillBePending": "Ao salvar, a diferença fica registrada. O ACMS cobre o que falta ou sobra.",
+      "countDate": "Data da contagem",
+      "treasurer": "Tesoureiro",
+      "elder": "Ancião",
+      "signedByPastor": "Assinado pelo pastor",
+      "signedByElder": "Assinado pelo ancião",
+      "observation": "Observação",
+      "tabs": {
+        "attachments": "Anexos",
+        "followUps": "Acompanhamento",
+        "corrections": "Correções"
+      },
+      "download": "Baixar",
+      "noAttachments": "Não há anexos.",
+      "upload": "Enviar anexo",
+      "uploadHint": "Foto do livro ou ata da contagem. PDF, JPG ou PNG de até 10 MB.",
+      "noFollowUps": "A diferença ainda não tem acompanhamento.",
+      "correctionsHint": "As correções são usadas quando o mês já está fechado: a contagem original não muda e a correção é aplicada no mês aberto.",
+      "noCorrections": "Não há correções.",
+      "appliedIn": "Aplicada em {{month}}",
+      "statusChange": "De {{from}} para {{to}}",
+      "amountChange": "de {{from}} para {{to}}",
+      "viewTitle": "Conferência de {{church}}",
+      "closedHint": "O período está fechado: a conferência é somente leitura. Os erros são corrigidos com uma correção.",
+      "delete": "Excluir esta conferência",
+      "deleteTitle": "Excluir conferência",
+      "deleteMessage": "Excluir a conferência de {{church}} de {{period}}? O acompanhamento e os anexos também são excluídos.",
+      "uploadInvalid": "Somente arquivos PDF, JPG ou PNG de até 10 MB são aceitos.",
+      "uploaded": "Arquivo enviado.",
+      "correctionField": "Valor a corrigir",
+      "correctedAmount": "Valor correto",
+      "addCorrection": "Registrar correção",
+      "correctionSaved": "Correção registrada no período aberto.",
+      "fundsTitle": "Fundos do tesoureiro",
+      "bankStatement": "Saldo conforme extrato bancário",
+      "bankDeposit": "Depósito bancário",
+      "localCash": "Cédulas e moedas em moeda nacional (fundo local)",
+      "usdAmount": "Dólares (USD)",
+      "exchangeRate": "Taxa de câmbio",
+      "usdInBs": "Dólares em Bs",
+      "documentsTitle": "Documentos (notas fiscais, recibos e outros a prestar contas)",
+      "addDocument": "Adicionar",
+      "documentDate": "Data",
+      "documentNumber": "N.º nota ou recibo",
+      "documentDetail": "Detalhe",
+      "documentAmount": "Valor",
+      "noDocuments": "Sem documentos a prestar contas.",
+      "fundsTotal": "Conferência (bancos, dinheiro e dólares)",
+      "documentsTotal": "Documentos a prestar contas",
+      "custodyTotal": "Total de fundos sob custódia do tesoureiro",
+      "differenceOver": "a mais",
+      "differenceUnder": "a menos",
+      "differenceReason": "Observação: por que há diferença?",
+      "elderOptional": "Ancião (opcional)",
+      "print": "Imprimir",
+      "printing": "Preparando...",
+      "printError": "Não foi possível preparar a conferência para imprimir.",
+      "fixBeforePrint": "Complete os campos marcados em vermelho antes de imprimir."
+    },
+    "differences": {
+      "subtitle": "Conferências em que o total sob custódia não bate com o saldo ACMS. O ACMS cobre o que falta ou sobra; aqui só se registra e, se quiser, se marca como resolvida.",
+      "tabs": {
+        "pending": "Pendentes",
+        "resolved": "Resolvidas",
+        "all": "Todas"
+      },
+      "lastFollowUp": "Último acompanhamento",
+      "followUp": "Acompanhamento",
+      "empty": "Não há diferenças neste status.",
+      "lastChange": "Última alteração"
+    },
+    "followUp": {
+      "title": "Acompanhamento: {{church}}",
+      "history": "Histórico",
+      "justification": "Motivo",
+      "markAs": {
+        "resolved": "Marcar como resolvida"
+      },
+      "hint": {
+        "resolved": "A Missão dá a diferença por resolvida. Escreva o motivo."
+      },
+      "done": "Esta diferença já está resolvida."
+    }
+  },
+  "catalogs": {
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "deleteMessage": "Excluir \"{{name}}\"? Esta ação não pode ser desfeita.",
+    "actions": {
+      "edit": "Editar",
+      "delete": "Excluir"
+    },
+    "filters": {
+      "search": "Buscar por nome",
+      "status": "Status"
+    },
+    "columns": {
+      "name": "Nome",
+      "districts": "Distritos",
+      "churchesAndGroups": "Igrejas e Grupos",
+      "pendingBalance": "Saldo pendente",
+      "status": "Status",
+      "region": "Região",
+      "missionary": "Missionário",
+      "pastor": "Pastor",
+      "churches": "Igrejas",
+      "district": "Distrito",
+      "fullName": "Nome completo",
+      "firstNames": "Nomes",
+      "lastNames": "Sobrenomes",
+      "ci": "Documento",
+      "email": "E-mail",
+      "code": "Código",
+      "type": "Tipo",
+      "phone": "Telefone",
+      "address": "Endereço",
+      "treasurer": "Tesoureiro",
+      "treasurerPhone": "Telefone do tesoureiro",
+      "elder": "Ancião",
+      "elderPhone": "Telefone do ancião",
+      "year": "Ano",
+      "period": "Período",
+      "dueDate": "Data limite",
+      "closedAt": "Fechado em",
+      "closedBy": "Fechado por"
+    },
+    "regions": {
+      "new": "Nova região",
+      "newTitle": "Nova região",
+      "editTitle": "Editar região",
+      "deleteTitle": "Excluir região",
+      "cannotDelete": "Tem distritos: mova-os antes de excluí-la."
+    },
+    "districts": {
+      "new": "Novo distrito",
+      "newTitle": "Novo distrito",
+      "editTitle": "Editar distrito",
+      "deleteTitle": "Excluir distrito",
+      "cannotDelete": "Tem igrejas: mova-as antes de excluí-lo.",
+      "search": "Buscar por distrito ou pastor",
+      "missionaryOnly": "Somente missionários (DM)",
+      "regularOnly": "Somente regulares",
+      "isMissionary": "Distrito missionário (DM)",
+      "dm": "DM",
+      "noPastor": "Sem pastor",
+      "assignPastor": "Atribuir pastor",
+      "assignTitle": "Atribuir pastor a {{district}}",
+      "currentPastor": "Pastor atual",
+      "startDate": "Desde",
+      "assignHint": "A atribuição atual do distrito, e a do pastor escolhido se tinha outro distrito, termina no dia anterior a esta data.",
+      "pastorHistory": "Histórico de pastores",
+      "historyTitle": "Pastores de {{district}}",
+      "today": "hoje",
+      "current": "Atual",
+      "noHistory": "Este distrito ainda não teve pastores atribuídos."
+    },
+    "pastors": {
+      "new": "Novo pastor",
+      "newTitle": "Novo pastor",
+      "editTitle": "Editar pastor",
+      "deleteTitle": "Excluir pastor",
+      "cannotDelete": "Tem um distrito: atribua outro pastor a ele antes de excluí-lo.",
+      "search": "Buscar por nome, documento ou e-mail",
+      "withDistrict": "Com distrito",
+      "withoutDistrict": "Sem distrito",
+      "unassigned": "Sem distrito",
+      "noCi": "Sem documento",
+      "ciHint": "Opcional: pode ficar vazio.",
+      "districtHint": "O distrito é alterado em Distritos, com Atribuir pastor, para ficar no histórico."
+    },
+    "churches": {
+      "subtitle": "As filiais compartilham o código da igreja mãe e não têm conferência própria.",
+      "new": "Nova igreja",
+      "newTitle": "Nova igreja",
+      "editTitle": "Editar igreja",
+      "import": "Importar Excel",
+      "search": "Buscar por código ou nome",
+      "filialCount": "{{count}} filial(is)",
+      "parentChurch": "Igreja mãe",
+      "codeFromParent": "Vem da igreja mãe.",
+      "contacts": "Contatos",
+      "history": "Histórico",
+      "historyTitle": "Histórico de {{church}}",
+      "noHistory": "Sem alterações registradas.",
+      "changeValues": "De {{old}} para {{new}}",
+      "closeOrMerge": "Fechar ou fundir",
+      "closeTitle": "Fechar ou fundir {{church}}",
+      "alreadyClosed": "Já está fechada ou fundida.",
+      "action": "Ação",
+      "close": "Fechar",
+      "merge": "Fundir",
+      "mergeInto": "Une-se a",
+      "closedAt": "Data de fechamento",
+      "reason": "Motivo",
+      "closeFilialsBlocked": "Tem {{count}} filial(is) ativa(s). Feche-as ou mova-as para outra igreja antes.",
+      "types": {
+        "Iglesia": "Igreja",
+        "Grupo": "Grupo",
+        "Filial": "Filial"
+      },
+      "statuses": {
+        "active": "Ativa",
+        "closed": "Fechada",
+        "merged": "Fundida"
+      },
+      "changeTypes": {
+        "type": "Mudança de tipo",
+        "district": "Mudança de distrito",
+        "status": "Mudança de status",
+        "name": "Mudança de nome"
+      },
+      "mergedInto": "Fundida com {{church}}",
+      "changeHint": "Você alterou o tipo, o distrito ou o nome: ficará no histórico com esta data e motivo.",
+      "changeDate": "Mudança vale desde"
+    },
+    "periods": {
+      "subtitle": "Um período fechado não é reaberto. Diferenças de um mês fechado são corrigidas com correções.",
+      "generateYear": "Gerar ano",
+      "generate": "Gerar",
+      "generateHint": "Cria somente os meses que faltam, cada um com data limite no dia 15 do mês seguinte.",
+      "editDueDate": "Alterar data limite",
+      "dueDateTitle": "Data limite de {{period}}",
+      "dueDateHint": "Depois desta data o período aparece como vencido enquanto estiver aberto.",
+      "close": "Fechar período",
+      "closeTitle": "Fechar {{period}}",
+      "closeMessage": "Não será mais possível registrar ou editar conferências deste mês, e ele não pode ser reaberto. Continuar?",
+      "alreadyClosed": "Já está fechado.",
+      "closedLocked": "Está fechado e não pode mais ser alterado.",
+      "deleteTitle": "Excluir período",
+      "cannotDelete": "Está fechado e tem conferências: não pode ser excluído.",
+      "states": {
+        "open": "Aberto",
+        "overdue": "Vencido",
+        "closed": "Fechado"
+      }
+    },
+    "import": {
+      "title": "Importar igrejas do Excel",
+      "hint": "Primeiro o arquivo é revisado sem salvar nada. Se não houver erros, pode ser salvo. Com um único erro, nenhuma linha é salva.",
+      "template": "Baixar o modelo",
+      "file": "Arquivo .xlsx",
+      "pastorStartDate": "Início dos pastores",
+      "pastorStartDateHint": "Desde quando cada pastor está em seu distrito.",
+      "review": "Revisar arquivo",
+      "save": "Salvar importação",
+      "ready": "Revisão correta: {{rows}} linhas sem erros. Já pode salvar.",
+      "hasErrors": "O arquivo tem erros: corrija-os e revise de novo. Nada foi salvo.",
+      "savedResult": "Importação salva.",
+      "row": "Linha {{row}}",
+      "counters": {
+        "regionsCreated": "Regiões novas",
+        "districtsCreated": "Distritos novos",
+        "pastorsCreated": "Pastores novos",
+        "churchesCreated": "Igrejas e grupos novos",
+        "filialsCreated": "Filiais novas",
+        "pastorAssignmentsCreated": "Atribuições de pastor",
+        "churchesSkipped": "Já existiam"
+      }
+    }
+  },
+  "admin": {
+    "columns": {
+      "roles": "Perfis",
+      "lastLogin": "Último acesso",
+      "description": "Descrição",
+      "users": "Usuários",
+      "menus": "Menus",
+      "user": "Usuário",
+      "table": "Tabela",
+      "action": "Ação",
+      "recordId": "Id do registro",
+      "date": "Data",
+      "changes": "Campos"
+    },
+    "users": {
+      "new": "Novo usuário",
+      "newTitle": "Novo usuário",
+      "editTitle": "Editar usuário",
+      "deleteTitle": "Excluir usuário",
+      "deleteMessage": "Excluir \"{{name}}\"? Se já registrou dados não poderá ser excluído: nesse caso desative-o.",
+      "cannotDeleteSelf": "Você não pode excluir seu próprio usuário.",
+      "search": "Buscar por nome, e-mail ou documento",
+      "roles": "Perfis",
+      "rolesTitle": "Perfis de {{name}}",
+      "noRoles": "Sem perfis",
+      "never": "Nunca",
+      "neverLoggedIn": "Nunca (senha temporária)",
+      "linkedPastor": "Pastor vinculado",
+      "linkedPastorHint": "Somente para usuários com perfil Pastor: define qual distrito vê.",
+      "tempPassword": "Senha temporária",
+      "tempPasswordHint": "Mínimo 8 caracteres. O usuário a altera no primeiro acesso.",
+      "newPassword": "Nova senha temporária",
+      "newPasswordHint": "Deixe vazia para manter. Se preenchida, a conta é desbloqueada e o usuário a altera ao entrar.",
+      "pastorRoleNeedsLink": "Este usuário não tem pastor vinculado: com o perfil Pastor não veria nenhum distrito. Vincule em Editar.",
+      "states": {
+        "active": "Ativo",
+        "locked": "Bloqueado",
+        "inactive": "Inativo"
+      }
+    },
+    "roles": {
+      "subtitle": "O que cada perfil pode fazer é fixo no sistema. Aqui se escolhe quais menus vê.",
+      "new": "Novo perfil",
+      "newTitle": "Novo perfil",
+      "editTitle": "Editar perfil",
+      "deleteTitle": "Excluir perfil",
+      "deleteWithUsers": "\"{{name}}\" tem {{count}} usuário(s): eles perdem este perfil ao excluí-lo. Continuar?",
+      "protected": "O perfil M-BOS não pode ser renomeado, desativado nem excluído.",
+      "newRoleHint": "Um perfil novo só consulta: registrar dados fica para M-BOS e Analista.",
+      "menus": "Menus",
+      "menusTitle": "Menus de {{name}}",
+      "protectedMenus": "O perfil M-BOS sempre vê todos os menus.",
+      "deleteMessage": "Excluir o perfil \"{{name}}\"? Os usuários que o têm o perdem. Esta ação não pode ser desfeita."
+    },
+    "audit": {
+      "subtitle": "Cada alteração salva fica aqui com quem a fez. É mantida por 3 anos.",
+      "system": "Sistema",
+      "detail": "Ver detalhe",
+      "detailTitle": "Registro de auditoria #{{id}}",
+      "browser": "Navegador",
+      "field": "Campo",
+      "before": "Antes",
+      "after": "Depois",
+      "noChanges": "Sem alterações de valores.",
+      "maskedHint": "Senhas e tokens são guardados ocultos (***).",
+      "actions": {
+        "INSERT": "Criou",
+        "UPDATE": "Alterou",
+        "DELETE": "Excluiu"
+      },
+      "tables": {
+        "app_user": "Usuários",
+        "app_user_role": "Perfis de usuário",
+        "role": "Perfis",
+        "menu": "Menus",
+        "menu_role": "Menus de perfil",
+        "region": "Regiões",
+        "district": "Distritos",
+        "district_pastor": "Pastores de distrito",
+        "pastor": "Pastores",
+        "church": "Igrejas",
+        "church_history": "Histórico de igrejas",
+        "period": "Períodos",
+        "local_fund_count": "Conferências",
+        "local_fund_count_attachment": "Anexos de conferência",
+        "local_fund_count_correction": "Correções",
+        "difference_follow_up": "Acompanhamento de diferenças"
+      },
+      "fieldCount": "{{count}} campos"
+    }
+  },
+  "account": {
+    "changePassword": "Alterar senha",
+    "mustChange": "Você entrou com uma senha temporária. Altere-a para continuar usando o sistema.",
+    "currentPassword": "Senha atual",
+    "newPassword": "Nova senha",
+    "confirmPassword": "Repita a nova senha",
+    "mismatch": "As senhas não coincidem.",
+    "changed": "Senha atualizada."
+  },
+  "errorState": {
+    "400": {
+      "title": "Solicitação inválida",
+      "description": "Não foi possível processar a solicitação. Verifique os dados e tente novamente."
+    },
+    "401": {
+      "title": "Não autorizado",
+      "description": "Você precisa entrar para acessar este conteúdo."
+    },
+    "403": {
+      "title": "Acesso negado",
+      "description": "Você não tem permissão para ver esta seção."
+    },
+    "404": {
+      "title": "Página não encontrada",
+      "description": "O conteúdo que você procura não existe ou foi movido."
+    },
+    "500": {
+      "title": "Erro do servidor",
+      "description": "Ocorreu um problema inesperado. Tente novamente mais tarde."
+    },
+    "503": {
+      "title": "Serviço indisponível",
+      "description": "O serviço não está disponível no momento. Tente novamente mais tarde."
+    },
+    "default": {
+      "title": "Ocorreu um erro",
+      "description": "Algo deu errado. Tente novamente."
+    }
+  },
+  "reports": {
+    "filters": {
+      "year": "Ano",
+      "monthFrom": "Do mês",
+      "monthTo": "Até o mês",
+      "dateFrom": "De",
+      "dateTo": "Até",
+      "changeType": "Tipo de alteração",
+      "allStatuses": "Todos os status",
+      "allChanges": "Todas as alterações",
+      "allChurches": "Todas as igrejas",
+      "groupBy": "Agrupar por",
+      "byRegion": "Região",
+      "byDistrict": "Distrito"
+    },
+    "downloadPdf": "Baixar PDF",
+    "downloadExcel": "Baixar Excel",
+    "downloading": "Baixando...",
+    "error": "Não foi possível gerar o relatório.",
+    "excelError": "Não foi possível baixar o Excel.",
+    "selectPrompt": "Escolha os filtros para ver o relatório.",
+    "noPreview": "Este navegador não mostra PDFs na página: use Baixar PDF.",
+    "notFound": "Esse relatório não existe.",
+    "local-fund": {
+      "title": "Fundo local anual",
+      "description": "Saldo ACMS, total sob custódia e diferença de cada igreja, mês a mês."
+    },
+    "pending": {
+      "title": "Pendentes do mês",
+      "description": "Igrejas que não registraram ou não entregaram a conferência, ou com diferença não resolvida, por distrito e pastor."
+    },
+    "differences": {
+      "title": "Diferenças por status",
+      "description": "Conferências que não batem com o ACMS: valor, status, dias em aberto e último acompanhamento."
+    },
+    "compliance": {
+      "title": "Cumprimento por distrito e pastor",
+      "description": "Porcentagem de conferências registradas até a data limite de cada mês vencido."
+    },
+    "negative-acms": {
+      "title": "Saldo ACMS negativo",
+      "description": "Igrejas que gastaram mais do que tinham e por quantos meses seguidos."
+    },
+    "region-summary": {
+      "title": "Resumo mensal por região ou distrito",
+      "description": "Para cada mês: igrejas ativas, quantas entregaram, não entregaram, não registraram, com diferença e os valores. Agrupe por região ou por distrito."
+    },
+    "corrections": {
+      "title": "Correções aplicadas",
+      "description": "O que foi corrigido em meses fechados, onde foi aplicado, quem fez, o valor anterior e o novo."
+    },
+    "church-movements": {
+      "title": "Movimentações de igrejas",
+      "description": "Igrejas fechadas, fundidas ou com mudança de distrito, tipo ou nome entre duas datas."
+    },
+    "local-fund-count": {
+      "title": "Conferência do fundo local",
+      "description": "A folha da conferência para imprimir e assinar: tesoureiro, pastor e ancião. Uma folha por igreja; escolha uma igreja ou um distrito."
+    },
+    "pickDistrictOrChurch": "Escolha um distrito ou uma igreja para ver as conferências."
   }
 }

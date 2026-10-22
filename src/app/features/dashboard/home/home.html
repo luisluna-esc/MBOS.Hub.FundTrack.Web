@@ -1,0 +1,206 @@
+@let data = dashboard();
+@let total = totals();
+
+<div class="flex flex-col gap-6">
+  <!-- Encabezado: mes elegido -->
+  <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+    <div class="flex flex-col gap-1">
+      <h1 class="text-xl font-semibold text-foreground">{{ 'home.title' | translate }}</h1>
+      @if (data.period; as period) {
+        <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+          <span>{{ periodLabel(period) }}</span>
+          @if (period.status === 'closed') {
+            <app-badge>{{ 'home.closed' | translate }}</app-badge>
+          } @else if (data.isOverdue) {
+            <app-badge tone="danger">{{ 'home.overdue' | translate }}</app-badge>
+          } @else {
+            <app-badge tone="success">{{ 'home.open' | translate }}</app-badge>
+          }
+          <span>· {{ 'home.dueDate' | translate: { date: dueDateLabel(period) } }}</span>
+        </div>
+      }
+    </div>
+
+    <div class="w-full md:w-56">
+      <app-select
+        [label]="'home.period' | translate"
+        [options]="periodOptions()"
+        [ngModel]="selectedPeriod()"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="onPeriodChange($event)"
+      />
+    </div>
+  </div>
+
+  @if (errorCode()) {
+    <div class="rounded-lg border border-border">
+      <app-error-state [code]="errorCode()!" [actionLabel]="'common.retry' | translate" (action)="load(selectedPeriod())" />
+    </div>
+  } @else if (!loading() && !data.period) {
+    <div class="rounded-lg border border-border bg-surface px-4 py-10 text-center text-sm text-muted-foreground">{{ 'funds.counts.noPeriods' | translate }}</div>
+  }
+
+  <!-- Meses abiertos que ya pasaron su fecha límite -->
+  @if (data.overduePeriods.length) {
+    <div class="flex flex-col gap-1 rounded-lg border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-foreground sm:flex-row sm:items-center sm:gap-3">
+      <span class="font-semibold text-warning">{{ 'home.overdueTitle' | translate }}</span>
+      <span>
+        @for (period of data.overduePeriods; track period.periodId; let last = $last) {
+          {{ periodLabel(period) }}{{ last ? '' : ', ' }}
+        }
+      </span>
+    </div>
+  }
+
+  <!-- Tarjetas de estado -->
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div class="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
+      <span class="text-sm text-muted-foreground">{{ 'home.cards.progress' | translate }}</span>
+      <span class="text-2xl font-semibold text-foreground">{{ progress() }}%</span>
+      <div class="h-2 w-full overflow-hidden rounded-full bg-border/50">
+        <div class="h-full rounded-full bg-primary" [style.width.%]="progress()"></div>
+      </div>
+      <span class="text-xs text-muted-foreground">
+        {{ 'home.cards.progressDetail' | translate: { done: total.submitted + total.notSubmitted, total: total.activeChurches } }}
+      </span>
+    </div>
+
+    <div class="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
+      <span class="text-sm text-muted-foreground">{{ 'home.cards.missing' | translate }}</span>
+      <span class="text-2xl font-semibold" [class.text-warning]="total.missing > 0" [class.text-foreground]="total.missing === 0">
+        {{ total.missing }}
+      </span>
+      <span class="text-xs text-muted-foreground">{{ 'home.cards.notSubmitted' | translate: { count: total.notSubmitted } }}</span>
+    </div>
+
+    <div class="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
+      <span class="text-sm text-muted-foreground">{{ 'home.cards.differences' | translate }}</span>
+      <span class="text-2xl font-semibold" [class.text-warning]="total.differencesPending > 0" [class.text-foreground]="total.differencesPending === 0">
+        {{ total.differencesPending }}
+      </span>
+      <div class="flex flex-wrap gap-1.5">
+        <app-badge tone="warning">{{ 'home.status.pending' | translate }}: {{ total.differencesPending }}</app-badge>
+        <app-badge tone="success">{{ 'home.status.resolved' | translate }}: {{ total.differencesResolved }}</app-badge>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4">
+      <span class="text-sm text-muted-foreground">{{ 'home.cards.negativeAcms' | translate }}</span>
+      <span class="text-2xl font-semibold" [class.text-danger]="total.negativeAcms > 0" [class.text-foreground]="total.negativeAcms === 0">
+        {{ total.negativeAcms }}
+      </span>
+      <span class="text-xs text-muted-foreground">{{ 'home.cards.negativeAcmsDetail' | translate }}</span>
+    </div>
+  </div>
+
+  <!-- Montos del mes -->
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+    <div class="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4">
+      <span class="text-sm text-muted-foreground">{{ 'home.amounts.acms' | translate }}</span>
+      <span class="text-xl font-semibold text-foreground">Bs {{ total.totalAcmsBalance | money }}</span>
+    </div>
+    <div class="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4">
+      <span class="text-sm text-muted-foreground">{{ 'home.amounts.counted' | translate }}</span>
+      <span class="text-xl font-semibold text-foreground">Bs {{ total.totalCounted | money }}</span>
+    </div>
+    <div class="flex flex-col gap-1 rounded-lg border border-border bg-surface p-4">
+      <span class="text-sm text-muted-foreground">{{ 'home.amounts.difference' | translate }}</span>
+      <span class="text-xl font-semibold" [class]="differenceClass(total.totalDifference)">Bs {{ total.totalDifference | money: true }}</span>
+      <span class="text-xs text-muted-foreground">{{ 'home.amounts.differenceHint' | translate }}</span>
+    </div>
+  </div>
+
+  <!-- Resumen por región -->
+  <div class="flex flex-col gap-3">
+    <h2 class="text-base font-semibold text-foreground">{{ 'home.byRegion' | translate }}</h2>
+
+    <div class="overflow-x-auto rounded-lg border border-border bg-surface">
+      <table class="w-full min-w-[64rem] text-sm">
+        <thead>
+          <tr class="border-b border-border text-left text-xs text-muted-foreground">
+            <th class="px-3 py-2 font-medium">{{ 'home.columns.region' | translate }}</th>
+            <th class="px-3 py-2 text-right font-medium">{{ 'home.columns.active' | translate }}</th>
+            <th class="w-40 px-3 py-2 font-medium">{{ 'home.columns.progress' | translate }}</th>
+            <th class="px-3 py-2 text-right font-medium">{{ 'home.columns.submitted' | translate }}</th>
+            <th class="px-3 py-2 text-right font-medium">{{ 'home.columns.notSubmitted' | translate }}</th>
+            <th class="px-3 py-2 text-right font-medium">{{ 'home.columns.missing' | translate }}</th>
+            <th class="px-3 py-2 text-center font-medium">{{ 'home.columns.differences' | translate }}</th>
+            <th class="px-3 py-2 text-right font-medium">{{ 'home.columns.acms' | translate }}</th>
+            <th class="px-3 py-2 text-right font-medium">{{ 'home.columns.counted' | translate }}</th>
+            <th class="px-3 py-2 text-right font-medium">{{ 'home.columns.difference' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of data.regions; track row.regionId) {
+            <tr class="border-b border-border/60 text-foreground transition-colors last:border-b-0 hover:bg-background">
+              <td class="px-3 py-2 font-medium whitespace-nowrap">{{ row.regionName }}</td>
+              <td class="px-3 py-2 text-right">{{ row.activeChurches }}</td>
+              <td class="px-3 py-2">
+                <div class="flex items-center gap-2">
+                  <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-border/50">
+                    <div class="h-full rounded-full bg-primary" [style.width.%]="percent(row)"></div>
+                  </div>
+                  <span class="w-9 text-right text-xs text-muted-foreground">{{ percent(row) }}%</span>
+                </div>
+              </td>
+              <td class="px-3 py-2 text-right">{{ row.submitted }}</td>
+              <td class="px-3 py-2 text-right">{{ row.notSubmitted }}</td>
+              <td class="px-3 py-2 text-right" [class.font-semibold]="row.missing > 0" [class.text-warning]="row.missing > 0">{{ row.missing }}</td>
+              <td class="px-3 py-2">
+                <div class="flex justify-center gap-1">
+                  @if (row.differencesPending) {
+                    <app-badge tone="warning">{{ row.differencesPending }}</app-badge>
+                  }
+                  @if (row.differencesResolved) {
+                    <app-badge tone="success">{{ row.differencesResolved }}</app-badge>
+                  }
+                  @if (!row.differencesPending && !row.differencesResolved) {
+                    <span class="text-muted-foreground"></span>
+                  }
+                </div>
+              </td>
+              <td class="px-3 py-2 text-right whitespace-nowrap">{{ row.totalAcmsBalance | money }}</td>
+              <td class="px-3 py-2 text-right whitespace-nowrap">{{ row.totalCounted | money }}</td>
+              <td class="px-3 py-2 text-right font-medium whitespace-nowrap" [class]="differenceClass(row.totalDifference)">
+                {{ row.totalDifference | money: true }}
+              </td>
+            </tr>
+          }
+        </tbody>
+        <tfoot>
+          <tr class="border-t border-border bg-background font-semibold text-foreground">
+            <td class="px-3 py-2">{{ 'home.columns.total' | translate }}</td>
+            <td class="px-3 py-2 text-right">{{ total.activeChurches }}</td>
+            <td class="px-3 py-2">
+              <div class="flex items-center gap-2">
+                <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-border/50">
+                  <div class="h-full rounded-full bg-primary" [style.width.%]="progress()"></div>
+                </div>
+                <span class="w-9 text-right text-xs">{{ progress() }}%</span>
+              </div>
+            </td>
+            <td class="px-3 py-2 text-right">{{ total.submitted }}</td>
+            <td class="px-3 py-2 text-right">{{ total.notSubmitted }}</td>
+            <td class="px-3 py-2 text-right" [class.text-warning]="total.missing > 0">{{ total.missing }}</td>
+            <td class="px-3 py-2">
+              <div class="flex justify-center gap-1">
+                <app-badge tone="warning">{{ total.differencesPending }}</app-badge>
+                <app-badge tone="success">{{ total.differencesResolved }}</app-badge>
+              </div>
+            </td>
+            <td class="px-3 py-2 text-right whitespace-nowrap">{{ total.totalAcmsBalance | money }}</td>
+            <td class="px-3 py-2 text-right whitespace-nowrap">{{ total.totalCounted | money }}</td>
+            <td class="px-3 py-2 text-right whitespace-nowrap" [class]="differenceClass(total.totalDifference)">
+              {{ total.totalDifference | money: true }}
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="flex flex-wrap gap-3 text-xs text-muted-foreground">
+      <span class="flex items-center gap-1"><app-badge tone="warning">n</app-badge> {{ 'home.status.pending' | translate }}</span>
+      <span class="flex items-center gap-1"><app-badge tone="success">n</app-badge> {{ 'home.status.resolved' | translate }}</span>
+    </div>
+  </div>
+</div>

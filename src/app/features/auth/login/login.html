@@ -46,7 +46,7 @@
         <button
           type="submit"
           class="mt-2 self-center rounded-full bg-primary px-10 py-2.5 text-sm font-medium text-primary-foreground transition-colors disabled:cursor-not-allowed disabled:opacity-50"
-          [disabled]="formInvalid()"
+          [disabled]="formInvalid() || loading()"
         >
           {{ 'login.submit' | translate }}
         </button>

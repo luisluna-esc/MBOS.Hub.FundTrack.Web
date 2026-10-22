@@ -37,7 +37,7 @@ export class Input implements ControlValueAccessor {
   readonly errorDisplay = input<'text' | 'icon'>('text');
   // Nombre "patternRule" (no "pattern"): Angular tiene un PatternValidator nativo que se
   // auto-adjunta a cualquier elemento con [pattern] + formControlName/ngModel, sin importar si
-  // es un componente propio — coincide por nombre de atributo, no por selector de componente.
+  // es un componente propio: coincide por nombre de atributo, no por selector de componente.
   /** Patrón adicional a validar (ej. requerir un "@" en un campo type="text" sin las restricciones de type="email"). */
   readonly patternRule = input<string | RegExp | null>(null);
 

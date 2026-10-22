@@ -1,6 +1,12 @@
 {
   "common": {
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "logout": "Sign out",
+    "saved": "Saved successfully.",
+    "deleted": "Deleted successfully.",
+    "saveError": "It could not be saved.",
+    "loadError": "The information could not be loaded.",
+    "retry": "Retry"
   },
   "dialog": {
     "cancel": "Cancel",
@@ -74,6 +80,620 @@
     "welcomeDescription": "Track the local fund counts of every church in the mission from one place, simply and securely.",
     "email": "Email",
     "password": "Password",
-    "submit": "Sign in"
+    "submit": "Sign in",
+    "error": "Could not sign in."
+  },
+  "layout": {
+    "collapseMenu": "Collapse menu",
+    "expandMenu": "Expand menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "nav": {
+    "home": "Home",
+    "funds": "Fund counts",
+    "localFundCounts": "Fund count entry",
+    "differences": "Differences",
+    "catalogs": "Catalogs",
+    "regions": "Regions",
+    "districts": "Districts",
+    "pastors": "Pastors",
+    "churches": "Churches",
+    "periods": "Periods",
+    "admin": "Administration",
+    "users": "Users",
+    "roles": "Roles",
+    "auditLogs": "Audit log",
+    "reports": "Reports",
+    "reportLocalFund": "Annual local fund",
+    "reportPending": "Monthly pending",
+    "reportDifferences": "Differences by status",
+    "reportCompliance": "Compliance",
+    "reportNegativeAcms": "Negative ACMS balance",
+    "reportRegionSummary": "Summary by region or district",
+    "reportCorrections": "Corrections",
+    "reportChurchMovements": "Church changes",
+    "reportLocalFundCount": "Local fund count sheet"
+  },
+  "placeholder": {
+    "description": "This screen is still under construction.",
+    "comingSoon": "Coming soon"
+  },
+  "months": {
+    "1": "January",
+    "2": "February",
+    "3": "March",
+    "4": "April",
+    "5": "May",
+    "6": "June",
+    "7": "July",
+    "8": "August",
+    "9": "September",
+    "10": "October",
+    "11": "November",
+    "12": "December"
+  },
+  "home": {
+    "title": "Home",
+    "period": "Month",
+    "open": "Open",
+    "closed": "Closed",
+    "overdue": "Overdue",
+    "dueDate": "due {{date}}",
+    "overdueTitle": "Open months past their due date:",
+    "byRegion": "Summary by region",
+    "cards": {
+      "progress": "Counts recorded",
+      "progressDetail": "{{done}} of {{total}} churches and groups",
+      "missing": "Still to record",
+      "notSubmitted": "Not submitted: {{count}}",
+      "differences": "Pending differences",
+      "negativeAcms": "Negative ACMS balance",
+      "negativeAcmsDetail": "Churches that spent more than they had"
+    },
+    "amounts": {
+      "acms": "ACMS balance for the month",
+      "counted": "Counted",
+      "difference": "Difference",
+      "differenceHint": "Count minus ACMS: negative is missing, positive is extra"
+    },
+    "status": {
+      "pending": "Pending",
+      "resolved": "Resolved"
+    },
+    "columns": {
+      "region": "Region",
+      "active": "Active",
+      "progress": "Progress",
+      "submitted": "Submitted",
+      "notSubmitted": "Not submitted",
+      "missing": "Missing",
+      "differences": "Differences",
+      "acms": "ACMS balance",
+      "counted": "Counted",
+      "difference": "Difference",
+      "total": "Total"
+    }
+  },
+  "funds": {
+    "sampleOnly": "Sample view: nothing is saved yet.",
+    "status": {
+      "missing": "Not recorded",
+      "notSubmitted": "Not submitted",
+      "noDifference": "No difference",
+      "none": "No difference",
+      "pending": "Pending",
+      "resolved": "Resolved",
+      "withDifference": "With difference"
+    },
+    "filters": {
+      "period": "Month",
+      "region": "Region",
+      "district": "District",
+      "statusLabel": "Status",
+      "search": "Search",
+      "searchPlaceholder": "Church or code",
+      "allRegions": "All regions",
+      "allDistricts": "All districts",
+      "status": {
+        "all": "All",
+        "missing": "Not recorded",
+        "notSubmitted": "Not submitted",
+        "withDifference": "With difference",
+        "ok": "No difference"
+      }
+    },
+    "columns": {
+      "code": "Code",
+      "church": "Church",
+      "type": "Type",
+      "acms": "ACMS balance",
+      "cash": "Cash",
+      "bank": "Bank",
+      "counted": "Count",
+      "difference": "Difference",
+      "status": "Status",
+      "attachments": "Files",
+      "funds": "Count",
+      "documents": "Documents",
+      "custody": "Total in custody"
+    },
+    "fields": {
+      "acms_balance": "ACMS balance",
+      "cash_amount": "Cash",
+      "bank_amount": "Bank",
+      "total_amount": "Total in custody"
+    },
+    "counts": {
+      "subtitle": "Local fund count of every church and group for the month. Branches are included in the count of their parent church.",
+      "registered": "Recorded: {{done}} of {{total}}",
+      "withDifference": "With difference",
+      "pastor": "Pastor",
+      "filials": "+{{count}} branches",
+      "noCountYet": "The count has not been recorded yet",
+      "open": "View",
+      "register": "Record",
+      "noPeriods": "There are no periods yet. Create them in Catalogs, Periods, with Generate year.",
+      "closedPeriod": "This period is closed: its counts can no longer be edited. To fix an amount, open the count and record a correction."
+    },
+    "dialog": {
+      "newTitle": "Record count: {{church}}",
+      "editTitle": "Count: {{church}}",
+      "save": "Save count",
+      "district": "District",
+      "includesFilials": "Includes the branches:",
+      "submitted": "The church submitted its count",
+      "acms": "ACMS balance at month close",
+      "notSubmittedHint": "It is recorded as Not submitted. Only the ACMS balance is saved.",
+      "differenceWillBePending": "When saved, the difference is recorded. The ACMS covers what is short or over.",
+      "countDate": "Count date",
+      "treasurer": "Treasurer",
+      "elder": "Elder",
+      "signedByPastor": "Signed by the pastor",
+      "signedByElder": "Signed by the elder",
+      "observation": "Notes",
+      "tabs": {
+        "attachments": "Files",
+        "followUps": "Follow-up",
+        "corrections": "Corrections"
+      },
+      "download": "Download",
+      "noAttachments": "No supporting files.",
+      "upload": "Upload file",
+      "uploadHint": "Photo of the ledger or the count record. PDF, JPG or PNG up to 10 MB.",
+      "noFollowUps": "The difference has no follow-up yet.",
+      "correctionsHint": "Corrections are used when the month is already closed: the original count does not change and the correction applies to the open month.",
+      "noCorrections": "No corrections.",
+      "appliedIn": "Applied in {{month}}",
+      "statusChange": "From {{from}} to {{to}}",
+      "amountChange": "from {{from}} to {{to}}",
+      "viewTitle": "Count for {{church}}",
+      "closedHint": "The period is closed: the count is read only. Errors are fixed with a correction.",
+      "delete": "Delete this count",
+      "deleteTitle": "Delete count",
+      "deleteMessage": "Delete the {{period}} count for {{church}}? Its follow-up and attachments are deleted too.",
+      "uploadInvalid": "Only PDF, JPG or PNG files up to 10 MB are accepted.",
+      "uploaded": "File uploaded.",
+      "correctionField": "Amount to correct",
+      "correctedAmount": "Correct amount",
+      "addCorrection": "Record correction",
+      "correctionSaved": "Correction recorded in the open period.",
+      "fundsTitle": "Treasurer funds",
+      "bankStatement": "Balance per bank statement",
+      "bankDeposit": "Bank deposit",
+      "localCash": "Local currency bills and coins (local fund)",
+      "usdAmount": "Dollars (USD)",
+      "exchangeRate": "Exchange rate",
+      "usdInBs": "Dollars in Bs",
+      "documentsTitle": "Documents (invoices, receipts and others to account for)",
+      "addDocument": "Add",
+      "documentDate": "Date",
+      "documentNumber": "Invoice or receipt no.",
+      "documentDetail": "Detail",
+      "documentAmount": "Amount",
+      "noDocuments": "No documents to account for.",
+      "fundsTotal": "Count (banks, cash and dollars)",
+      "documentsTotal": "Documents to account for",
+      "custodyTotal": "Total funds in the treasurer's custody",
+      "differenceOver": "over",
+      "differenceUnder": "short",
+      "differenceReason": "Observation: why is there a difference?",
+      "elderOptional": "Elder (optional)",
+      "print": "Print",
+      "printing": "Preparing...",
+      "printError": "The count could not be prepared for printing.",
+      "fixBeforePrint": "Complete the fields marked in red before printing."
+    },
+    "differences": {
+      "subtitle": "Counts where the total in custody does not match the ACMS balance. The ACMS covers what is short or over; here it is only recorded and, if needed, marked as resolved.",
+      "tabs": {
+        "pending": "Pending",
+        "resolved": "Resolved",
+        "all": "All"
+      },
+      "lastFollowUp": "Last follow-up",
+      "followUp": "Follow-up",
+      "empty": "No differences in this status.",
+      "lastChange": "Last change"
+    },
+    "followUp": {
+      "title": "Follow-up: {{church}}",
+      "history": "History",
+      "justification": "Reason",
+      "markAs": {
+        "resolved": "Mark as resolved"
+      },
+      "hint": {
+        "resolved": "The Mission closes the difference. Write the reason."
+      },
+      "done": "This difference is already resolved."
+    }
+  },
+  "catalogs": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "deleteMessage": "Delete \"{{name}}\"? This cannot be undone.",
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "filters": {
+      "search": "Search by name",
+      "status": "Status"
+    },
+    "columns": {
+      "name": "Name",
+      "districts": "Districts",
+      "churchesAndGroups": "Churches and Groups",
+      "pendingBalance": "Pending balance",
+      "status": "Status",
+      "region": "Region",
+      "missionary": "Missionary",
+      "pastor": "Pastor",
+      "churches": "Churches",
+      "district": "District",
+      "fullName": "Full name",
+      "firstNames": "First names",
+      "lastNames": "Last names",
+      "ci": "ID number",
+      "email": "Email",
+      "code": "Code",
+      "type": "Type",
+      "phone": "Phone",
+      "address": "Address",
+      "treasurer": "Treasurer",
+      "treasurerPhone": "Treasurer phone",
+      "elder": "Elder",
+      "elderPhone": "Elder phone",
+      "year": "Year",
+      "period": "Period",
+      "dueDate": "Due date",
+      "closedAt": "Closed on",
+      "closedBy": "Closed by"
+    },
+    "regions": {
+      "new": "New region",
+      "newTitle": "New region",
+      "editTitle": "Edit region",
+      "deleteTitle": "Delete region",
+      "cannotDelete": "It has districts: move them before deleting it."
+    },
+    "districts": {
+      "new": "New district",
+      "newTitle": "New district",
+      "editTitle": "Edit district",
+      "deleteTitle": "Delete district",
+      "cannotDelete": "It has churches: move them before deleting it.",
+      "search": "Search by district or pastor",
+      "missionaryOnly": "Missionary only (DM)",
+      "regularOnly": "Regular only",
+      "isMissionary": "Missionary district (DM)",
+      "dm": "DM",
+      "noPastor": "No pastor",
+      "assignPastor": "Assign pastor",
+      "assignTitle": "Assign pastor to {{district}}",
+      "currentPastor": "Current pastor",
+      "startDate": "From",
+      "assignHint": "The district's current assignment, and the chosen pastor's if they had another district, ends the day before this date.",
+      "pastorHistory": "Pastor history",
+      "historyTitle": "Pastors of {{district}}",
+      "today": "today",
+      "current": "Current",
+      "noHistory": "This district has had no pastors assigned yet."
+    },
+    "pastors": {
+      "new": "New pastor",
+      "newTitle": "New pastor",
+      "editTitle": "Edit pastor",
+      "deleteTitle": "Delete pastor",
+      "cannotDelete": "They have a district: assign another pastor to it before deleting them.",
+      "search": "Search by name, ID or email",
+      "withDistrict": "With district",
+      "withoutDistrict": "Without district",
+      "unassigned": "No district",
+      "noCi": "No ID",
+      "ciHint": "Optional: it can be left empty.",
+      "districtHint": "The district is changed from Districts, with Assign pastor, so it stays in the history."
+    },
+    "churches": {
+      "subtitle": "Branches share their mother church's code and have no count of their own.",
+      "new": "New church",
+      "newTitle": "New church",
+      "editTitle": "Edit church",
+      "import": "Import Excel",
+      "search": "Search by code or name",
+      "filialCount": "{{count}} branch(es)",
+      "parentChurch": "Mother church",
+      "codeFromParent": "Taken from the mother church.",
+      "contacts": "Contacts",
+      "history": "History",
+      "historyTitle": "History of {{church}}",
+      "noHistory": "No changes recorded.",
+      "changeValues": "From {{old}} to {{new}}",
+      "closeOrMerge": "Close or merge",
+      "closeTitle": "Close or merge {{church}}",
+      "alreadyClosed": "It is already closed or merged.",
+      "action": "Action",
+      "close": "Close",
+      "merge": "Merge",
+      "mergeInto": "Merges into",
+      "closedAt": "Closing date",
+      "reason": "Reason",
+      "closeFilialsBlocked": "It has {{count}} active branch(es). Close them or move them to another church first.",
+      "types": {
+        "Iglesia": "Church",
+        "Grupo": "Group",
+        "Filial": "Branch"
+      },
+      "statuses": {
+        "active": "Active",
+        "closed": "Closed",
+        "merged": "Merged"
+      },
+      "changeTypes": {
+        "type": "Type change",
+        "district": "District change",
+        "status": "Status change",
+        "name": "Name change"
+      },
+      "mergedInto": "Merged into {{church}}",
+      "changeHint": "You changed the type, district or name: it will be recorded in the history with this date and reason.",
+      "changeDate": "Change effective from"
+    },
+    "periods": {
+      "subtitle": "A closed period is never reopened. Differences in a closed month are fixed with corrections.",
+      "generateYear": "Generate year",
+      "generate": "Generate",
+      "generateHint": "Creates only the missing months, each due on the 15th of the following month.",
+      "editDueDate": "Change due date",
+      "dueDateTitle": "Due date for {{period}}",
+      "dueDateHint": "After this date the period shows as overdue while it stays open.",
+      "close": "Close period",
+      "closeTitle": "Close {{period}}",
+      "closeMessage": "Counts for this month can no longer be added or edited, and it cannot be reopened. Continue?",
+      "alreadyClosed": "It is already closed.",
+      "closedLocked": "It is closed and can no longer be changed.",
+      "deleteTitle": "Delete period",
+      "cannotDelete": "It is closed and has counts: it cannot be deleted.",
+      "states": {
+        "open": "Open",
+        "overdue": "Overdue",
+        "closed": "Closed"
+      }
+    },
+    "import": {
+      "title": "Import churches from Excel",
+      "hint": "The file is reviewed first without saving anything. If there are no errors, it can be saved. With a single error, no row is saved.",
+      "template": "Download the template",
+      "file": ".xlsx file",
+      "pastorStartDate": "Pastors start date",
+      "pastorStartDateHint": "When each pastor starts in their district.",
+      "review": "Review file",
+      "save": "Save import",
+      "ready": "Review passed: {{rows}} rows without errors. You can save now.",
+      "hasErrors": "The file has errors: fix them and review it again. Nothing was saved.",
+      "savedResult": "Import saved.",
+      "row": "Row {{row}}",
+      "counters": {
+        "regionsCreated": "New regions",
+        "districtsCreated": "New districts",
+        "pastorsCreated": "New pastors",
+        "churchesCreated": "New churches and groups",
+        "filialsCreated": "New branches",
+        "pastorAssignmentsCreated": "Pastor assignments",
+        "churchesSkipped": "Already existed"
+      }
+    }
+  },
+  "admin": {
+    "columns": {
+      "roles": "Roles",
+      "lastLogin": "Last login",
+      "description": "Description",
+      "users": "Users",
+      "menus": "Menus",
+      "user": "User",
+      "table": "Table",
+      "action": "Action",
+      "recordId": "Record id",
+      "date": "Date",
+      "changes": "Fields"
+    },
+    "users": {
+      "new": "New user",
+      "newTitle": "New user",
+      "editTitle": "Edit user",
+      "deleteTitle": "Delete user",
+      "deleteMessage": "Delete \"{{name}}\"? If they already recorded data it cannot be deleted: deactivate them instead.",
+      "cannotDeleteSelf": "You cannot delete your own user.",
+      "search": "Search by name, email or ID",
+      "roles": "Roles",
+      "rolesTitle": "Roles of {{name}}",
+      "noRoles": "No roles",
+      "never": "Never",
+      "neverLoggedIn": "Never (temporary password)",
+      "linkedPastor": "Linked pastor",
+      "linkedPastorHint": "Only for users with the Pastor role: it sets which district they see.",
+      "tempPassword": "Temporary password",
+      "tempPasswordHint": "At least 8 characters. The user changes it on first login.",
+      "newPassword": "New temporary password",
+      "newPasswordHint": "Leave it empty to keep it. If filled, the account is unlocked and the user changes it on login.",
+      "pastorRoleNeedsLink": "This user has no linked pastor: with the Pastor role they would see no district. Link one in Edit.",
+      "states": {
+        "active": "Active",
+        "locked": "Locked",
+        "inactive": "Inactive"
+      }
+    },
+    "roles": {
+      "subtitle": "What each role can do is fixed in the system. Here you choose which menus it sees.",
+      "new": "New role",
+      "newTitle": "New role",
+      "editTitle": "Edit role",
+      "deleteTitle": "Delete role",
+      "deleteWithUsers": "\"{{name}}\" has {{count}} user(s): they lose this role if it is deleted. Continue?",
+      "protected": "The M-BOS role cannot be renamed, deactivated or deleted.",
+      "newRoleHint": "A new role can only view: recording data is limited to M-BOS and Analista.",
+      "menus": "Menus",
+      "menusTitle": "Menus of {{name}}",
+      "protectedMenus": "The M-BOS role always sees every menu.",
+      "deleteMessage": "Delete the role \"{{name}}\"? Users who have it will lose it. This cannot be undone."
+    },
+    "audit": {
+      "subtitle": "Every saved change is kept here with who made it. It is kept for 3 years.",
+      "system": "System",
+      "detail": "View detail",
+      "detailTitle": "Audit record #{{id}}",
+      "browser": "Browser",
+      "field": "Field",
+      "before": "Before",
+      "after": "After",
+      "noChanges": "No value changes.",
+      "maskedHint": "Passwords and tokens are stored hidden (***).",
+      "actions": {
+        "INSERT": "Created",
+        "UPDATE": "Updated",
+        "DELETE": "Deleted"
+      },
+      "tables": {
+        "app_user": "Users",
+        "app_user_role": "User roles",
+        "role": "Roles",
+        "menu": "Menus",
+        "menu_role": "Role menus",
+        "region": "Regions",
+        "district": "Districts",
+        "district_pastor": "District pastors",
+        "pastor": "Pastors",
+        "church": "Churches",
+        "church_history": "Church history",
+        "period": "Periods",
+        "local_fund_count": "Counts",
+        "local_fund_count_attachment": "Count attachments",
+        "local_fund_count_correction": "Corrections",
+        "difference_follow_up": "Difference follow-up"
+      },
+      "fieldCount": "{{count}} fields"
+    }
+  },
+  "account": {
+    "changePassword": "Change password",
+    "mustChange": "You signed in with a temporary password. Change it to keep using the system.",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Repeat the new password",
+    "mismatch": "The passwords do not match.",
+    "changed": "Password updated."
+  },
+  "errorState": {
+    "400": {
+      "title": "Invalid request",
+      "description": "The request could not be processed. Check the data and try again."
+    },
+    "401": {
+      "title": "Unauthorized",
+      "description": "You need to sign in to access this content."
+    },
+    "403": {
+      "title": "Access denied",
+      "description": "You don't have permission to view this section."
+    },
+    "404": {
+      "title": "Page not found",
+      "description": "The content you're looking for doesn't exist or was moved."
+    },
+    "500": {
+      "title": "Server error",
+      "description": "Something unexpected happened. Please try again later."
+    },
+    "503": {
+      "title": "Service unavailable",
+      "description": "The service isn't available right now. Please try again later."
+    },
+    "default": {
+      "title": "An error occurred",
+      "description": "Something went wrong. Please try again."
+    }
+  },
+  "reports": {
+    "filters": {
+      "year": "Year",
+      "monthFrom": "From month",
+      "monthTo": "To month",
+      "dateFrom": "From",
+      "dateTo": "To",
+      "changeType": "Change type",
+      "allStatuses": "All statuses",
+      "allChanges": "All changes",
+      "allChurches": "All churches",
+      "groupBy": "Group by",
+      "byRegion": "Region",
+      "byDistrict": "District"
+    },
+    "downloadPdf": "Download PDF",
+    "downloadExcel": "Download Excel",
+    "downloading": "Downloading...",
+    "error": "The report could not be generated.",
+    "excelError": "The Excel file could not be downloaded.",
+    "selectPrompt": "Choose the filters to see the report.",
+    "noPreview": "This browser cannot show PDFs inside the page: use Download PDF.",
+    "notFound": "That report does not exist.",
+    "local-fund": {
+      "title": "Annual local fund",
+      "description": "ACMS balance, total in custody and difference for each church, month by month."
+    },
+    "pending": {
+      "title": "Monthly pending",
+      "description": "Churches that did not record or submit their count, or with an unresolved difference, by district and pastor."
+    },
+    "differences": {
+      "title": "Differences by status",
+      "description": "Counts that do not match the ACMS: amount, status, days open and last follow-up."
+    },
+    "compliance": {
+      "title": "Compliance by district and pastor",
+      "description": "Percentage of counts recorded by each overdue month's due date."
+    },
+    "negative-acms": {
+      "title": "Negative ACMS balance",
+      "description": "Churches that spent more than they had and for how many months in a row."
+    },
+    "region-summary": {
+      "title": "Monthly summary by region or district",
+      "description": "For each month: active churches, how many submitted, did not submit, did not record, with a difference, and the amounts. Group it by region or district."
+    },
+    "corrections": {
+      "title": "Applied corrections",
+      "description": "What was corrected in closed months, where it was applied, who did it, the previous and new amounts."
+    },
+    "church-movements": {
+      "title": "Church changes",
+      "description": "Churches closed, merged or with a district, type or name change between two dates."
+    },
+    "local-fund-count": {
+      "title": "Local fund count sheet",
+      "description": "The count sheet to print and sign: treasurer, pastor and elder. One sheet per church; choose a church or a whole district."
+    },
+    "pickDistrictOrChurch": "Choose a district or a church to see its counts."
   }
 }

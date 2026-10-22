@@ -40,6 +40,17 @@
         {{ cancelLabel() ?? ('dialog.cancel' | translate) }}
       </button>
     }
+    @if (extraLabel()) {
+      <button
+        type="button"
+        class="rounded-md border border-border px-4 py-2 text-sm text-foreground transition-colors hover:bg-brand-300/20"
+        [class.cursor-not-allowed]="extraDisabled()"
+        [class.opacity-50]="extraDisabled()"
+        (click)="!extraDisabled() && extra.emit()"
+      >
+        {{ extraLabel() }}
+      </button>
+    }
     <button
       type="button"
       class="rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground transition-colors"

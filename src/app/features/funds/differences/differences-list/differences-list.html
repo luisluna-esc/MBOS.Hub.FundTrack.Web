@@ -1,0 +1,138 @@
+<div class="flex flex-col gap-5">
+  <div class="flex flex-col gap-1">
+    <h1 class="text-xl font-semibold text-foreground">{{ 'nav.differences' | translate }}</h1>
+    <p class="text-sm text-muted-foreground">{{ 'funds.differences.subtitle' | translate }}</p>
+  </div>
+
+  <div class="flex flex-wrap items-end gap-3 rounded-md border border-border bg-surface p-3">
+    <div class="min-w-[10rem] flex-1">
+      <app-select
+        [label]="'funds.filters.region' | translate"
+        [options]="regionOptions()"
+        [ngModel]="selectedRegion() ?? ''"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="onRegionChange($event)"
+      />
+    </div>
+    <div class="min-w-[10rem] flex-1">
+      <app-select
+        [label]="'funds.filters.district' | translate"
+        [options]="districtOptions()"
+        [ngModel]="selectedDistrict() ?? ''"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="onDistrictChange($event)"
+      />
+    </div>
+    <div class="flex flex-col gap-1">
+      <span class="invisible text-sm font-medium">&nbsp;</span>
+      <button
+        type="button"
+        class="rounded-md border border-border px-4 py-2 text-sm text-foreground transition-colors hover:bg-brand-300"
+        (click)="clearFilters()"
+      >
+        {{ 'filters.clear' | translate }}
+      </button>
+      <span class="invisible min-h-4 text-xs">&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- Pestañas por estado -->
+  <div class="flex flex-wrap gap-1 border-b border-border">
+    @for (tab of tabs; track tab) {
+      <button
+        type="button"
+        class="-mb-px flex items-center gap-2 border-b-2 px-3 py-2 text-sm transition-colors"
+        [class]="activeTab() === tab ? 'border-primary font-medium text-foreground' : 'border-transparent text-muted-foreground hover:text-foreground'"
+        (click)="selectTab(tab)"
+      >
+        {{ 'funds.differences.tabs.' + tab | translate }}
+        <span class="rounded-full bg-surface px-2 text-xs text-muted-foreground">{{ tabCount()[tab] }}</span>
+      </button>
+    }
+  </div>
+
+  @if (errorCode()) {
+    <div class="rounded-lg border border-border">
+      <app-error-state [code]="errorCode()!" [actionLabel]="'common.retry' | translate" (action)="reload()" />
+    </div>
+  } @else {
+    <div class="overflow-x-auto rounded-lg border border-border bg-surface">
+      <table class="w-full min-w-[64rem] text-sm">
+        <thead>
+          <tr class="border-b border-border text-left text-xs text-muted-foreground">
+            <th class="px-3 py-2 font-medium">{{ 'funds.filters.period' | translate }}</th>
+            <th class="px-3 py-2 font-medium">{{ 'funds.columns.church' | translate }}</th>
+            <th class="px-3 py-2 font-medium">{{ 'funds.dialog.district' | translate }}</th>
+            <th class="px-3 py-2 text-right font-medium">{{ 'funds.columns.acms' | translate }}</th>
+            <th class="px-3 py-2 text-right font-medium">{{ 'funds.columns.custody' | translate }}</th>
+            <th class="px-3 py-2 text-right font-medium">{{ 'funds.columns.difference' | translate }}</th>
+            <th class="px-3 py-2 font-medium">{{ 'funds.columns.status' | translate }}</th>
+            <th class="px-3 py-2 font-medium">{{ 'funds.differences.lastChange' | translate }}</th>
+            <th class="px-3 py-2"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (loading()) {
+            @for (_ of [1, 2, 3, 4]; track $index) {
+              <tr class="border-b border-border/60">
+                <td colspan="9" class="px-3 py-2"><app-skeleton height="1.5rem" /></td>
+              </tr>
+            }
+          } @else {
+            @for (count of counts(); track count.localFundCountId) {
+              @let status = countStatus(count);
+              <tr class="border-b border-border/60 text-foreground transition-colors last:border-b-0 hover:bg-background">
+                <td class="px-3 py-2 whitespace-nowrap">{{ monthLabel(count) }}</td>
+                <td class="px-3 py-2">
+                  <span class="font-medium">{{ count.churchName }}</span>
+                  <span class="text-muted-foreground"> · {{ count.churchCode }}</span>
+                </td>
+                <td class="px-3 py-2 text-muted-foreground">{{ count.districtName }} · {{ count.regionName }}</td>
+                <td class="px-3 py-2 text-right whitespace-nowrap" [class.text-danger]="count.acmsBalance < 0">{{ count.acmsBalance | money }}</td>
+                <td class="px-3 py-2 text-right whitespace-nowrap">{{ count.totalAmount | money }}</td>
+                <td class="px-3 py-2 text-right font-semibold whitespace-nowrap" [class]="differenceClass(count.difference)">{{ count.difference | money: true }}</td>
+                <td class="px-3 py-2"><app-badge [tone]="status.tone">{{ status.labelKey | translate }}</app-badge></td>
+                <td class="px-3 py-2 whitespace-nowrap text-muted-foreground">{{ lastChange(count) }}</td>
+                <td class="px-3 py-2 text-right">
+                  <button
+                    type="button"
+                    class="rounded-md border border-border px-3 py-1 text-xs font-medium whitespace-nowrap text-foreground transition-colors hover:bg-background"
+                    (click)="openFollowUp(count)"
+                  >
+                    {{ 'funds.differences.followUp' | translate }}
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="9" class="px-3 py-10 text-center text-muted-foreground">{{ 'funds.differences.empty' | translate }}</td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (totalPages() > 1) {
+      <div class="flex items-center justify-end gap-3 text-sm text-muted-foreground">
+        <button
+          type="button"
+          class="rounded-md border border-border px-3 py-1 text-foreground transition-colors hover:bg-surface disabled:opacity-50"
+          [disabled]="pageNumber() === 1"
+          (click)="goToPage(pageNumber() - 1)"
+        >
+          {{ 'table.previous' | translate }}
+        </button>
+        <span>{{ 'table.pageInfo' | translate: { page: pageNumber(), total: totalPages() } }}</span>
+        <button
+          type="button"
+          class="rounded-md border border-border px-3 py-1 text-foreground transition-colors hover:bg-surface disabled:opacity-50"
+          [disabled]="pageNumber() === totalPages()"
+          (click)="goToPage(pageNumber() + 1)"
+        >
+          {{ 'table.next' | translate }}
+        </button>
+      </div>
+    }
+  }
+</div>

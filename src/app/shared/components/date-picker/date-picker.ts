@@ -1,6 +1,8 @@
 import { ConnectionPositionPair, OverlayModule } from '@angular/cdk/overlay';
 import { Component, Injector, computed, effect, inject, input, signal } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { localDateIso } from '../../../core/dates/calendar-date';
+import { InfoHint } from '../info-hint/info-hint';
 
 interface CalendarDay {
   date: Date;
@@ -19,7 +21,7 @@ let nextId = 0;
 
 @Component({
   selector: 'app-date-picker',
-  imports: [OverlayModule],
+  imports: [OverlayModule, InfoHint],
   templateUrl: './date-picker.html',
 })
 export class DatePicker implements ControlValueAccessor {
@@ -30,11 +32,28 @@ export class DatePicker implements ControlValueAccessor {
   readonly placeholder = input('Selecciona una fecha');
   readonly hint = input<string | null>(null);
   readonly required = input(false);
-  /** Fecha máxima permitida, formato ISO 'yyyy-MM-dd' (ej. hoy, para no permitir fechas futuras). */
+  /** Fecha máxima permitida, formato ISO 'yyyy-MM-dd'. Nunca pasa de hoy salvo con allowFuture. */
   readonly max = input<string | null>(null);
+  /**
+   * Regla del sistema: no se registran fechas futuras, así que por defecto el máximo es hoy. Solo
+   * las fechas que de verdad caen adelante (la fecha límite de un período) lo activan.
+   */
+  readonly allowFuture = input(false);
   /** Fecha mínima permitida, formato ISO 'yyyy-MM-dd'. */
   readonly min = input<string | null>(null);
   readonly errorMessages = input<Record<string, string>>({});
+  /** Igual que en app-input: 'icon' muestra el error como ícono a la derecha, para tablas. */
+  readonly errorDisplay = input<'text' | 'icon'>('text');
+
+  /** El máximo que rige: el que se pasó, pero nunca después de hoy (salvo allowFuture). */
+  protected readonly effectiveMax = computed<string | null>(() => {
+    const max = this.max();
+    if (this.allowFuture()) {
+      return max;
+    }
+    const today = localDateIso();
+    return max && max < today ? max : today;
+  });
 
   protected readonly pickerId = `app-date-picker-${nextId++}`;
   protected readonly value = signal<string | null>(null);
@@ -61,7 +80,7 @@ export class DatePicker implements ControlValueAccessor {
   });
 
   protected isYearDisabled(year: number): boolean {
-    const maxDate = this.max();
+    const maxDate = this.effectiveMax();
     const minDate = this.min();
     if (maxDate && year > Number(maxDate.slice(0, 4))) {
       return true;
@@ -95,7 +114,7 @@ export class DatePicker implements ControlValueAccessor {
     const firstWeekday = (firstOfMonth.getDay() + 6) % 7;
     const startDate = new Date(year, month, 1 - firstWeekday);
 
-    const maxDate = this.max();
+    const maxDate = this.effectiveMax();
     const minDate = this.min();
 
     const days: CalendarDay[] = [];
@@ -131,8 +150,8 @@ export class DatePicker implements ControlValueAccessor {
           if (this.required()) {
             validators.push(Validators.required);
           }
-          if (this.max() !== null) {
-            validators.push(this.maxDateValidator(this.max()!));
+          if (this.effectiveMax() !== null) {
+            validators.push(this.maxDateValidator(this.effectiveMax()!));
           }
           if (this.min() !== null) {
             validators.push(this.minDateValidator(this.min()!));

@@ -25,7 +25,7 @@
             <div #swatch class="h-14" [attr.data-token]="swatch.token" [style.background-color]="'var(--color-' + swatch.token + ')'"></div>
             <div class="px-2 py-1.5 text-xs">
               <div class="font-semibold">{{ swatch.token }}</div>
-              <div class="font-mono text-muted-foreground">{{ resolvedColors()[swatch.token] ?? '' }}</div>
+              <div class="font-mono text-muted-foreground">{{ resolvedColors()[swatch.token] }}</div>
             </div>
           </div>
         }
@@ -42,7 +42,7 @@
             <div #swatch class="size-10 shrink-0 rounded border border-border" [attr.data-token]="swatch.token" [style.background-color]="'var(--color-' + swatch.token + ')'"></div>
             <div class="min-w-0 text-xs">
               <div class="font-semibold">{{ swatch.token }}</div>
-              <div class="font-mono text-muted-foreground">{{ resolvedColors()[swatch.token] ?? '' }}</div>
+              <div class="font-mono text-muted-foreground">{{ resolvedColors()[swatch.token] }}</div>
               <div class="truncate text-muted-foreground">{{ swatch.usage | translate }}</div>
             </div>
           </div>
@@ -100,10 +100,7 @@
         <app-input [label]="'styleGuide.fields.cash' | translate" type="number" [decimals]="2" [formControl]="amountControl" />
         <app-select [label]="'styleGuide.fields.type' | translate" [options]="typeOptions" [formControl]="typeControl" />
         <app-date-picker [label]="'styleGuide.fields.countDate' | translate" [formControl]="dateControl" />
-        <label class="flex items-center gap-2 text-sm">
-          <app-checkbox [formControl]="signedControl" />
-          {{ 'styleGuide.fields.signedByPastor' | translate }}
-        </label>
+        <app-checkbox [formControl]="signedControl">{{ 'styleGuide.fields.signedByPastor' | translate }}</app-checkbox>
         <app-switch [(checked)]="submitted" [label]="'styleGuide.fields.submitted' | translate" />
       </div>
     </section>

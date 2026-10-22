@@ -1,0 +1,45 @@
+<!-- Plantilla compartida por las listas (mismo diseño que las listas de InvenTrack): título, botones
+     del encabezado, filtros y tabla paginada por el backend. -->
+<div class="flex flex-col gap-4">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div class="flex flex-col gap-0.5">
+      <h1 class="text-xl font-semibold text-foreground">{{ titleKey | translate }}</h1>
+      @if (subtitleKey) {
+        <p class="text-sm text-muted-foreground">{{ subtitleKey | translate }}</p>
+      }
+    </div>
+    <div class="flex flex-wrap gap-2">
+      @for (button of headerButtons(); track button.labelKey) {
+        <button
+          type="button"
+          class="rounded-full px-4 py-2 text-sm font-medium transition-colors"
+          [class]="button.primary ? 'bg-primary text-primary-foreground hover:opacity-90' : 'border border-border text-foreground hover:bg-surface'"
+          (click)="button.onClick()"
+        >
+          {{ button.labelKey | translate }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <app-filters [fields]="filterFields()" (search)="onSearch($event)" (clear)="onClear()" />
+
+  @if (errorCode()) {
+    <div class="rounded-lg border border-border">
+      <app-error-state [code]="errorCode()!" [actionLabel]="'common.retry' | translate" (action)="reload()" />
+    </div>
+  } @else {
+    <app-table
+      [columns]="columns()"
+      [rows]="$any(rows())"
+      [actions]="$any(actions())"
+      [totalRecords]="totalRecords()"
+      [pageNumber]="pageNumber()"
+      [pageSize]="pageSize()"
+      [loading]="loading()"
+      [emptyMessage]="'table.empty' | translate"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    />
+  }
+</div>

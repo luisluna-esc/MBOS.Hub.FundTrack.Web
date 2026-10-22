@@ -1,0 +1,232 @@
+<app-dialog
+  size="large"
+  [title]="(isNew ? 'funds.dialog.newTitle' : editable ? 'funds.dialog.editTitle' : 'funds.dialog.viewTitle') | translate: { church: row.churchName }"
+  [saveDisabled]="editable && (saveDisabled() || loadingDocuments())"
+  [saveLabel]="(editable ? 'funds.dialog.save' : 'dialog.close') | translate"
+  [showCancel]="editable"
+  [extraLabel]="isNew && !editable ? null : ((printing() ? 'funds.dialog.printing' : 'funds.dialog.print') | translate)"
+  [extraDisabled]="printing() || loadingDocuments()"
+  (save)="editable ? save() : onCancel()"
+  (cancel)="onCancel()"
+  (extra)="print()"
+>
+  <div class="flex flex-col gap-5">
+    <!-- Datos de la iglesia y del mes -->
+    <div class="grid grid-cols-2 gap-3 rounded-lg border border-border bg-surface p-4 text-sm md:grid-cols-4">
+      <div class="flex flex-col">
+        <span class="text-xs text-muted-foreground">{{ 'funds.columns.church' | translate }}</span>
+        <span class="font-medium text-foreground">{{ row.churchCode }} · {{ row.churchName }}</span>
+        <span class="text-xs text-muted-foreground">{{ row.churchType }}</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-xs text-muted-foreground">{{ 'funds.dialog.district' | translate }}</span>
+        <span class="font-medium text-foreground">{{ row.districtName }}</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-xs text-muted-foreground">{{ 'funds.counts.pastor' | translate }}</span>
+        <span class="font-medium text-foreground">{{ row.pastorName ?? '' }}</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-xs text-muted-foreground">{{ 'funds.filters.period' | translate }}</span>
+        <span class="font-medium text-foreground">{{ data.periodLabel }}</span>
+        @if (status; as s) {
+          <app-badge class="self-start" [tone]="s.tone">{{ s.labelKey | translate }}</app-badge>
+        }
+      </div>
+
+      @if (filials().length) {
+        <div class="col-span-2 flex flex-wrap items-center gap-1.5 border-t border-border pt-3 md:col-span-4">
+          <span class="text-xs text-muted-foreground">{{ 'funds.dialog.includesFilials' | translate }}</span>
+          @for (filial of filials(); track filial) {
+            <app-badge>{{ filial }}</app-badge>
+          }
+        </div>
+      }
+    </div>
+
+    @if (editable) {
+      <app-switch [checked]="submitted()" (checkedChange)="setSubmitted($event)" [label]="'funds.dialog.submitted' | translate" />
+    } @else if (data.period.status === 'closed') {
+      <p class="rounded-md border border-info/30 bg-info/10 px-3 py-2 text-sm text-info">{{ 'funds.dialog.closedHint' | translate }}</p>
+    }
+
+    <form [formGroup]="form" class="flex flex-col gap-5">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <app-input formControlName="acmsBalance" type="number" [decimals]="2" [label]="'funds.dialog.acms' | translate" [required]="true" />
+        @if (submitted()) {
+          <app-date-picker formControlName="countDate" [label]="'funds.dialog.countDate' | translate" [required]="true" />
+        } @else {
+          <p class="text-sm text-muted-foreground sm:self-end">{{ 'funds.dialog.notSubmittedHint' | translate }}</p>
+        }
+      </div>
+
+      @if (submitted()) {
+        <!-- Fondos que tiene el tesorero -->
+        <section class="flex flex-col gap-3">
+          <h3 class="text-sm font-semibold text-foreground">{{ 'funds.dialog.fundsTitle' | translate }}</h3>
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <app-input formControlName="bankStatementBalance" type="number" [decimals]="2" [label]="'funds.dialog.bankStatement' | translate" />
+            <app-input formControlName="bankDeposit" type="number" [decimals]="2" [label]="'funds.dialog.bankDeposit' | translate" />
+            <app-input formControlName="localCash" type="number" [decimals]="2" [label]="'funds.dialog.localCash' | translate" />
+          </div>
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <app-input formControlName="usdAmount" type="number" [decimals]="2" [label]="'funds.dialog.usdAmount' | translate" />
+            <app-input formControlName="exchangeRate" type="number" [decimals]="2" [label]="'funds.dialog.exchangeRate' | translate" />
+            <!-- Misma estructura que app-input (etiqueta, caja y línea de ayuda) para quedar alineado. -->
+            <div class="flex w-full flex-col gap-1">
+              <span class="text-sm font-medium text-foreground">{{ 'funds.dialog.usdInBs' | translate }}</span>
+              <span class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm font-semibold text-foreground tabular-nums">Bs {{ usdInBs() | money }}</span>
+              <p class="min-h-4 text-xs" aria-hidden="true">&nbsp;</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Documentos a rendir: tabla como el detalle de Salidas de CheckInvoice (errores en ícono para que
+             todas las filas tengan el mismo alto). -->
+        <section class="flex flex-col gap-3">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="text-sm font-semibold text-foreground">{{ 'funds.dialog.documentsTitle' | translate }}</h3>
+            @if (editable) {
+              <button
+                type="button"
+                class="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-surface"
+                (click)="addDocument()"
+              >
+                + {{ 'funds.dialog.addDocument' | translate }}
+              </button>
+            }
+          </div>
+
+          @if (loadingDocuments()) {
+            <app-skeleton height="3rem" />
+          } @else if (!documents.length) {
+            <p class="rounded-md border border-dashed border-border px-3 py-3 text-center text-sm text-muted-foreground">{{ 'funds.dialog.noDocuments' | translate }}</p>
+          } @else {
+            <div class="w-full overflow-x-auto rounded-md border border-border" formArrayName="documents">
+              <table class="w-full min-w-[40rem] divide-y divide-border text-sm">
+                <thead class="bg-background">
+                  <tr>
+                    <th class="px-3 py-2 text-left font-semibold whitespace-nowrap text-foreground">#</th>
+                    <th class="px-3 py-2 text-left font-semibold whitespace-nowrap text-foreground">{{ 'funds.dialog.documentDate' | translate }}</th>
+                    <th class="px-3 py-2 text-left font-semibold whitespace-nowrap text-foreground">{{ 'funds.dialog.documentNumber' | translate }}</th>
+                    <th class="px-3 py-2 text-left font-semibold whitespace-nowrap text-foreground">{{ 'funds.dialog.documentDetail' | translate }}</th>
+                    <th class="px-3 py-2 text-left font-semibold whitespace-nowrap text-foreground">{{ 'funds.dialog.documentAmount' | translate }}</th>
+                    @if (editable) {
+                      <th class="px-3 py-2 text-center font-semibold whitespace-nowrap text-foreground">{{ 'table.actions' | translate }}</th>
+                    }
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-border">
+                  @for (document of documents.controls; track document; let i = $index) {
+                    <tr [formGroupName]="i">
+                      <td class="px-3 py-2 align-middle text-muted-foreground">{{ i + 1 }}</td>
+                      <td class="w-44 px-3 py-2 align-middle">
+                        <app-date-picker formControlName="documentDate" errorDisplay="icon" [required]="true" />
+                      </td>
+                      <td class="w-36 px-3 py-2 align-middle">
+                        <app-input formControlName="documentNumber" errorDisplay="icon" [maxLength]="50" />
+                      </td>
+                      <td class="px-3 py-2 align-middle">
+                        <app-input formControlName="detail" errorDisplay="icon" [required]="true" [maxLength]="500" />
+                      </td>
+                      <td class="w-36 px-3 py-2 align-middle">
+                        <app-input formControlName="amount" type="number" errorDisplay="icon" [required]="true" [min]="0.01" [decimals]="2" />
+                      </td>
+                      @if (editable) {
+                        <td class="px-3 py-2 text-center align-middle">
+                          <button
+                            type="button"
+                            class="rounded p-1.5 text-danger transition-colors hover:bg-danger/10"
+                            [attr.aria-label]="'catalogs.actions.delete' | translate"
+                            (click)="removeDocument(i)"
+                          >
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="size-4">
+                              <path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                              <path
+                                d="M18.8332 8.5L18.3732 15.3991C18.1962 18.054 18.1077 19.3815 17.2427 20.1907C16.3777 21 15.0473 21 12.3865 21H11.6132C8.95235 21 7.62195 21 6.75694 20.1907C5.89194 19.3815 5.80344 18.054 5.62644 15.3991L5.1665 8.5"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                              />
+                              <path d="M9.5 11L10 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                              <path d="M14.5 11L14 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                              <path
+                                d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                              />
+                            </svg>
+                          </button>
+                        </td>
+                      }
+                    </tr>
+                  }
+                </tbody>
+                <tfoot class="bg-background">
+                  <tr>
+                    <td colspan="4" class="px-3 py-2 text-right font-semibold text-foreground">{{ 'funds.dialog.documentsTotal' | translate }}</td>
+                    <td class="px-3 py-2 font-semibold whitespace-nowrap text-foreground tabular-nums">Bs {{ documentsTotal() | money }}</td>
+                    @if (editable) {
+                      <td></td>
+                    }
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          }
+        </section>
+
+        <!-- Totales -->
+        <div class="grid grid-cols-1 gap-2 rounded-lg border border-border bg-surface p-4 text-sm sm:grid-cols-2">
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-muted-foreground">{{ 'funds.dialog.fundsTotal' | translate }}</span>
+            <span class="font-medium text-foreground">Bs {{ fundsTotal() | money }}</span>
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-muted-foreground">{{ 'funds.dialog.documentsTotal' | translate }}</span>
+            <span class="font-medium text-foreground">Bs {{ documentsTotal() | money }}</span>
+          </div>
+          <div class="flex items-center justify-between gap-3 border-t border-border pt-2 sm:col-span-2">
+            <span class="font-semibold text-foreground">{{ 'funds.dialog.custodyTotal' | translate }}</span>
+            <span class="text-base font-semibold text-foreground">Bs {{ custodyTotal() | money }}</span>
+          </div>
+          <div class="flex items-center justify-between gap-3 sm:col-span-2">
+            <span class="text-muted-foreground">
+              {{ 'funds.columns.difference' | translate }}
+              @if (difference() > 0) {
+                ({{ 'funds.dialog.differenceOver' | translate }})
+              } @else if (difference() < 0) {
+                ({{ 'funds.dialog.differenceUnder' | translate }})
+              }
+            </span>
+            <span class="text-base font-semibold" [class]="differenceClass(difference())">Bs {{ difference() | money: true }}</span>
+          </div>
+        </div>
+
+        @if (needsObservation()) {
+          <div class="flex flex-col gap-2 rounded-lg border border-warning/40 bg-warning/10 p-4">
+            <p class="text-sm text-warning">{{ 'funds.dialog.differenceWillBePending' | translate }}</p>
+            <app-textarea
+              formControlName="observation"
+              [label]="'funds.dialog.differenceReason' | translate"
+              [required]="true"
+              [maxLength]="1000"
+              [rows]="3"
+            />
+          </div>
+        }
+
+        <!-- Responsables y firmas -->
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <app-input formControlName="treasurerName" [label]="'funds.dialog.treasurer' | translate" [maxLength]="150" />
+          <app-input formControlName="elderName" [label]="'funds.dialog.elderOptional' | translate" [maxLength]="150" />
+        </div>
+
+        <div class="flex flex-wrap gap-6 text-sm text-foreground">
+          <app-checkbox formControlName="signedByPastor">{{ 'funds.dialog.signedByPastor' | translate }}</app-checkbox>
+          <app-checkbox formControlName="signedByElder">{{ 'funds.dialog.signedByElder' | translate }}</app-checkbox>
+        </div>
+      }
+    </form>
+  </div>
+</app-dialog>

@@ -1,6 +1,12 @@
 {
   "common": {
-    "loading": "Cargando..."
+    "loading": "Cargando...",
+    "logout": "Cerrar sesión",
+    "saved": "Guardado correctamente.",
+    "deleted": "Eliminado correctamente.",
+    "saveError": "No se pudo guardar.",
+    "loadError": "No se pudo cargar la información.",
+    "retry": "Reintentar"
   },
   "dialog": {
     "cancel": "Cancelar",
@@ -74,6 +80,620 @@
     "welcomeDescription": "Controla los arqueos del fondo local de cada iglesia de la misión desde un solo lugar, de forma simple y segura.",
     "email": "Correo",
     "password": "Contraseña",
-    "submit": "Entrar"
+    "submit": "Entrar",
+    "error": "No se pudo iniciar sesión."
+  },
+  "layout": {
+    "collapseMenu": "Contraer menú",
+    "expandMenu": "Expandir menú",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú"
+  },
+  "nav": {
+    "home": "Inicio",
+    "funds": "Arqueos",
+    "localFundCounts": "Registro de arqueos",
+    "differences": "Diferencias",
+    "catalogs": "Catálogos",
+    "regions": "Regiones",
+    "districts": "Distritos",
+    "pastors": "Pastores",
+    "churches": "Iglesias",
+    "periods": "Períodos",
+    "admin": "Administración",
+    "users": "Usuarios",
+    "roles": "Roles",
+    "auditLogs": "Auditoría",
+    "reports": "Reportes",
+    "reportLocalFund": "Fondo Local anual",
+    "reportPending": "Pendientes del mes",
+    "reportDifferences": "Diferencias por estado",
+    "reportCompliance": "Cumplimiento",
+    "reportNegativeAcms": "Saldo ACMS negativo",
+    "reportRegionSummary": "Resumen por región o distrito",
+    "reportCorrections": "Correcciones",
+    "reportChurchMovements": "Movimientos de iglesias",
+    "reportLocalFundCount": "Arqueo del fondo local"
+  },
+  "placeholder": {
+    "description": "Esta pantalla todavía está en construcción.",
+    "comingSoon": "Próximamente"
+  },
+  "months": {
+    "1": "Enero",
+    "2": "Febrero",
+    "3": "Marzo",
+    "4": "Abril",
+    "5": "Mayo",
+    "6": "Junio",
+    "7": "Julio",
+    "8": "Agosto",
+    "9": "Septiembre",
+    "10": "Octubre",
+    "11": "Noviembre",
+    "12": "Diciembre"
+  },
+  "home": {
+    "title": "Inicio",
+    "period": "Mes",
+    "open": "Abierto",
+    "closed": "Cerrado",
+    "overdue": "Vencido",
+    "dueDate": "fecha límite {{date}}",
+    "overdueTitle": "Meses abiertos con la fecha límite vencida:",
+    "byRegion": "Resumen por región",
+    "cards": {
+      "progress": "Arqueos registrados",
+      "progressDetail": "{{done}} de {{total}} Iglesias y Grupos",
+      "missing": "Faltan registrar",
+      "notSubmitted": "No presentaron: {{count}}",
+      "differences": "Diferencias pendientes",
+      "negativeAcms": "Saldo ACMS negativo",
+      "negativeAcmsDetail": "Iglesias que gastaron más de lo que tenían"
+    },
+    "amounts": {
+      "acms": "Saldo ACMS del mes",
+      "counted": "Contado en arqueos",
+      "difference": "Diferencia",
+      "differenceHint": "Arqueo menos ACMS: negativo falta, positivo sobra"
+    },
+    "status": {
+      "pending": "Pendiente",
+      "resolved": "Resuelta"
+    },
+    "columns": {
+      "region": "Región",
+      "active": "Activas",
+      "progress": "Avance",
+      "submitted": "Presentaron",
+      "notSubmitted": "No presentaron",
+      "missing": "Faltan",
+      "differences": "Diferencias",
+      "acms": "Saldo ACMS",
+      "counted": "Contado",
+      "difference": "Diferencia",
+      "total": "Total"
+    }
+  },
+  "funds": {
+    "sampleOnly": "Vista de ejemplo: todavía no se guarda.",
+    "status": {
+      "missing": "Sin registrar",
+      "notSubmitted": "No presentó",
+      "noDifference": "Sin diferencia",
+      "none": "Sin diferencia",
+      "pending": "Pendiente",
+      "resolved": "Resuelta",
+      "withDifference": "Con diferencia"
+    },
+    "filters": {
+      "period": "Mes",
+      "region": "Región",
+      "district": "Distrito",
+      "statusLabel": "Estado",
+      "search": "Buscar",
+      "searchPlaceholder": "Iglesia o código",
+      "allRegions": "Todas las regiones",
+      "allDistricts": "Todos los distritos",
+      "status": {
+        "all": "Todos",
+        "missing": "Sin registrar",
+        "notSubmitted": "No presentó",
+        "withDifference": "Con diferencia",
+        "ok": "Sin diferencia"
+      }
+    },
+    "columns": {
+      "code": "Código",
+      "church": "Iglesia",
+      "type": "Tipo",
+      "acms": "Saldo ACMS",
+      "cash": "Efectivo",
+      "bank": "Banco",
+      "counted": "Arqueo",
+      "difference": "Diferencia",
+      "status": "Estado",
+      "attachments": "Adjuntos",
+      "funds": "Arqueo",
+      "documents": "Documentos",
+      "custody": "Total en custodia"
+    },
+    "fields": {
+      "acms_balance": "Saldo ACMS",
+      "cash_amount": "Efectivo",
+      "bank_amount": "Banco",
+      "total_amount": "Total en custodia"
+    },
+    "counts": {
+      "subtitle": "Arqueo del fondo local de cada Iglesia y Grupo en el mes. Las Filiales van dentro del arqueo de su madre.",
+      "registered": "Registrados: {{done}} de {{total}}",
+      "withDifference": "Con diferencia",
+      "pastor": "Pastor",
+      "filials": "+{{count}} filiales",
+      "noCountYet": "Todavía no se registró el arqueo",
+      "open": "Ver",
+      "register": "Registrar",
+      "noPeriods": "Todavía no hay períodos. Créalos en Catálogos, Períodos, con Generar año.",
+      "closedPeriod": "Este período está cerrado: sus arqueos ya no se editan. Para arreglar un monto, abre el arqueo y registra una corrección."
+    },
+    "dialog": {
+      "newTitle": "Registrar arqueo: {{church}}",
+      "editTitle": "Arqueo: {{church}}",
+      "save": "Guardar arqueo",
+      "district": "Distrito",
+      "includesFilials": "Incluye las filiales:",
+      "submitted": "La iglesia presentó su arqueo",
+      "acms": "Saldo ACMS al cierre del mes",
+      "notSubmittedHint": "Se registra como No presentó. Solo se guarda el saldo ACMS.",
+      "differenceWillBePending": "Al guardar, la diferencia queda registrada. El ACMS es el que cubre lo que falta o sobra.",
+      "countDate": "Fecha del arqueo",
+      "treasurer": "Tesorero",
+      "elder": "Anciano",
+      "signedByPastor": "Firmado por el pastor",
+      "signedByElder": "Firmado por el anciano",
+      "observation": "Observación",
+      "tabs": {
+        "attachments": "Adjuntos",
+        "followUps": "Seguimiento",
+        "corrections": "Correcciones"
+      },
+      "download": "Descargar",
+      "noAttachments": "No hay respaldos adjuntos.",
+      "upload": "Subir respaldo",
+      "uploadHint": "Foto del libro o acta del arqueo. PDF, JPG o PNG de hasta 10 MB.",
+      "noFollowUps": "La diferencia todavía no tiene seguimiento.",
+      "correctionsHint": "Las correcciones se usan cuando el mes ya está cerrado: el arqueo original no cambia y la corrección se aplica en el mes abierto.",
+      "noCorrections": "No hay correcciones.",
+      "appliedIn": "Aplicada en {{month}}",
+      "statusChange": "De {{from}} a {{to}}",
+      "amountChange": "de {{from}} a {{to}}",
+      "viewTitle": "Arqueo de {{church}}",
+      "closedHint": "El período está cerrado: el arqueo es de solo lectura. Los errores se arreglan con una corrección.",
+      "delete": "Eliminar este arqueo",
+      "deleteTitle": "Eliminar arqueo",
+      "deleteMessage": "¿Eliminar el arqueo de {{church}} de {{period}}? También se borran su seguimiento y sus adjuntos.",
+      "uploadInvalid": "Solo se aceptan archivos PDF, JPG o PNG de hasta 10 MB.",
+      "uploaded": "Archivo subido.",
+      "correctionField": "Monto a corregir",
+      "correctedAmount": "Monto correcto",
+      "addCorrection": "Registrar corrección",
+      "correctionSaved": "Corrección registrada en el período abierto.",
+      "fundsTitle": "Fondos del tesorero",
+      "bankStatement": "Saldo según extracto bancario",
+      "bankDeposit": "Depósito bancario",
+      "localCash": "Billetes y monedas en moneda nacional (fondo local)",
+      "usdAmount": "Dólares (USD)",
+      "exchangeRate": "Tipo de cambio",
+      "usdInBs": "Dólares en Bs",
+      "documentsTitle": "Documentos (facturas, recibos y otros a rendir)",
+      "addDocument": "Agregar",
+      "documentDate": "Fecha",
+      "documentNumber": "N.º factura o recibo",
+      "documentDetail": "Detalle",
+      "documentAmount": "Monto",
+      "noDocuments": "Sin documentos a rendir.",
+      "fundsTotal": "Arqueo (bancos, efectivo y dólares)",
+      "documentsTotal": "Documentos a rendir",
+      "custodyTotal": "Total fondos en custodia del tesorero",
+      "differenceOver": "de más",
+      "differenceUnder": "de menos",
+      "differenceReason": "Observación: ¿por qué hay diferencia?",
+      "elderOptional": "Anciano (opcional)",
+      "print": "Imprimir",
+      "printing": "Preparando...",
+      "printError": "No se pudo preparar el arqueo para imprimir.",
+      "fixBeforePrint": "Completa los campos marcados en rojo antes de imprimir."
+    },
+    "differences": {
+      "subtitle": "Arqueos donde el total en custodia no coincide con el saldo ACMS. El ACMS cubre lo que falta o sobra; aquí solo se registra y, si se quiere, se marca como resuelta.",
+      "tabs": {
+        "pending": "Pendientes",
+        "resolved": "Resueltas",
+        "all": "Todas"
+      },
+      "lastFollowUp": "Último seguimiento",
+      "followUp": "Seguimiento",
+      "empty": "No hay diferencias en este estado.",
+      "lastChange": "Última modificación"
+    },
+    "followUp": {
+      "title": "Seguimiento: {{church}}",
+      "history": "Historial",
+      "justification": "Motivo",
+      "markAs": {
+        "resolved": "Marcar como resuelta"
+      },
+      "hint": {
+        "resolved": "La Misión da la diferencia por resuelta. Escribe el motivo."
+      },
+      "done": "Esta diferencia ya está resuelta."
+    }
+  },
+  "catalogs": {
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "deleteMessage": "¿Eliminar «{{name}}»? Esta acción no se puede deshacer.",
+    "actions": {
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "filters": {
+      "search": "Buscar por nombre",
+      "status": "Estado"
+    },
+    "columns": {
+      "name": "Nombre",
+      "districts": "Distritos",
+      "churchesAndGroups": "Iglesias y Grupos",
+      "pendingBalance": "Saldo pendiente",
+      "status": "Estado",
+      "region": "Región",
+      "missionary": "Misionero",
+      "pastor": "Pastor",
+      "churches": "Iglesias",
+      "district": "Distrito",
+      "fullName": "Nombre completo",
+      "firstNames": "Nombres",
+      "lastNames": "Apellidos",
+      "ci": "CI",
+      "email": "Correo",
+      "code": "Código",
+      "type": "Tipo",
+      "phone": "Teléfono",
+      "address": "Dirección",
+      "treasurer": "Tesorero",
+      "treasurerPhone": "Teléfono del tesorero",
+      "elder": "Anciano",
+      "elderPhone": "Teléfono del anciano",
+      "year": "Año",
+      "period": "Período",
+      "dueDate": "Fecha límite",
+      "closedAt": "Cerrado el",
+      "closedBy": "Cerrado por"
+    },
+    "regions": {
+      "new": "Nueva región",
+      "newTitle": "Nueva región",
+      "editTitle": "Editar región",
+      "deleteTitle": "Eliminar región",
+      "cannotDelete": "Tiene distritos: muévelos antes de eliminarla."
+    },
+    "districts": {
+      "new": "Nuevo distrito",
+      "newTitle": "Nuevo distrito",
+      "editTitle": "Editar distrito",
+      "deleteTitle": "Eliminar distrito",
+      "cannotDelete": "Tiene iglesias: muévelas antes de eliminarlo.",
+      "search": "Buscar por distrito o pastor",
+      "missionaryOnly": "Solo misioneros (DM)",
+      "regularOnly": "Solo regulares",
+      "isMissionary": "Distrito misionero (DM)",
+      "dm": "DM",
+      "noPastor": "Sin pastor",
+      "assignPastor": "Asignar pastor",
+      "assignTitle": "Asignar pastor a {{district}}",
+      "currentPastor": "Pastor actual",
+      "startDate": "Desde",
+      "assignHint": "La asignación actual del distrito, y la del pastor elegido si tenía otro distrito, se cierra el día anterior a esta fecha.",
+      "pastorHistory": "Historial de pastores",
+      "historyTitle": "Pastores de {{district}}",
+      "today": "hoy",
+      "current": "Actual",
+      "noHistory": "Este distrito todavía no tuvo pastores asignados."
+    },
+    "pastors": {
+      "new": "Nuevo pastor",
+      "newTitle": "Nuevo pastor",
+      "editTitle": "Editar pastor",
+      "deleteTitle": "Eliminar pastor",
+      "cannotDelete": "Tiene un distrito asignado: asigna otro pastor al distrito antes de eliminarlo.",
+      "search": "Buscar por nombre, CI o correo",
+      "withDistrict": "Con distrito",
+      "withoutDistrict": "Sin distrito",
+      "unassigned": "Sin distrito",
+      "noCi": "Sin CI",
+      "ciHint": "Opcional: se puede dejar vacío.",
+      "districtHint": "El distrito se cambia desde Distritos, con Asignar pastor, para que quede en el historial."
+    },
+    "churches": {
+      "subtitle": "Las filiales comparten el código de su iglesia madre y no tienen arqueo propio.",
+      "new": "Nueva iglesia",
+      "newTitle": "Nueva iglesia",
+      "editTitle": "Editar iglesia",
+      "import": "Importar Excel",
+      "search": "Buscar por código o nombre",
+      "filialCount": "{{count}} filial(es)",
+      "parentChurch": "Iglesia madre",
+      "codeFromParent": "Se toma de la iglesia madre.",
+      "contacts": "Contactos",
+      "history": "Historial",
+      "historyTitle": "Historial de {{church}}",
+      "noHistory": "Sin cambios registrados.",
+      "changeValues": "De {{old}} a {{new}}",
+      "closeOrMerge": "Cerrar o fusionar",
+      "closeTitle": "Cerrar o fusionar {{church}}",
+      "alreadyClosed": "Ya está cerrada o fusionada.",
+      "action": "Acción",
+      "close": "Cerrar",
+      "merge": "Fusionar",
+      "mergeInto": "Se une a",
+      "closedAt": "Fecha de cierre",
+      "reason": "Motivo",
+      "closeFilialsBlocked": "Tiene {{count}} filial(es) activa(s). Ciérralas o pásalas a otra iglesia antes de cerrarla.",
+      "types": {
+        "Iglesia": "Iglesia",
+        "Grupo": "Grupo",
+        "Filial": "Filial"
+      },
+      "statuses": {
+        "active": "Activa",
+        "closed": "Cerrada",
+        "merged": "Fusionada"
+      },
+      "changeTypes": {
+        "type": "Cambio de tipo",
+        "district": "Cambio de distrito",
+        "status": "Cambio de estado",
+        "name": "Cambio de nombre"
+      },
+      "mergedInto": "Fusionada con {{church}}",
+      "changeHint": "Cambiaste el tipo, el distrito o el nombre: quedará en el historial con esta fecha y motivo.",
+      "changeDate": "Desde cuándo rige el cambio"
+    },
+    "periods": {
+      "subtitle": "Un período cerrado no se vuelve a abrir. Las diferencias de un mes cerrado se arreglan con correcciones.",
+      "generateYear": "Generar año",
+      "generate": "Generar",
+      "generateHint": "Crea solo los meses que falten, cada uno con fecha límite el 15 del mes siguiente.",
+      "editDueDate": "Cambiar fecha límite",
+      "dueDateTitle": "Fecha límite de {{period}}",
+      "dueDateHint": "Después de esta fecha el período aparece como vencido mientras siga abierto.",
+      "close": "Cerrar período",
+      "closeTitle": "Cerrar {{period}}",
+      "closeMessage": "Ya no se podrán registrar ni editar arqueos de este mes y no se puede volver a abrir. ¿Continuar?",
+      "alreadyClosed": "Ya está cerrado.",
+      "closedLocked": "Está cerrado y ya no se puede modificar.",
+      "deleteTitle": "Eliminar período",
+      "cannotDelete": "Está cerrado y tiene arqueos: no se puede eliminar.",
+      "states": {
+        "open": "Abierto",
+        "overdue": "Vencido",
+        "closed": "Cerrado"
+      }
+    },
+    "import": {
+      "title": "Importar iglesias desde Excel",
+      "hint": "Primero se revisa el archivo sin guardar nada. Si no hay errores, se puede guardar. Si hay un solo error, no se guarda ninguna fila.",
+      "template": "Descargar la plantilla",
+      "file": "Archivo .xlsx",
+      "pastorStartDate": "Inicio de los pastores",
+      "pastorStartDateHint": "Desde cuándo rige cada pastor en su distrito.",
+      "review": "Revisar archivo",
+      "save": "Guardar importación",
+      "ready": "Revisión correcta: {{rows}} filas sin errores. Ya puedes guardar.",
+      "hasErrors": "El archivo tiene errores: corrígelos y vuelve a revisarlo. No se guardó nada.",
+      "savedResult": "Importación guardada.",
+      "row": "Fila {{row}}",
+      "counters": {
+        "regionsCreated": "Regiones nuevas",
+        "districtsCreated": "Distritos nuevos",
+        "pastorsCreated": "Pastores nuevos",
+        "churchesCreated": "Iglesias y Grupos nuevos",
+        "filialsCreated": "Filiales nuevas",
+        "pastorAssignmentsCreated": "Asignaciones de pastor",
+        "churchesSkipped": "Ya existían"
+      }
+    }
+  },
+  "admin": {
+    "columns": {
+      "roles": "Roles",
+      "lastLogin": "Último ingreso",
+      "description": "Descripción",
+      "users": "Usuarios",
+      "menus": "Menús",
+      "user": "Usuario",
+      "table": "Tabla",
+      "action": "Acción",
+      "recordId": "Id del registro",
+      "date": "Fecha",
+      "changes": "Campos"
+    },
+    "users": {
+      "new": "Nuevo usuario",
+      "newTitle": "Nuevo usuario",
+      "editTitle": "Editar usuario",
+      "deleteTitle": "Eliminar usuario",
+      "deleteMessage": "¿Eliminar a «{{name}}»? Si ya registró datos no se podrá eliminar: en ese caso desactívalo.",
+      "cannotDeleteSelf": "No puedes eliminar tu propio usuario.",
+      "search": "Buscar por nombre, correo o CI",
+      "roles": "Roles",
+      "rolesTitle": "Roles de {{name}}",
+      "noRoles": "Sin roles",
+      "never": "Nunca",
+      "neverLoggedIn": "Nunca (contraseña temporal)",
+      "linkedPastor": "Pastor vinculado",
+      "linkedPastorHint": "Solo para usuarios con rol Pastor: define qué distrito ve.",
+      "tempPassword": "Contraseña temporal",
+      "tempPasswordHint": "Mínimo 8 caracteres. El usuario la cambia al entrar por primera vez.",
+      "newPassword": "Nueva contraseña temporal",
+      "newPasswordHint": "Déjala vacía para no cambiarla. Si la llenas, la cuenta se desbloquea y el usuario la cambia al entrar.",
+      "pastorRoleNeedsLink": "Este usuario no tiene pastor vinculado: con el rol Pastor no vería ningún distrito. Vincúlalo en Editar.",
+      "states": {
+        "active": "Activo",
+        "locked": "Bloqueado",
+        "inactive": "Inactivo"
+      }
+    },
+    "roles": {
+      "subtitle": "Qué puede hacer cada rol está fijo en el sistema. Aquí se elige qué menús ve.",
+      "new": "Nuevo rol",
+      "newTitle": "Nuevo rol",
+      "editTitle": "Editar rol",
+      "deleteTitle": "Eliminar rol",
+      "deleteWithUsers": "«{{name}}» tiene {{count}} usuario(s): al eliminarlo pierden este rol. ¿Continuar?",
+      "protected": "El rol M-BOS no se puede renombrar, desactivar ni eliminar.",
+      "newRoleHint": "Un rol nuevo solo consulta: registrar datos queda para M-BOS y Analista.",
+      "menus": "Menús",
+      "menusTitle": "Menús de {{name}}",
+      "protectedMenus": "El rol M-BOS ve siempre todos los menús.",
+      "deleteMessage": "¿Eliminar el rol «{{name}}»? Los usuarios que lo tengan lo pierden. Esta acción no se puede deshacer."
+    },
+    "audit": {
+      "subtitle": "Cada cambio guardado queda aquí con quién lo hizo. Se conserva 3 años.",
+      "system": "Sistema",
+      "detail": "Ver detalle",
+      "detailTitle": "Registro de auditoría #{{id}}",
+      "browser": "Navegador",
+      "field": "Campo",
+      "before": "Antes",
+      "after": "Después",
+      "noChanges": "Sin cambios de valores.",
+      "maskedHint": "Las contraseñas y tokens se guardan ocultos (***).",
+      "actions": {
+        "INSERT": "Creó",
+        "UPDATE": "Modificó",
+        "DELETE": "Eliminó"
+      },
+      "tables": {
+        "app_user": "Usuarios",
+        "app_user_role": "Roles de usuario",
+        "role": "Roles",
+        "menu": "Menús",
+        "menu_role": "Menús de rol",
+        "region": "Regiones",
+        "district": "Distritos",
+        "district_pastor": "Pastores de distrito",
+        "pastor": "Pastores",
+        "church": "Iglesias",
+        "church_history": "Historial de iglesias",
+        "period": "Períodos",
+        "local_fund_count": "Arqueos",
+        "local_fund_count_attachment": "Adjuntos de arqueo",
+        "local_fund_count_correction": "Correcciones",
+        "difference_follow_up": "Seguimiento de diferencias"
+      },
+      "fieldCount": "{{count}} campos"
+    }
+  },
+  "account": {
+    "changePassword": "Cambiar contraseña",
+    "mustChange": "Entraste con una contraseña temporal. Cámbiala para seguir usando el sistema.",
+    "currentPassword": "Contraseña actual",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Repite la nueva contraseña",
+    "mismatch": "Las contraseñas no coinciden.",
+    "changed": "Contraseña actualizada."
+  },
+  "errorState": {
+    "400": {
+      "title": "Solicitud inválida",
+      "description": "La solicitud no pudo ser procesada. Verifica los datos e inténtalo de nuevo."
+    },
+    "401": {
+      "title": "No autorizado",
+      "description": "Debes iniciar sesión para acceder a este contenido."
+    },
+    "403": {
+      "title": "Acceso denegado",
+      "description": "No tienes permisos para ver esta sección."
+    },
+    "404": {
+      "title": "Página no encontrada",
+      "description": "El contenido que buscas no existe o fue movido."
+    },
+    "500": {
+      "title": "Error del servidor",
+      "description": "Ocurrió un problema inesperado. Inténtalo más tarde."
+    },
+    "503": {
+      "title": "Servicio no disponible",
+      "description": "El servicio no está disponible en este momento. Inténtalo más tarde."
+    },
+    "default": {
+      "title": "Ocurrió un error",
+      "description": "Algo salió mal. Inténtalo de nuevo."
+    }
+  },
+  "reports": {
+    "filters": {
+      "year": "Año",
+      "monthFrom": "Desde el mes",
+      "monthTo": "Hasta el mes",
+      "dateFrom": "Desde",
+      "dateTo": "Hasta",
+      "changeType": "Tipo de cambio",
+      "allStatuses": "Todos los estados",
+      "allChanges": "Todos los cambios",
+      "allChurches": "Todas las iglesias",
+      "groupBy": "Agrupar por",
+      "byRegion": "Región",
+      "byDistrict": "Distrito"
+    },
+    "downloadPdf": "Descargar PDF",
+    "downloadExcel": "Descargar Excel",
+    "downloading": "Descargando...",
+    "error": "No se pudo generar el reporte.",
+    "excelError": "No se pudo descargar el Excel.",
+    "selectPrompt": "Elige los filtros para ver el reporte.",
+    "noPreview": "Este navegador no muestra PDFs dentro de la página: usa Descargar PDF.",
+    "notFound": "Ese reporte no existe.",
+    "local-fund": {
+      "title": "Fondo Local anual",
+      "description": "Saldo ACMS, total en custodia y diferencia de cada iglesia, mes por mes. Es el Excel de la Misión."
+    },
+    "pending": {
+      "title": "Pendientes del mes",
+      "description": "Iglesias que no registraron o no presentaron el arqueo, o con diferencia sin resolver, por distrito y pastor."
+    },
+    "differences": {
+      "title": "Diferencias por estado",
+      "description": "Arqueos que no cuadran con el ACMS: monto, estado, días abierta y último seguimiento. Sirve para cobrar lo que falta."
+    },
+    "compliance": {
+      "title": "Cumplimiento por distrito y pastor",
+      "description": "Porcentaje de arqueos registrados hasta la fecha límite de cada mes ya vencido."
+    },
+    "negative-acms": {
+      "title": "Saldo ACMS negativo",
+      "description": "Iglesias que gastaron más de lo que tenían y cuántos meses seguidos les pasó."
+    },
+    "region-summary": {
+      "title": "Resumen mensual por región o distrito",
+      "description": "Por cada mes: iglesias activas, cuántas presentaron, no presentaron, no registraron, con diferencia y los montos. Agrúpalo por región o por distrito."
+    },
+    "corrections": {
+      "title": "Correcciones aplicadas",
+      "description": "Qué se corrigió en meses cerrados, en qué mes se aplicó, quién lo hizo, el monto anterior y el nuevo."
+    },
+    "church-movements": {
+      "title": "Movimientos de iglesias",
+      "description": "Iglesias cerradas, fusionadas o con cambio de distrito, tipo o nombre entre dos fechas."
+    },
+    "local-fund-count": {
+      "title": "Arqueo del fondo local",
+      "description": "La hoja del arqueo para imprimir y firmar: tesorero, pastor y anciano. Una hoja por iglesia; elige una iglesia o todo un distrito."
+    },
+    "pickDistrictOrChurch": "Elige un distrito o una iglesia para ver sus arqueos."
   }
 }

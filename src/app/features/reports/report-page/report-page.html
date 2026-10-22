@@ -1,0 +1,128 @@
+@if (definition(); as report) {
+  <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-1">
+      <h1 class="text-xl font-semibold text-foreground">{{ 'reports.' + report.key + '.title' | translate }}</h1>
+      <p class="text-sm text-muted-foreground">{{ 'reports.' + report.key + '.description' | translate }}</p>
+    </div>
+
+    <div class="flex flex-wrap items-end gap-3 rounded-md border border-border bg-surface p-3">
+      @if (has('year')) {
+        <div class="min-w-[10rem] flex-1"><app-select [label]="'reports.filters.year' | translate" [options]="yearOptions()" [ngModel]="year()" (ngModelChange)="touch(); year.set($event)" /></div>
+      }
+      @if (has('monthRange')) {
+        <div class="min-w-[10rem] flex-1"><app-select [label]="'reports.filters.monthFrom' | translate" [options]="monthOptions()" [ngModel]="monthFrom()" (ngModelChange)="touch(); monthFrom.set($event)" /></div>
+        <div class="min-w-[10rem] flex-1"><app-select [label]="'reports.filters.monthTo' | translate" [options]="monthOptions()" [ngModel]="monthTo()" (ngModelChange)="touch(); monthTo.set($event)" /></div>
+      }
+      @if (has('period')) {
+        <div class="min-w-[10rem] flex-1"><app-select [label]="'funds.filters.period' | translate" [options]="periodOptions()" [ngModel]="periodId()" (ngModelChange)="touch(); periodId.set($event)" /></div>
+      }
+      @if (has('dateRange')) {
+        <div class="min-w-[10rem] flex-1"><app-date-picker [label]="'reports.filters.dateFrom' | translate" [ngModel]="dateFrom()" (ngModelChange)="touch(); dateFrom.set($event)" /></div>
+        <div class="min-w-[10rem] flex-1"><app-date-picker [label]="'reports.filters.dateTo' | translate" [ngModel]="dateTo()" (ngModelChange)="touch(); dateTo.set($event)" /></div>
+      }
+      @if (has('differenceStatus')) {
+        <div class="min-w-[10rem] flex-1"><app-select
+          [label]="'funds.columns.status' | translate"
+          [options]="statusOptions()"
+          [ngModel]="differenceStatus() ?? ''"
+          (ngModelChange)="setOptional(differenceStatus, $event)"
+        /></div>
+      }
+      @if (has('changeType')) {
+        <div class="min-w-[10rem] flex-1"><app-select
+          [label]="'reports.filters.changeType' | translate"
+          [options]="changeTypeOptions()"
+          [ngModel]="changeType() ?? ''"
+          (ngModelChange)="setOptional(changeType, $event)"
+        /></div>
+      }
+      @if (has('groupBy')) {
+        <div class="min-w-[10rem] flex-1"><app-select
+          [label]="'reports.filters.groupBy' | translate"
+          [options]="groupByOptions()"
+          [ngModel]="groupBy()"
+          (ngModelChange)="onGroupByChange($event)"
+        /></div>
+      }
+      @if (showRegion()) {
+        <div class="min-w-[10rem] flex-1"><app-select [label]="'funds.filters.region' | translate" [options]="regionOptions()" [ngModel]="regionId() ?? ''" (ngModelChange)="onRegionChange($event)" /></div>
+      }
+      @if (has('district')) {
+        <div class="min-w-[10rem] flex-1"><app-select
+          [label]="'funds.filters.district' | translate"
+          [options]="districtOptions()"
+          [ngModel]="districtId() ?? ''"
+          (ngModelChange)="onDistrictChange($event)"
+        /></div>
+      }
+      @if (has('church')) {
+        <div class="min-w-[10rem] flex-1"><app-select
+          [label]="'funds.columns.church' | translate"
+          [options]="churchOptions()"
+          [ngModel]="churchId() ?? ''"
+          (ngModelChange)="setOptional(churchId, $event)"
+        /></div>
+      }
+      <div class="flex flex-col gap-1">
+        <span class="invisible text-sm font-medium">&nbsp;</span>
+        <button
+          type="button"
+          class="rounded-md border border-border px-4 py-2 text-sm text-foreground transition-colors hover:bg-brand-300"
+          (click)="clearFilters()"
+        >
+          {{ 'filters.clear' | translate }}
+        </button>
+        <span class="invisible min-h-4 text-xs">&nbsp;</span>
+      </div>
+    </div>
+
+    @if (loading()) {
+      <div class="flex flex-col gap-2 rounded-md border border-border p-4">
+        @for (i of [1, 2, 3, 4, 5]; track i) {
+          <app-skeleton height="1.25rem" />
+        }
+      </div>
+    } @else if (previewUrl(); as url) {
+      <div class="flex flex-wrap justify-end gap-2">
+        <button
+          type="button"
+          class="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-background"
+          (click)="downloadPdf()"
+        >
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="size-4 text-danger" aria-hidden="true">
+            <path d="M4 4.5C4 3.67 4.67 3 5.5 3H14L20 9V19.5C20 20.33 19.33 21 18.5 21H5.5C4.67 21 4 20.33 4 19.5V4.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M14 3V9H20" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M12 11V17M12 17L9.5 14.5M12 17L14.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          {{ 'reports.downloadPdf' | translate }}
+        </button>
+        @if (!report.pdfOnly) {
+        <button
+          type="button"
+          class="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-background disabled:cursor-not-allowed disabled:opacity-60"
+          [disabled]="downloading() === 'excel'"
+          (click)="downloadExcel()"
+        >
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="size-4 text-success" aria-hidden="true">
+            <path d="M4 4.5C4 3.67 4.67 3 5.5 3H14L20 9V19.5C20 20.33 19.33 21 18.5 21H5.5C4.67 21 4 20.33 4 19.5V4.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M14 3V9H20" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M8.5 12.5L12 17M12 12.5L8.5 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          {{ (downloading() === 'excel' ? 'reports.downloading' : 'reports.downloadExcel') | translate }}
+        </button>
+        }
+      </div>
+      @if (canPreviewPdf) {
+        <iframe [src]="url" class="w-full rounded-md border border-border" style="height: 80vh" [title]="'reports.' + report.key + '.title' | translate"></iframe>
+      } @else {
+        <p class="text-sm text-muted-foreground">{{ 'reports.noPreview' | translate }}</p>
+      }
+    } @else if (errorMessage(); as message) {
+      <p class="rounded-md border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger">{{ message }}</p>
+    } @else {
+      <p class="text-sm text-muted-foreground">{{ (missingDistrict() ? 'reports.pickDistrictOrChurch' : 'reports.selectPrompt') | translate }}</p>
+    }
+  </div>
+} @else {
+  <p class="text-sm text-muted-foreground">{{ 'reports.notFound' | translate }}</p>
+}

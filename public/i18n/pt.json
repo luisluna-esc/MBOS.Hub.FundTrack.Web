@@ -81,8 +81,7 @@
     "password": "Senha",
     "submit": "Entrar",
     "error": "Usuário ou senha incorretos.",
-    "username": "Usuário",
-    "usernamePlaceholder": "nome.sobrenome"
+    "username": "Usuário"
   },
   "layout": {
     "collapseMenu": "Recolher menu",

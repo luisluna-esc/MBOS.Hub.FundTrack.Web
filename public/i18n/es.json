@@ -81,8 +81,7 @@
     "password": "Contraseña",
     "submit": "Entrar",
     "error": "Usuario o contraseña incorrectos.",
-    "username": "Usuario",
-    "usernamePlaceholder": "nombre.apellido"
+    "username": "Usuario"
   },
   "layout": {
     "collapseMenu": "Contraer menú",

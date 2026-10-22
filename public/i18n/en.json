@@ -81,8 +81,7 @@
     "password": "Password",
     "submit": "Sign in",
     "error": "Wrong username or password.",
-    "username": "Username",
-    "usernamePlaceholder": "name.surname"
+    "username": "Username"
   },
   "layout": {
     "collapseMenu": "Collapse menu",

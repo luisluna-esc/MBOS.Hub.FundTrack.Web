@@ -50,10 +50,6 @@ export class AuthService {
 
   async changePassword(request: ChangePasswordRequest): Promise<void> {
     await firstValueFrom(this.http.post(`${environment.apiUrl}/auth/change-password`, request));
-    const session = this.session();
-    if (session) {
-      this.store({ ...session, mustChangePassword: false });
-    }
   }
 
   getAccessToken(): string | null {

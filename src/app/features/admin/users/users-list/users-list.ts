@@ -59,12 +59,12 @@ export class UsersList extends ListPage<AppUser> {
 
   protected readonly columns = computed<TableColumn<Row>[]>(() => [
     { key: 'fullName', header: this.t('catalogs.columns.fullName') },
-    { key: 'email', header: this.t('catalogs.columns.email') },
+    { key: 'username', header: this.t('admin.users.username') },
     { key: 'pastorId', header: this.t('admin.users.linkedPastor'), format: (v) => (v ? (this.pastorNames().get(v as number) ?? '') : '') },
     {
       key: 'lastLogin',
       header: this.t('admin.columns.lastLogin'),
-      format: (v, row) => (v ? new Date(v as string).toLocaleString() : this.t(row.mustChangePassword ? 'admin.users.neverLoggedIn' : 'admin.users.never')),
+      format: (v) => (v ? new Date(v as string).toLocaleString() : this.t('admin.users.never')),
     },
     { key: 'isActive', header: this.t('catalogs.columns.status'), align: 'center', format: (_, row) => this.t(`admin.users.states.${this.state(row)}`) },
   ]);

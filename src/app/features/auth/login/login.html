@@ -40,7 +40,7 @@
           {{ 'login.title' | translate }}
         </h2>
 
-        <app-input formControlName="email" type="email" [label]="'login.email' | translate" [required]="true" />
+        <app-input formControlName="username" [label]="'login.username' | translate" [placeholder]="'login.usernamePlaceholder' | translate" [required]="true" />
         <app-input formControlName="password" type="password" [label]="'login.password' | translate" [required]="true" />
 
         <button

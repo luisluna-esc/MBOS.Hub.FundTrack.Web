@@ -23,9 +23,9 @@ export class Login {
 
   protected readonly loading = signal(false);
 
-  // FundTrack inicia sesión con el correo (no con usuario como InvenTrack).
+  // Se entra con el usuario nombre.apellido.
   protected readonly form = new FormGroup({
-    email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
+    username: new FormControl('', { nonNullable: true, validators: Validators.required }),
     password: new FormControl('', { nonNullable: true, validators: Validators.required }),
   });
 
@@ -38,14 +38,14 @@ export class Login {
     { initialValue: true }
   );
 
-  // Si entra con contraseña temporal, el shell le pide cambiarla antes de dejarlo usar el sistema.
   protected onSubmit(): void {
     if (this.form.invalid || this.loading()) {
       return;
     }
     this.loading.set(true);
 
-    this.authService.login(this.form.getRawValue()).subscribe({
+    const { username, password } = this.form.getRawValue();
+    this.authService.login({ username: username.trim().toLowerCase(), password }).subscribe({
       next: () => {
         this.loading.set(false);
         void this.router.navigateByUrl('/');

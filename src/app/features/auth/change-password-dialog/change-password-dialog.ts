@@ -1,4 +1,4 @@
-import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { DialogRef } from '@angular/cdk/dialog';
 import { Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
@@ -10,11 +10,6 @@ import { ToastService } from '../../../core/toast/toast.service';
 import { Dialog } from '../../../shared/components/dialog/dialog';
 import { Input as AppInput } from '../../../shared/components/input/input';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
-
-export interface ChangePasswordDialogData {
-  /** Contraseña temporal: no se puede cancelar, solo cambiarla o cerrar sesión. */
-  forced: boolean;
-}
 
 const matchesNewPassword = (group: AbstractControl): ValidationErrors | null => {
   const { newPassword, confirmPassword } = (group as FormGroup).controls;
@@ -30,14 +25,10 @@ const matchesNewPassword = (group: AbstractControl): ValidationErrors | null => 
     <app-dialog
       [title]="'account.changePassword' | translate"
       [saveDisabled]="saveDisabled()"
-      [cancelLabel]="(forced ? 'common.logout' : 'dialog.cancel') | translate"
       (save)="onSave()"
       (cancel)="dialogRef.close(false)"
     >
       <form [formGroup]="form" class="flex flex-col gap-4">
-        @if (forced) {
-          <p class="rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-sm text-warning">{{ 'account.mustChange' | translate }}</p>
-        }
         <app-input formControlName="currentPassword" type="password" [label]="'account.currentPassword' | translate" [required]="true" />
         <app-input formControlName="newPassword" type="password" [label]="'account.newPassword' | translate" [required]="true" [minLength]="8" [maxLength]="100" />
         <app-input
@@ -52,7 +43,6 @@ const matchesNewPassword = (group: AbstractControl): ValidationErrors | null => 
   `,
 })
 export class ChangePasswordDialog {
-  protected readonly forced = inject<ChangePasswordDialogData>(DIALOG_DATA).forced;
   protected readonly dialogRef = inject(DialogRef<boolean, ChangePasswordDialog>);
   private readonly authService = inject(AuthService);
   private readonly toastService = inject(ToastService);

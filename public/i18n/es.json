@@ -78,10 +78,11 @@
     "title": "Iniciar sesión",
     "welcomeTitle": "Bienvenido de nuevo",
     "welcomeDescription": "Controla los arqueos del fondo local de cada iglesia de la misión desde un solo lugar, de forma simple y segura.",
-    "email": "Correo",
     "password": "Contraseña",
     "submit": "Entrar",
-    "error": "No se pudo iniciar sesión."
+    "error": "Usuario o contraseña incorrectos.",
+    "username": "Usuario",
+    "usernamePlaceholder": "nombre.apellido"
   },
   "layout": {
     "collapseMenu": "Contraer menú",
@@ -526,24 +527,26 @@
       "deleteTitle": "Eliminar usuario",
       "deleteMessage": "¿Eliminar a «{{name}}»? Si ya registró datos no se podrá eliminar: en ese caso desactívalo.",
       "cannotDeleteSelf": "No puedes eliminar tu propio usuario.",
-      "search": "Buscar por nombre, correo o CI",
+      "search": "Buscar por nombre, usuario o CI",
       "roles": "Roles",
       "rolesTitle": "Roles de {{name}}",
       "noRoles": "Sin roles",
       "never": "Nunca",
-      "neverLoggedIn": "Nunca (contraseña temporal)",
       "linkedPastor": "Pastor vinculado",
       "linkedPastorHint": "Solo para usuarios con rol Pastor: define qué distrito ve.",
-      "tempPassword": "Contraseña temporal",
-      "tempPasswordHint": "Mínimo 8 caracteres. El usuario la cambia al entrar por primera vez.",
-      "newPassword": "Nueva contraseña temporal",
-      "newPasswordHint": "Déjala vacía para no cambiarla. Si la llenas, la cuenta se desbloquea y el usuario la cambia al entrar.",
+      "newPassword": "Nueva contraseña",
+      "newPasswordHint": "Déjala vacía para no cambiarla. Si la llenas, también se desbloquea la cuenta.",
       "pastorRoleNeedsLink": "Este usuario no tiene pastor vinculado: con el rol Pastor no vería ningún distrito. Vincúlalo en Editar.",
       "states": {
         "active": "Activo",
         "locked": "Bloqueado",
         "inactive": "Inactivo"
-      }
+      },
+      "username": "Usuario",
+      "usernameHint": "Con esto entra al sistema. Se arma solo con el nombre; puedes corregirlo.",
+      "usernameInvalid": "Debe ser nombre.apellido: letras minúsculas sin tildes, un punto y, si hace falta, un número al final.",
+      "password": "Contraseña",
+      "passwordHint": "Mínimo 8 caracteres."
     },
     "roles": {
       "subtitle": "Qué puede hacer cada rol está fijo en el sistema. Aquí se elige qué menús ve.",
@@ -598,7 +601,6 @@
   },
   "account": {
     "changePassword": "Cambiar contraseña",
-    "mustChange": "Entraste con una contraseña temporal. Cámbiala para seguir usando el sistema.",
     "currentPassword": "Contraseña actual",
     "newPassword": "Nueva contraseña",
     "confirmPassword": "Repite la nueva contraseña",

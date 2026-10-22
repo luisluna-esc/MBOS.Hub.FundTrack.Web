@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
@@ -14,7 +14,7 @@ import { Select, SelectOption } from '../../shared/components/select/select';
 import { ThemeToggle } from '../../shared/components/theme-toggle/theme-toggle';
 import { Tooltip } from '../../shared/components/tooltip/tooltip';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
-import { ChangePasswordDialog, ChangePasswordDialogData } from '../../features/auth/change-password-dialog/change-password-dialog';
+import { ChangePasswordDialog } from '../../features/auth/change-password-dialog/change-password-dialog';
 
 const SIDEBAR_STORAGE_KEY = 'sidebarCollapsed';
 
@@ -51,7 +51,7 @@ export class Shell {
   protected readonly accountMenuOpen = signal(false);
   protected readonly expandedItems = signal<ReadonlySet<number>>(new Set());
 
-  protected readonly email = computed(() => this.authService.session()?.email ?? '');
+  protected readonly username = computed(() => this.authService.session()?.username ?? '');
   protected readonly activeRole = computed(() => this.authService.activeRole() ?? '');
   protected readonly initials = computed(() => this.authService.session()?.fullName.charAt(0).toUpperCase() || '?');
 
@@ -81,34 +81,18 @@ export class Shell {
     this.themeService.theme() === 'dark' ? 'img/fund-track-icono-blanco.png' : 'img/fund-track-icono-azul.png'
   );
 
-  private passwordDialogOpen = false;
-
   constructor() {
     void this.menuService.loadMyMenu();
 
     effect(() => {
       localStorage.setItem(SIDEBAR_STORAGE_KEY, String(this.collapsed()));
     });
-
-    // Contraseña temporal (usuario nuevo o restablecida por M-BOS): hay que cambiarla antes de
-    // seguir. El backend igual la acepta, pero así lo pide la regla del sistema.
-    effect(() => {
-      if (this.authService.session()?.mustChangePassword && !this.passwordDialogOpen) {
-        untracked(() => this.openChangePassword(true));
-      }
-    });
   }
 
-  protected openChangePassword(forced = false): void {
-    this.passwordDialogOpen = true;
+  /** Cambiar la contraseña es voluntario, desde el menú de la cuenta. */
+  protected openChangePassword(): void {
     this.accountMenuOpen.set(false);
-    const ref = this.dialogService.open<boolean, ChangePasswordDialogData>(ChangePasswordDialog, { data: { forced } });
-    ref.closed.subscribe((changed) => {
-      this.passwordDialogOpen = false;
-      if (forced && !changed) {
-        this.onLogout();
-      }
-    });
+    this.dialogService.open<boolean>(ChangePasswordDialog);
   }
 
   private filterByActiveRole(items: MenuTreeItem[]): MenuTreeItem[] {

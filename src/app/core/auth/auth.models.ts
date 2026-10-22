@@ -1,16 +1,15 @@
 // Mismos formatos que /api/auth (LoginDto, AuthResponseDto, ChangePasswordRequestDto).
 
 export interface LoginRequest {
-  email: string;
+  /** nombre.apellido */
+  username: string;
   password: string;
 }
 
 export interface AuthSession {
   appUserId: number;
   fullName: string;
-  email: string;
-  /** Entró con una contraseña temporal: debe cambiarla antes de usar el sistema. */
-  mustChangePassword: boolean;
+  username: string;
   accessToken: string;
   accessTokenExpiresAt: string;
   refreshToken: string;

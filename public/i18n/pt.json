@@ -78,10 +78,11 @@
     "title": "Entrar",
     "welcomeTitle": "Bem-vindo de volta",
     "welcomeDescription": "Controle as contagens do fundo local de cada igreja da missão em um só lugar, de forma simples e segura.",
-    "email": "E-mail",
     "password": "Senha",
     "submit": "Entrar",
-    "error": "Não foi possível entrar."
+    "error": "Usuário ou senha incorretos.",
+    "username": "Usuário",
+    "usernamePlaceholder": "nome.sobrenome"
   },
   "layout": {
     "collapseMenu": "Recolher menu",
@@ -526,24 +527,26 @@
       "deleteTitle": "Excluir usuário",
       "deleteMessage": "Excluir \"{{name}}\"? Se já registrou dados não poderá ser excluído: nesse caso desative-o.",
       "cannotDeleteSelf": "Você não pode excluir seu próprio usuário.",
-      "search": "Buscar por nome, e-mail ou documento",
+      "search": "Buscar por nome, usuário ou documento",
       "roles": "Perfis",
       "rolesTitle": "Perfis de {{name}}",
       "noRoles": "Sem perfis",
       "never": "Nunca",
-      "neverLoggedIn": "Nunca (senha temporária)",
       "linkedPastor": "Pastor vinculado",
       "linkedPastorHint": "Somente para usuários com perfil Pastor: define qual distrito vê.",
-      "tempPassword": "Senha temporária",
-      "tempPasswordHint": "Mínimo 8 caracteres. O usuário a altera no primeiro acesso.",
-      "newPassword": "Nova senha temporária",
-      "newPasswordHint": "Deixe vazia para manter. Se preenchida, a conta é desbloqueada e o usuário a altera ao entrar.",
+      "newPassword": "Nova senha",
+      "newPasswordHint": "Deixe vazia para manter. Se preenchida, a conta também é desbloqueada.",
       "pastorRoleNeedsLink": "Este usuário não tem pastor vinculado: com o perfil Pastor não veria nenhum distrito. Vincule em Editar.",
       "states": {
         "active": "Ativo",
         "locked": "Bloqueado",
         "inactive": "Inativo"
-      }
+      },
+      "username": "Usuário",
+      "usernameHint": "Usado para entrar. É montado a partir do nome; você pode corrigir.",
+      "usernameInvalid": "Deve ser nome.sobrenome: letras minúsculas sem acentos, um ponto e, se precisar, um número no final.",
+      "password": "Senha",
+      "passwordHint": "Mínimo 8 caracteres."
     },
     "roles": {
       "subtitle": "O que cada perfil pode fazer é fixo no sistema. Aqui se escolhe quais menus vê.",
@@ -598,7 +601,6 @@
   },
   "account": {
     "changePassword": "Alterar senha",
-    "mustChange": "Você entrou com uma senha temporária. Altere-a para continuar usando o sistema.",
     "currentPassword": "Senha atual",
     "newPassword": "Nova senha",
     "confirmPassword": "Repita a nova senha",

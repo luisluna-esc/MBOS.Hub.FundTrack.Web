@@ -78,10 +78,11 @@
     "title": "Sign in",
     "welcomeTitle": "Welcome back",
     "welcomeDescription": "Track the local fund counts of every church in the mission from one place, simply and securely.",
-    "email": "Email",
     "password": "Password",
     "submit": "Sign in",
-    "error": "Could not sign in."
+    "error": "Wrong username or password.",
+    "username": "Username",
+    "usernamePlaceholder": "name.surname"
   },
   "layout": {
     "collapseMenu": "Collapse menu",
@@ -526,24 +527,26 @@
       "deleteTitle": "Delete user",
       "deleteMessage": "Delete \"{{name}}\"? If they already recorded data it cannot be deleted: deactivate them instead.",
       "cannotDeleteSelf": "You cannot delete your own user.",
-      "search": "Search by name, email or ID",
+      "search": "Search by name, username or ID",
       "roles": "Roles",
       "rolesTitle": "Roles of {{name}}",
       "noRoles": "No roles",
       "never": "Never",
-      "neverLoggedIn": "Never (temporary password)",
       "linkedPastor": "Linked pastor",
       "linkedPastorHint": "Only for users with the Pastor role: it sets which district they see.",
-      "tempPassword": "Temporary password",
-      "tempPasswordHint": "At least 8 characters. The user changes it on first login.",
-      "newPassword": "New temporary password",
-      "newPasswordHint": "Leave it empty to keep it. If filled, the account is unlocked and the user changes it on login.",
+      "newPassword": "New password",
+      "newPasswordHint": "Leave it empty to keep it. If filled, the account is also unlocked.",
       "pastorRoleNeedsLink": "This user has no linked pastor: with the Pastor role they would see no district. Link one in Edit.",
       "states": {
         "active": "Active",
         "locked": "Locked",
         "inactive": "Inactive"
-      }
+      },
+      "username": "Username",
+      "usernameHint": "Used to sign in. It is built from the name; you can edit it.",
+      "usernameInvalid": "It must be name.surname: lowercase letters without accents, one dot and, if needed, a number at the end.",
+      "password": "Password",
+      "passwordHint": "At least 8 characters."
     },
     "roles": {
       "subtitle": "What each role can do is fixed in the system. Here you choose which menus it sees.",
@@ -598,7 +601,6 @@
   },
   "account": {
     "changePassword": "Change password",
-    "mustChange": "You signed in with a temporary password. Change it to keep using the system.",
     "currentPassword": "Current password",
     "newPassword": "New password",
     "confirmPassword": "Repeat the new password",

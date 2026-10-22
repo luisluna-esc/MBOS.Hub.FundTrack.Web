@@ -5,12 +5,12 @@ export interface AppUser {
   appUserId: number;
   ci: string | null;
   fullName: string;
-  email: string;
+  /** nombre.apellido: con esto se entra al sistema. */
+  username: string;
   phone: string | null;
   pastorId: number | null;
-  /** Solo al crear o al restablecer: la contraseña temporal. Nunca viene en las respuestas. */
+  /** Solo al crear o al cambiarla: la contraseña. Nunca viene en las respuestas. */
   password?: string | null;
-  mustChangePassword: boolean;
   passwordChangedAt?: string | null;
   failedLoginAttempts: number;
   lockedUntil: string | null;

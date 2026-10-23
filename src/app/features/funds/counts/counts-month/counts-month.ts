@@ -2,17 +2,20 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { DialogService } from '../../../../core/dialog/dialog.service';
-import { apiErrorCode } from '../../../../core/http/api-error';
+import { apiErrorCode, apiErrorMessage } from '../../../../core/http/api-error';
 import { LanguageService } from '../../../../core/i18n/language.service';
+import { ToastService } from '../../../../core/toast/toast.service';
 import { Badge } from '../../../../shared/components/badge/badge';
+import { ConfirmDialog, ConfirmDialogData } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 import { ErrorState } from '../../../../shared/components/error-state/error-state';
 import { Input as AppInput } from '../../../../shared/components/input/input';
 import { Select, SelectOption } from '../../../../shared/components/select/select';
 import { Skeleton } from '../../../../shared/components/skeleton/skeleton';
+import { Switch } from '../../../../shared/components/switch/switch';
 import { MoneyPipe } from '../../../../shared/pipes/money.pipe';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { CatalogLookups } from '../../../catalogs/catalog-lookups';
-import { Period } from '../../../catalogs/catalog.models';
+import { isStartedPeriod, Period } from '../../../catalogs/catalog.models';
 import { PeriodService } from '../../../catalogs/catalog.services';
 import { countStatus, differenceClass } from '../../count-status';
 import { PeriodCountRow } from '../../funds.models';
@@ -31,9 +34,11 @@ interface DistrictGroup {
 
 // Registro de arqueos: la vista del mes tipo Excel, una fila por Iglesia o Grupo (las Filiales van
 // dentro de su madre). Región y distrito los filtra el backend; estado y búsqueda, la pantalla.
+// El mes se elige entre los abiertos del año en curso hasta el mes actual (los que toca registrar);
+// los meses cerrados se ven aparte, con "Ver meses cerrados", y solo para consulta.
 @Component({
   selector: 'app-counts-month',
-  imports: [FormsModule, AppInput, Badge, ErrorState, Select, Skeleton, MoneyPipe, TranslatePipe],
+  imports: [FormsModule, AppInput, Badge, ErrorState, Select, Skeleton, Switch, MoneyPipe, TranslatePipe],
   templateUrl: './counts-month.html',
 })
 export class CountsMonth {
@@ -42,6 +47,7 @@ export class CountsMonth {
   private readonly fundsService = inject(FundsService);
   private readonly periodService = inject(PeriodService);
   private readonly lookups = inject(CatalogLookups);
+  private readonly toastService = inject(ToastService);
   protected readonly authService = inject(AuthService);
 
   protected readonly periods = signal<Period[]>([]);
@@ -54,14 +60,22 @@ export class CountsMonth {
   protected readonly selectedDistrict = signal<string | null>(null);
   protected readonly selectedStatus = signal<StatusFilter>('all');
   protected readonly search = signal('');
+  /** Ver meses cerrados (solo consulta) en lugar de los abiertos del año. */
+  protected readonly showClosed = signal(false);
+  protected readonly deletingId = signal<number | null>(null);
 
   protected readonly period = computed(() => this.periods().find((p) => String(p.periodId) === this.selectedPeriod()) ?? null);
 
+  /** Abiertos del año en curso hasta el mes actual (los meses futuros todavía no se registran). */
+  protected readonly openPeriods = computed(() => {
+    const year = new Date().getFullYear();
+    return this.periods().filter((p) => p.status === 'open' && p.year === year && isStartedPeriod(p));
+  });
+  /** Cerrados de cualquier año, el más reciente primero. */
+  protected readonly closedPeriods = computed(() => this.periods().filter((p) => p.status === 'closed'));
+
   protected readonly periodOptions = computed<SelectOption[]>(() =>
-    this.periods().map((p) => ({
-      value: String(p.periodId),
-      label: `${this.periodLabel(p)}${p.status === 'closed' ? ` (${this.languageService.t('catalogs.periods.states.closed')})` : ''}`,
-    }))
+    (this.showClosed() ? this.closedPeriods() : this.openPeriods()).map((p) => ({ value: String(p.periodId), label: this.periodLabel(p) }))
   );
   protected readonly regionOptions = computed<SelectOption[]>(() => [
     { value: '', label: this.languageService.t('funds.filters.allRegions') },
@@ -132,14 +146,11 @@ export class CountsMonth {
     void this.loadPeriods();
   }
 
-  /** Por defecto el período abierto más antiguo (el que toca registrar); si no hay, el último. */
   private async loadPeriods(): Promise<void> {
     try {
       const periods = (await this.periodService.all()).sort((a, b) => b.year - a.year || b.month - a.month);
       this.periods.set(periods);
-      const open = periods.filter((p) => p.status === 'open');
-      const initial = open.length ? open[open.length - 1] : periods[0];
-      this.selectedPeriod.set(initial ? String(initial.periodId) : null);
+      this.selectDefaultPeriod();
       await this.loadRows();
     } catch (error) {
       this.errorCode.set(apiErrorCode(error));
@@ -163,6 +174,25 @@ export class CountsMonth {
     } finally {
       this.loading.set(false);
     }
+  }
+
+  /**
+   * Abiertos: el más antiguo (el que toca registrar). Cerrados: el más reciente. Si no hay abiertos
+   * en el año, se pasa a los cerrados para que la pantalla no quede vacía.
+   */
+  private selectDefaultPeriod(): void {
+    if (!this.showClosed() && !this.openPeriods().length && this.closedPeriods().length) {
+      this.showClosed.set(true);
+    }
+    const list = this.showClosed() ? this.closedPeriods() : this.openPeriods();
+    const initial = this.showClosed() ? list[0] : list[list.length - 1];
+    this.selectedPeriod.set(initial ? String(initial.periodId) : null);
+  }
+
+  protected onShowClosedChange(value: boolean): void {
+    this.showClosed.set(value);
+    this.selectDefaultPeriod();
+    void this.loadRows();
   }
 
   protected onPeriodChange(value: string | null): void {
@@ -192,6 +222,36 @@ export class CountsMonth {
 
   protected periodLabel(period: { year: number; month: number }): string {
     return `${this.languageService.t(`months.${period.month}`)} ${period.year}`;
+  }
+
+  /** Elimina el arqueo (con su seguimiento y adjuntos) para volver a registrarlo. Solo en un mes abierto. */
+  protected confirmDelete(row: PeriodCountRow): void {
+    const count = row.localFundCount;
+    const period = this.period();
+    if (!count || !period || !this.canEdit()) return;
+    const t = (key: string, params?: Record<string, string | number>) => this.languageService.t(key, params);
+    this.dialogService
+      .open<boolean, ConfirmDialogData>(ConfirmDialog, {
+        data: {
+          title: t('funds.counts.deleteTitle'),
+          message: t('funds.counts.deleteMessage', { church: row.churchName, period: this.periodLabel(period) }),
+          confirmLabel: t('catalogs.actions.delete'),
+        },
+      })
+      .closed.subscribe((confirmed) => confirmed && void this.deleteCount(count.localFundCountId));
+  }
+
+  private async deleteCount(id: number): Promise<void> {
+    this.deletingId.set(id);
+    try {
+      await this.fundsService.delete(id);
+      this.toastService.show(this.languageService.t('common.deleted'));
+      await this.loadRows();
+    } catch (error) {
+      this.toastService.show(this.languageService.t('funds.counts.deleteError'), apiErrorMessage(error) ?? undefined);
+    } finally {
+      this.deletingId.set(null);
+    }
   }
 
   protected openCount(row: PeriodCountRow): void {

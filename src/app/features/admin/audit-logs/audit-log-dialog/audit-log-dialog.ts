@@ -42,15 +42,11 @@ const ACTION_TONES: Record<AuditAction, BadgeTone> = { INSERT: 'success', UPDATE
           </div>
           <div class="flex gap-2">
             <dt class="text-muted-foreground">{{ 'admin.columns.table' | translate }}:</dt>
-            <dd class="text-foreground">{{ tableLabel }}@if (log.recordId !== null) { #{{ log.recordId }} }</dd>
+            <dd class="text-foreground">{{ tableLabel }}</dd>
           </div>
-          <div class="flex gap-2">
-            <dt class="text-muted-foreground">IP:</dt>
-            <dd class="text-foreground">{{ log.ip ?? '' }}</dd>
-          </div>
-          <div class="flex min-w-0 gap-2">
-            <dt class="text-muted-foreground">{{ 'admin.audit.browser' | translate }}:</dt>
-            <dd class="truncate text-foreground" [title]="log.userAgent ?? ''">{{ log.userAgent ?? '' }}</dd>
+          <div class="flex gap-2 sm:col-span-2">
+            <dt class="text-muted-foreground">{{ 'admin.columns.record' | translate }}:</dt>
+            <dd class="text-foreground">{{ log.recordLabel ?? (log.recordId !== null ? '#' + log.recordId : '') }}</dd>
           </div>
         </dl>
 

@@ -233,8 +233,16 @@
       "noCountYet": "The count has not been recorded yet",
       "open": "View",
       "register": "Record",
-      "noPeriods": "There are no periods yet. Create them in Catalogs, Periods, with Generate year.",
-      "closedPeriod": "This period is closed: its counts can no longer be edited. To fix an amount, open the count and record a correction."
+      "noPeriods": "There are no open months this year. Open them in Catalogs, Periods, or look at the closed months.",
+      "closedPeriod": "This period is closed: its counts can no longer be edited. To fix an amount, open the count and record a correction.",
+      "edit": "Edit",
+      "view": "View",
+      "showClosed": "Show closed months",
+      "summaryBadge": "Church count",
+      "deleteTitle": "Delete count",
+      "deleteMessage": "The count of {{church}} for {{period}} will be deleted, with its follow-up and attachments. You can register it again afterwards.",
+      "deleteError": "The count could not be deleted.",
+      "readOnlyRole": "Your role can only view counts. M-BOS and Analyst roles register, edit and delete them."
     },
     "dialog": {
       "newTitle": "Record count: {{church}}",
@@ -302,7 +310,16 @@
       "print": "Print",
       "printing": "Preparing...",
       "printError": "The count could not be prepared for printing.",
-      "fixBeforePrint": "Complete the fields marked in red before printing."
+      "fixBeforePrint": "Complete the fields marked in red before printing.",
+      "modeTitle": "How is the count registered",
+      "modeDetail": "Do the count here",
+      "modeDetailHint": "Enter the bank, cash, dollars and documents. If it does not match ACMS, the difference must be explained.",
+      "modeSummary": "The church brought its count",
+      "modeSummaryHint": "Only the total of the count the church brought is entered. If something is short or over, no explanation is needed.",
+      "summaryTotal": "Church count total",
+      "summaryNote": "Note (optional)",
+      "summaryReadOnly": "The church brought its count already done: only the total was registered.",
+      "countDateOptional": "Count date (optional)"
     },
     "differences": {
       "subtitle": "Counts where the total in custody does not match the ACMS balance. The ACMS covers what is short or over; here it is only recorded and, if needed, marked as resolved.",
@@ -513,11 +530,12 @@
       "users": "Users",
       "menus": "Menus",
       "user": "User",
-      "table": "Table",
+      "table": "Section",
       "action": "Action",
-      "recordId": "Record id",
       "date": "Date",
-      "changes": "Fields"
+      "changes": "Changed fields",
+      "time": "Time",
+      "record": "Record"
     },
     "users": {
       "new": "New user",
@@ -562,11 +580,10 @@
       "deleteMessage": "Delete the role \"{{name}}\"? Users who have it will lose it. This cannot be undone."
     },
     "audit": {
-      "subtitle": "Every saved change is kept here with who made it. It is kept for 3 years.",
+      "subtitle": "Who created, edited or deleted each record, the day and the time. Kept for 3 years.",
       "system": "System",
       "detail": "View detail",
       "detailTitle": "Audit record #{{id}}",
-      "browser": "Browser",
       "field": "Field",
       "before": "Before",
       "after": "After",
@@ -574,7 +591,7 @@
       "maskedHint": "Passwords and tokens are stored hidden (***).",
       "actions": {
         "INSERT": "Created",
-        "UPDATE": "Updated",
+        "UPDATE": "Edited",
         "DELETE": "Deleted"
       },
       "tables": {
@@ -593,7 +610,8 @@
         "local_fund_count": "Counts",
         "local_fund_count_attachment": "Count attachments",
         "local_fund_count_correction": "Corrections",
-        "difference_follow_up": "Difference follow-up"
+        "difference_follow_up": "Difference follow-up",
+        "local_fund_count_document": "Count documents"
       },
       "fieldCount": "{{count}} fields"
     }
@@ -695,6 +713,8 @@
       "title": "Local fund count sheet",
       "description": "The count sheet to print and sign: treasurer, pastor and elder. One sheet per church; choose a church or a whole district."
     },
-    "pickDistrictOrChurch": "Choose a district or a church to see its counts."
+    "pickDistrictOrChurch": "Choose a district or a church to see its counts.",
+    "downloadTxt": "Download TXT",
+    "txtError": "The TXT could not be downloaded."
   }
 }

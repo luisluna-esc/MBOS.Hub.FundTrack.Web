@@ -15,7 +15,7 @@ import { Select, SelectOption } from '../../../shared/components/select/select';
 import { Skeleton } from '../../../shared/components/skeleton/skeleton';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { CatalogLookups } from '../../catalogs/catalog-lookups';
-import { Period } from '../../catalogs/catalog.models';
+import { isStartedPeriod, Period } from '../../catalogs/catalog.models';
 import { PeriodService } from '../../catalogs/catalog.services';
 import { ReportDefinition, ReportFilter, findReport } from '../report-definitions';
 
@@ -64,7 +64,7 @@ export class ReportPage {
 
   protected readonly periods = signal<Period[]>([]);
   protected readonly loading = signal(false);
-  protected readonly downloading = signal<'pdf' | 'excel' | null>(null);
+  protected readonly downloading = signal<'excel' | 'txt' | null>(null);
   protected readonly previewUrl = signal<SafeResourceUrl | null>(null);
   protected readonly errorMessage = signal<string | null>(null);
 
@@ -159,7 +159,8 @@ export class ReportPage {
     this.periodService
       .all()
       .then((periods) => {
-        const sorted = periods.sort((a, b) => b.year - a.year || b.month - a.month);
+        // Abiertos y cerrados, pero no los meses que todavía no empiezan.
+        const sorted = periods.filter((p) => isStartedPeriod(p)).sort((a, b) => b.year - a.year || b.month - a.month);
         this.periods.set(sorted);
         // Pendientes: por defecto el mes abierto más antiguo, que es el que se está cerrando.
         const open = sorted.filter((p) => p.status === 'open' && p.dueDate <= this.today);
@@ -319,15 +320,17 @@ export class ReportPage {
     if (this.pdfBlob && definition) saveBlob(this.pdfBlob, `${this.fileName()}.pdf`);
   }
 
-  protected async downloadExcel(): Promise<void> {
+  /** Excel o TXT: se piden al backend con los mismos filtros de la vista previa. */
+  protected async download(format: 'excel' | 'txt'): Promise<void> {
     const definition = this.definition();
     const query = this.query();
-    if (!definition || !query) return;
-    this.downloading.set('excel');
+    if (!definition || !query || this.downloading()) return;
+    this.downloading.set(format);
     try {
-      saveBlob(await this.api.download(`/reports/${definition.endpoint}/excel`, query), `${this.fileName()}.xlsx`);
+      const extension = format === 'excel' ? 'xlsx' : 'txt';
+      saveBlob(await this.api.download(`/reports/${definition.endpoint}/${format}`, query), `${this.fileName()}.${extension}`);
     } catch (error) {
-      this.toastService.show(this.languageService.t('reports.excelError'), (await this.blobErrorMessage(error)) ?? undefined);
+      this.toastService.show(this.languageService.t(`reports.${format}Error`), (await this.blobErrorMessage(error)) ?? undefined);
     } finally {
       this.downloading.set(null);
     }

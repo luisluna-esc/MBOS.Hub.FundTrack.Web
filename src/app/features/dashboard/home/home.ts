@@ -8,7 +8,7 @@ import { ErrorState } from '../../../shared/components/error-state/error-state';
 import { Select, SelectOption } from '../../../shared/components/select/select';
 import { MoneyPipe } from '../../../shared/pipes/money.pipe';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
-import { Period } from '../../catalogs/catalog.models';
+import { isStartedPeriod, Period } from '../../catalogs/catalog.models';
 import { PeriodService } from '../../catalogs/catalog.services';
 import { Dashboard, DashboardPeriod, DashboardRegionRow } from '../dashboard.models';
 
@@ -59,7 +59,7 @@ export class Home {
   constructor() {
     this.periodService
       .all()
-      .then((periods) => this.periods.set(periods.sort((a, b) => b.year - a.year || b.month - a.month)))
+      .then((periods) => this.periods.set(periods.filter((p) => isStartedPeriod(p)).sort((a, b) => b.year - a.year || b.month - a.month)))
       .catch(() => this.periods.set([]));
     void this.load(null);
   }

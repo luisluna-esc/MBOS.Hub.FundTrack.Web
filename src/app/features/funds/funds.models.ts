@@ -22,6 +22,8 @@ export interface LocalFundCount {
   pastorName: string | null;
   churchType: string;
   submissionStatus: SubmissionStatus;
+  /** Arqueo hecho por la iglesia: solo se cargó el total (totalAmount), sin el detalle. */
+  summaryOnly: boolean;
   acmsBalance: number;
   bankStatementBalance: number;
   bankDeposit: number;
@@ -55,6 +57,9 @@ export interface LocalFundCountRequest {
   churchId: number;
   periodId: number;
   submissionStatus: SubmissionStatus;
+  /** La iglesia trajo el arqueo hecho: solo se envía summaryTotal y no se pide explicar la diferencia. */
+  summaryOnly: boolean;
+  summaryTotal: number;
   acmsBalance: number;
   bankStatementBalance: number;
   bankDeposit: number;

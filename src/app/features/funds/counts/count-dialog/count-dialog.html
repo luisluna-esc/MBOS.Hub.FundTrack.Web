@@ -50,17 +50,77 @@
       <p class="rounded-md border border-info/30 bg-info/10 px-3 py-2 text-sm text-info">{{ 'funds.dialog.closedHint' | translate }}</p>
     }
 
+    <!-- Cómo se registra: el arqueo se hace aquí con todo el detalle, o la iglesia ya lo trajo hecho y
+         solo se anota el total. -->
+    @if (submitted()) {
+      @if (editable) {
+        <div class="flex flex-col gap-2">
+          <span class="text-sm font-medium text-foreground">{{ 'funds.dialog.modeTitle' | translate }}</span>
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2" role="radiogroup">
+            @for (option of [false, true]; track option) {
+              <button
+                type="button"
+                role="radio"
+                [attr.aria-checked]="summaryOnly() === option"
+                class="flex flex-col gap-1 rounded-lg border p-3 text-left transition-colors"
+                [class]="summaryOnly() === option ? 'border-primary bg-primary/10' : 'border-border hover:bg-surface'"
+                (click)="setSummaryOnly(option)"
+              >
+                <span class="flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <span class="flex size-4 shrink-0 items-center justify-center rounded-full border" [class]="summaryOnly() === option ? 'border-primary' : 'border-border'">
+                    @if (summaryOnly() === option) {
+                      <span class="size-2 rounded-full bg-primary"></span>
+                    }
+                  </span>
+                  {{ (option ? 'funds.dialog.modeSummary' : 'funds.dialog.modeDetail') | translate }}
+                </span>
+                <span class="pl-6 text-xs text-muted-foreground">{{ (option ? 'funds.dialog.modeSummaryHint' : 'funds.dialog.modeDetailHint') | translate }}</span>
+              </button>
+            }
+          </div>
+        </div>
+      } @else if (summaryOnly()) {
+        <p class="rounded-md border border-border bg-surface px-3 py-2 text-sm text-muted-foreground">{{ 'funds.dialog.summaryReadOnly' | translate }}</p>
+      }
+    }
+
     <form [formGroup]="form" class="flex flex-col gap-5">
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <app-input formControlName="acmsBalance" type="number" [decimals]="2" [label]="'funds.dialog.acms' | translate" [required]="true" />
         @if (submitted()) {
-          <app-date-picker formControlName="countDate" [label]="'funds.dialog.countDate' | translate" [required]="true" />
+          <app-date-picker
+            formControlName="countDate"
+            [label]="(summaryOnly() ? 'funds.dialog.countDateOptional' : 'funds.dialog.countDate') | translate"
+            [required]="!summaryOnly()"
+          />
         } @else {
           <p class="text-sm text-muted-foreground sm:self-end">{{ 'funds.dialog.notSubmittedHint' | translate }}</p>
         }
       </div>
 
-      @if (submitted()) {
+      @if (submitted() && summaryOnly()) {
+        <!-- Arqueo que trajo la iglesia: solo el total -->
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <app-input formControlName="summaryTotal" type="number" [decimals]="2" [min]="0" [label]="'funds.dialog.summaryTotal' | translate" [required]="true" />
+          <app-input formControlName="treasurerName" [label]="'funds.dialog.treasurer' | translate" [maxLength]="150" />
+        </div>
+
+        <div class="flex items-center justify-between gap-3 rounded-lg border border-border bg-surface p-4 text-sm">
+          <span class="text-muted-foreground">
+            {{ 'funds.columns.difference' | translate }}
+            @if (difference() > 0) {
+              ({{ 'funds.dialog.differenceOver' | translate }})
+            } @else if (difference() < 0) {
+              ({{ 'funds.dialog.differenceUnder' | translate }})
+            }
+          </span>
+          <span class="text-base font-semibold" [class]="differenceClass(difference())">Bs {{ difference() | money: true }}</span>
+        </div>
+
+        @if (difference() !== 0) {
+          <app-textarea formControlName="observation" [label]="'funds.dialog.summaryNote' | translate" [maxLength]="1000" [rows]="2" />
+        }
+      } @else if (submitted()) {
         <!-- Fondos que tiene el tesorero -->
         <section class="flex flex-col gap-3">
           <h3 class="text-sm font-semibold text-foreground">{{ 'funds.dialog.fundsTitle' | translate }}</h3>

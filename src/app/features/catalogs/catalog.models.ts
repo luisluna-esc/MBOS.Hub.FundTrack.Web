@@ -152,6 +152,12 @@ export interface Period {
   closedByFullName: string | null;
 }
 
+/** El mes ya empezó (no es de un mes o año futuro): solo esos se registran o se consultan. */
+export function isStartedPeriod(period: { year: number; month: number }, today: Date = new Date()): boolean {
+  const year = today.getFullYear();
+  return period.year < year || (period.year === year && period.month <= today.getMonth() + 1);
+}
+
 /** ImportResultDto de POST /api/imports/churches. */
 export interface ImportIssue {
   row: number;

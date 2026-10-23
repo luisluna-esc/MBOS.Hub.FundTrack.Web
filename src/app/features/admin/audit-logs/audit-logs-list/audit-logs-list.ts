@@ -15,8 +15,8 @@ import { changedFields } from '../audit-values';
 
 type Row = TableRow<AuditLog>;
 
-// Solo lectura: la llenan los cambios guardados en la base (interceptor del backend) y se purga
-// sola pasado el tiempo de retención. La ven M-BOS, Analista y Administrador; el filtro por
+// Solo lectura: quién creó, editó o eliminó qué, el día y la hora. La llenan los cambios guardados
+// en la base (interceptor del backend) y se purga sola pasado el tiempo de retención. La ven M-BOS, Analista y Administrador; el filtro por
 // usuario solo aparece para M-BOS, que es el único que puede listar usuarios.
 @Component({
   selector: 'app-audit-logs-list',
@@ -48,13 +48,7 @@ export class AuditLogsList extends ListPage<AuditLog> {
   }
 
   protected toQuery(values: FilterValues): QueryParams {
-    const record = values['record']?.trim();
-    return {
-      appUserId: values['user'],
-      tableName: values['table'],
-      action: values['action'],
-      recordId: record && /^\d+$/.test(record) ? record : undefined,
-    };
+    return { appUserId: values['user'], tableName: values['table'], action: values['action'] };
   }
 
   protected readonly headerButtons = computed<HeaderButton[]>(() => []);
@@ -68,15 +62,19 @@ export class AuditLogsList extends ListPage<AuditLog> {
       type: 'select',
       options: (['INSERT', 'UPDATE', 'DELETE'] as const).map((action) => ({ value: action, label: this.t(`admin.audit.actions.${action}`) })),
     },
-    { key: 'record', label: this.t('admin.columns.recordId'), type: 'text' },
   ]);
 
   protected readonly columns = computed<TableColumn<Row>[]>(() => [
-    { key: 'createdAt', header: this.t('admin.columns.date'), format: (v) => new Date(v as string).toLocaleString() },
+    { key: 'createdAt', header: this.t('admin.columns.date'), format: (v) => new Date(v as string).toLocaleDateString() },
+    {
+      key: 'auditLogId',
+      header: this.t('admin.columns.time'),
+      format: (_, row) => new Date(row.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    },
     { key: 'appUserFullName', header: this.t('admin.columns.user'), format: (v) => (v as string) || this.t('admin.audit.system') },
-    { key: 'action', header: this.t('admin.columns.action'), align: 'center', format: (v) => this.t(`admin.audit.actions.${v}`) },
+    { key: 'action', header: this.t('admin.columns.action'), format: (v) => this.t(`admin.audit.actions.${v}`) },
     { key: 'tableName', header: this.t('admin.columns.table'), format: (v) => this.tableLabel(v as string) },
-    { key: 'recordId', header: this.t('admin.columns.recordId'), align: 'right', format: (v) => (v === null ? '' : String(v)) },
+    { key: 'recordLabel', header: this.t('admin.columns.record'), format: (v, row) => (v as string) || (row.recordId === null ? '' : `#${row.recordId}`) },
     {
       key: 'newValue',
       header: this.t('admin.columns.changes'),

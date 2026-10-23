@@ -17,6 +17,13 @@
         (ngModelChange)="onPeriodChange($event)"
       />
     </div>
+    <div class="flex flex-col gap-1">
+      <span class="invisible text-sm font-medium">&nbsp;</span>
+      <div class="flex h-[2.375rem] items-center">
+        <app-switch [checked]="showClosed()" (checkedChange)="onShowClosedChange($event)" [label]="'funds.counts.showClosed' | translate" />
+      </div>
+      <span class="invisible min-h-4 text-xs">&nbsp;</span>
+    </div>
     <div class="min-w-[10rem] flex-1">
       <app-select
         [label]="'funds.filters.region' | translate"
@@ -70,11 +77,13 @@
     <div class="rounded-lg border border-border">
       <app-error-state [code]="errorCode()!" [actionLabel]="'common.retry' | translate" (action)="loadRows()" />
     </div>
-  } @else if (!loading() && !periods().length) {
+  } @else if (!loading() && !periodOptions().length) {
     <div class="rounded-lg border border-border bg-surface px-4 py-10 text-center text-sm text-muted-foreground">{{ 'funds.counts.noPeriods' | translate }}</div>
   } @else {
   @if (period()?.status === 'closed') {
     <p class="rounded-md border border-info/30 bg-info/10 px-3 py-2 text-sm text-info">{{ 'funds.counts.closedPeriod' | translate }}</p>
+  } @else if (!authService.canWrite()) {
+    <p class="rounded-md border border-info/30 bg-info/10 px-3 py-2 text-sm text-info">{{ 'funds.counts.readOnlyRole' | translate }}</p>
   }
 
   <!-- Contadores del mes -->
@@ -131,6 +140,9 @@
               <td class="px-3 py-2">
                 <div class="flex items-center gap-2">
                   <span class="font-medium">{{ row.churchName }}</span>
+                  @if (count?.summaryOnly) {
+                    <app-badge tone="info">{{ 'funds.counts.summaryBadge' | translate }}</app-badge>
+                  }
                   @if (row.filialCount) {
                     <app-badge>{{ 'funds.counts.filials' | translate: { count: row.filialCount } }}</app-badge>
                   }
@@ -155,16 +167,28 @@
 
               <td class="px-3 py-2"><app-badge [tone]="status.tone">{{ status.labelKey | translate }}</app-badge></td>
               <td class="px-3 py-2 text-right">
-                @if (count || canEdit()) {
-                  <button
-                    type="button"
-                    class="rounded-md px-3 py-1 text-xs font-medium whitespace-nowrap transition-colors"
-                    [class]="count ? 'border border-border text-foreground hover:bg-background' : 'bg-primary text-primary-foreground'"
-                    (click)="$event.stopPropagation(); openCount(row)"
-                  >
-                    {{ (count ? 'funds.counts.open' : 'funds.counts.register') | translate }}
-                  </button>
-                }
+                <div class="flex items-center justify-end gap-1.5">
+                  @if (count || canEdit()) {
+                    <button
+                      type="button"
+                      class="rounded-md px-3 py-1 text-xs font-medium whitespace-nowrap transition-colors"
+                      [class]="count ? 'border border-border text-foreground hover:bg-background' : 'bg-primary text-primary-foreground'"
+                      (click)="$event.stopPropagation(); openCount(row)"
+                    >
+                      {{ (!count ? 'funds.counts.register' : canEdit() ? 'funds.counts.edit' : 'funds.counts.view') | translate }}
+                    </button>
+                  }
+                  @if (count && canEdit()) {
+                    <button
+                      type="button"
+                      class="rounded-md border border-danger/40 px-3 py-1 text-xs font-medium whitespace-nowrap text-danger transition-colors hover:bg-danger/10 disabled:opacity-50"
+                      [disabled]="deletingId() === count.localFundCountId"
+                      (click)="$event.stopPropagation(); confirmDelete(row)"
+                    >
+                      {{ 'catalogs.actions.delete' | translate }}
+                    </button>
+                  }
+                </div>
               </td>
             </tr>
           }

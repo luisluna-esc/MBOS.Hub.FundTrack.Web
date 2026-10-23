@@ -233,8 +233,16 @@
       "noCountYet": "A contagem ainda não foi registrada",
       "open": "Ver",
       "register": "Registrar",
-      "noPeriods": "Ainda não há períodos. Crie-os em Catálogos, Períodos, com Gerar ano.",
-      "closedPeriod": "Este período está fechado: suas conferências não são mais editadas. Para corrigir um valor, abra a conferência e registre uma correção."
+      "noPeriods": "Não há meses abertos este ano. Abra-os em Catálogos, Períodos, ou veja os meses fechados.",
+      "closedPeriod": "Este período está fechado: suas conferências não são mais editadas. Para corrigir um valor, abra a conferência e registre uma correção.",
+      "edit": "Editar",
+      "view": "Ver",
+      "showClosed": "Ver meses fechados",
+      "summaryBadge": "Contagem da igreja",
+      "deleteTitle": "Excluir contagem",
+      "deleteMessage": "A contagem de {{church}} de {{period}} será excluída, com seu acompanhamento e anexos. Depois você pode registrá-la novamente.",
+      "deleteError": "Não foi possível excluir a contagem.",
+      "readOnlyRole": "Seu perfil só consulta as contagens. Os perfis M-BOS e Analista as registram, editam e excluem."
     },
     "dialog": {
       "newTitle": "Registrar contagem: {{church}}",
@@ -302,7 +310,16 @@
       "print": "Imprimir",
       "printing": "Preparando...",
       "printError": "Não foi possível preparar a conferência para imprimir.",
-      "fixBeforePrint": "Complete os campos marcados em vermelho antes de imprimir."
+      "fixBeforePrint": "Complete os campos marcados em vermelho antes de imprimir.",
+      "modeTitle": "Como a contagem é registrada",
+      "modeDetail": "Fazer a contagem aqui",
+      "modeDetailHint": "Informe o banco, o dinheiro, os dólares e os documentos. Se não bater com o ACMS, é preciso explicar a diferença.",
+      "modeSummary": "A igreja trouxe sua contagem",
+      "modeSummaryHint": "Informe apenas o total da contagem que a igreja trouxe. Se faltar ou sobrar, não precisa explicar.",
+      "summaryTotal": "Total da contagem da igreja",
+      "summaryNote": "Nota (opcional)",
+      "summaryReadOnly": "A igreja trouxe sua contagem pronta: só o total foi registrado.",
+      "countDateOptional": "Data da contagem (opcional)"
     },
     "differences": {
       "subtitle": "Conferências em que o total sob custódia não bate com o saldo ACMS. O ACMS cobre o que falta ou sobra; aqui só se registra e, se quiser, se marca como resolvida.",
@@ -513,11 +530,12 @@
       "users": "Usuários",
       "menus": "Menus",
       "user": "Usuário",
-      "table": "Tabela",
+      "table": "Seção",
       "action": "Ação",
-      "recordId": "Id do registro",
       "date": "Data",
-      "changes": "Campos"
+      "changes": "Campos alterados",
+      "time": "Hora",
+      "record": "Registro"
     },
     "users": {
       "new": "Novo usuário",
@@ -562,11 +580,10 @@
       "deleteMessage": "Excluir o perfil \"{{name}}\"? Os usuários que o têm o perdem. Esta ação não pode ser desfeita."
     },
     "audit": {
-      "subtitle": "Cada alteração salva fica aqui com quem a fez. É mantida por 3 anos.",
+      "subtitle": "Quem criou, editou ou excluiu cada dado, o dia e a hora. Mantido por 3 anos.",
       "system": "Sistema",
       "detail": "Ver detalhe",
       "detailTitle": "Registro de auditoria #{{id}}",
-      "browser": "Navegador",
       "field": "Campo",
       "before": "Antes",
       "after": "Depois",
@@ -574,7 +591,7 @@
       "maskedHint": "Senhas e tokens são guardados ocultos (***).",
       "actions": {
         "INSERT": "Criou",
-        "UPDATE": "Alterou",
+        "UPDATE": "Editou",
         "DELETE": "Excluiu"
       },
       "tables": {
@@ -593,7 +610,8 @@
         "local_fund_count": "Conferências",
         "local_fund_count_attachment": "Anexos de conferência",
         "local_fund_count_correction": "Correções",
-        "difference_follow_up": "Acompanhamento de diferenças"
+        "difference_follow_up": "Acompanhamento de diferenças",
+        "local_fund_count_document": "Documentos da contagem"
       },
       "fieldCount": "{{count}} campos"
     }
@@ -695,6 +713,8 @@
       "title": "Conferência do fundo local",
       "description": "A folha da conferência para imprimir e assinar: tesoureiro, pastor e ancião. Uma folha por igreja; escolha uma igreja ou um distrito."
     },
-    "pickDistrictOrChurch": "Escolha um distrito ou uma igreja para ver as conferências."
+    "pickDistrictOrChurch": "Escolha um distrito ou uma igreja para ver as conferências.",
+    "downloadTxt": "Baixar TXT",
+    "txtError": "Não foi possível baixar o TXT."
   }
 }

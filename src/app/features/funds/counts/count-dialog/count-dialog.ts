@@ -44,6 +44,8 @@ type DocumentForm = FormGroup<{
 // documentos a rendir. Todo eso es el total de fondos en custodia, que debe cuadrar con el saldo
 // ACMS; si no cuadra, hay que explicar la diferencia. Los totales se calculan mientras se escribe
 // y el backend los vuelve a calcular al guardar. En un período cerrado el arqueo es de solo lectura.
+// Si la iglesia ya trae el arqueo hecho, se elige "La iglesia trajo su arqueo" y solo se anota el
+// total: la diferencia con el ACMS queda registrada, pero no hace falta explicarla.
 @Component({
   selector: 'app-count-dialog',
   imports: [ReactiveFormsModule, Badge, Checkbox, DatePicker, Dialog, AppInput, Skeleton, Switch, Textarea, MoneyPipe, TranslatePipe],
@@ -67,11 +69,14 @@ export class CountDialog extends FormDialog {
   protected readonly editable = this.authService.canWrite() && this.data.period.status === 'open';
 
   protected readonly submitted = signal(this.count?.submissionStatus !== 'not_submitted');
+  /** La iglesia trajo el arqueo hecho: solo se pide el total. */
+  protected readonly summaryOnly = signal(this.count?.summaryOnly ?? false);
   protected readonly status = this.count ? countStatus(this.count, 'month') : null;
 
   protected readonly form = new FormGroup({
     acmsBalance: new FormControl<string | null>(this.amount(this.count?.acmsBalance), Validators.required),
     countDate: new FormControl<string | null>(this.count?.countDate ?? null),
+    summaryTotal: new FormControl<string | null>(this.count?.summaryOnly ? String(this.count.totalAmount) : null),
     bankStatementBalance: new FormControl<string | null>(this.optionalAmount(this.count?.bankStatementBalance)),
     bankDeposit: new FormControl<string | null>(this.optionalAmount(this.count?.bankDeposit)),
     localCash: new FormControl<string | null>(this.optionalAmount(this.count?.localCash)),
@@ -105,11 +110,14 @@ export class CountDialog extends FormDialog {
   /** Total fondos en custodia del tesorero: el arqueo más los documentos a rendir. */
   protected readonly custodyTotal = computed(() => this.round(this.fundsTotal() + this.documentsTotal()));
 
-  /** Total en custodia menos ACMS: negativo falta dinero, positivo sobra. */
-  protected readonly difference = computed(() => this.round(this.custodyTotal() - this.toNumber(this.values().acmsBalance)));
+  /** Total en custodia (o el total que trajo la iglesia) menos ACMS: negativo falta dinero, positivo sobra. */
+  protected readonly difference = computed(() => {
+    const total = this.summaryOnly() ? this.toNumber(this.values().summaryTotal) : this.custodyTotal();
+    return this.round(total - this.toNumber(this.values().acmsBalance));
+  });
 
-  /** Solo se pide explicar la diferencia cuando presentó y no cuadra. */
-  protected readonly needsObservation = computed(() => this.submitted() && this.difference() !== 0);
+  /** Solo se pide explicar la diferencia cuando el arqueo se hizo aquí y no cuadra. */
+  protected readonly needsObservation = computed(() => this.submitted() && !this.summaryOnly() && this.difference() !== 0);
 
   protected readonly differenceClass = differenceClass;
 
@@ -149,12 +157,24 @@ export class CountDialog extends FormDialog {
     this.applySubmitted(value);
   }
 
-  /** Si no presentó, solo se pide el saldo ACMS: el resto del arqueo no aplica. */
+  protected setSummaryOnly(value: boolean): void {
+    if (!this.editable) return;
+    this.summaryOnly.set(value);
+    this.applySubmitted(this.submitted());
+  }
+
+  /**
+   * Si no presentó, solo se pide el saldo ACMS. Si la iglesia trajo su arqueo, el ACMS y el total
+   * (la fecha es opcional). Si el arqueo se hace aquí, la fecha y el detalle.
+   */
   private applySubmitted(submitted: boolean): void {
-    const { countDate, documents } = this.form.controls;
-    countDate.setValidators(submitted ? Validators.required : null);
+    const { countDate, summaryTotal, documents } = this.form.controls;
+    const summary = submitted && this.summaryOnly();
+    countDate.setValidators(submitted && !summary ? Validators.required : null);
     countDate.updateValueAndValidity();
-    if (submitted) {
+    summaryTotal.setValidators(summary ? Validators.required : null);
+    summaryTotal.updateValueAndValidity();
+    if (submitted && !summary) {
       documents.enable();
     } else {
       documents.disable();
@@ -224,11 +244,36 @@ export class CountDialog extends FormDialog {
   private buildRequest(): LocalFundCountRequest {
     const raw = this.form.getRawValue();
     const submitted = this.submitted();
+    const summary = submitted && this.summaryOnly();
+    if (summary) {
+      return {
+        churchId: this.row.churchId,
+        periodId: this.data.period.periodId,
+        submissionStatus: 'submitted',
+        summaryOnly: true,
+        summaryTotal: this.toNumber(raw.summaryTotal),
+        acmsBalance: this.toNumber(raw.acmsBalance),
+        bankStatementBalance: 0,
+        bankDeposit: 0,
+        localCash: 0,
+        usdAmount: 0,
+        exchangeRate: 0,
+        countDate: raw.countDate,
+        treasurerName: this.text(raw.treasurerName),
+        elderName: this.text(raw.elderName),
+        signedByPastor: false,
+        signedByElder: false,
+        observation: this.difference() !== 0 ? this.text(raw.observation) : null,
+        documents: [],
+      };
+    }
     const usd = submitted ? this.toNumber(raw.usdAmount) : 0;
     const request: LocalFundCountRequest = {
       churchId: this.row.churchId,
       periodId: this.data.period.periodId,
       submissionStatus: submitted ? 'submitted' : 'not_submitted',
+      summaryOnly: false,
+      summaryTotal: 0,
       acmsBalance: this.toNumber(raw.acmsBalance),
       bankStatementBalance: submitted ? this.toNumber(raw.bankStatementBalance) : 0,
       bankDeposit: submitted ? this.toNumber(raw.bankDeposit) : 0,

@@ -49,14 +49,12 @@ export interface AuditLog {
   appUserId: number | null;
   appUserFullName: string | null;
   action: AuditAction;
-  module: string | null;
   tableName: string;
   recordId: number | null;
-  description: string | null;
+  /** De qué registro se trata: la iglesia y el mes de un arqueo, el nombre de una iglesia, etc. */
+  recordLabel: string | null;
   oldValue: string | null;
   newValue: string | null;
-  ip: string | null;
-  userAgent: string | null;
   createdAt: string;
 }
 
@@ -75,6 +73,7 @@ export const AUDITED_TABLES = [
   'church_history',
   'period',
   'local_fund_count',
+  'local_fund_count_document',
   'local_fund_count_attachment',
   'local_fund_count_correction',
   'difference_follow_up',

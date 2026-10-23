@@ -233,8 +233,16 @@
       "noCountYet": "Todavía no se registró el arqueo",
       "open": "Ver",
       "register": "Registrar",
-      "noPeriods": "Todavía no hay períodos. Créalos en Catálogos, Períodos, con Generar año.",
-      "closedPeriod": "Este período está cerrado: sus arqueos ya no se editan. Para arreglar un monto, abre el arqueo y registra una corrección."
+      "noPeriods": "No hay meses abiertos este año. Ábrelos en Catálogos, Períodos, o mira los meses cerrados.",
+      "closedPeriod": "Este período está cerrado: sus arqueos ya no se editan. Para arreglar un monto, abre el arqueo y registra una corrección.",
+      "edit": "Editar",
+      "view": "Ver",
+      "showClosed": "Ver meses cerrados",
+      "summaryBadge": "Arqueo de la iglesia",
+      "deleteTitle": "Eliminar arqueo",
+      "deleteMessage": "Se eliminará el arqueo de {{church}} de {{period}}, con su seguimiento y sus adjuntos. Después lo puedes volver a registrar.",
+      "deleteError": "No se pudo eliminar el arqueo.",
+      "readOnlyRole": "Tu rol solo consulta los arqueos. Los registran, editan y eliminan los roles M-BOS y Analista."
     },
     "dialog": {
       "newTitle": "Registrar arqueo: {{church}}",
@@ -302,7 +310,16 @@
       "print": "Imprimir",
       "printing": "Preparando...",
       "printError": "No se pudo preparar el arqueo para imprimir.",
-      "fixBeforePrint": "Completa los campos marcados en rojo antes de imprimir."
+      "fixBeforePrint": "Completa los campos marcados en rojo antes de imprimir.",
+      "modeTitle": "Cómo se registra el arqueo",
+      "modeDetail": "Hacer el arqueo aquí",
+      "modeDetailHint": "Se anota el banco, el efectivo, los dólares y los documentos. Si no cuadra con el ACMS, hay que explicar la diferencia.",
+      "modeSummary": "La iglesia trajo su arqueo",
+      "modeSummaryHint": "Solo se anota el total del arqueo que trajo la iglesia. Si falta o sobra, no hace falta explicarlo.",
+      "summaryTotal": "Total del arqueo de la iglesia",
+      "summaryNote": "Nota (opcional)",
+      "summaryReadOnly": "La iglesia trajo su arqueo hecho: solo se registró el total.",
+      "countDateOptional": "Fecha del arqueo (opcional)"
     },
     "differences": {
       "subtitle": "Arqueos donde el total en custodia no coincide con el saldo ACMS. El ACMS cubre lo que falta o sobra; aquí solo se registra y, si se quiere, se marca como resuelta.",
@@ -513,11 +530,12 @@
       "users": "Usuarios",
       "menus": "Menús",
       "user": "Usuario",
-      "table": "Tabla",
+      "table": "Sección",
       "action": "Acción",
-      "recordId": "Id del registro",
       "date": "Fecha",
-      "changes": "Campos"
+      "changes": "Campos cambiados",
+      "time": "Hora",
+      "record": "Registro"
     },
     "users": {
       "new": "Nuevo usuario",
@@ -562,11 +580,10 @@
       "deleteMessage": "¿Eliminar el rol «{{name}}»? Los usuarios que lo tengan lo pierden. Esta acción no se puede deshacer."
     },
     "audit": {
-      "subtitle": "Cada cambio guardado queda aquí con quién lo hizo. Se conserva 3 años.",
+      "subtitle": "Quién creó, editó o eliminó cada dato, el día y la hora. Se conserva 3 años.",
       "system": "Sistema",
       "detail": "Ver detalle",
       "detailTitle": "Registro de auditoría #{{id}}",
-      "browser": "Navegador",
       "field": "Campo",
       "before": "Antes",
       "after": "Después",
@@ -574,7 +591,7 @@
       "maskedHint": "Las contraseñas y tokens se guardan ocultos (***).",
       "actions": {
         "INSERT": "Creó",
-        "UPDATE": "Modificó",
+        "UPDATE": "Editó",
         "DELETE": "Eliminó"
       },
       "tables": {
@@ -593,7 +610,8 @@
         "local_fund_count": "Arqueos",
         "local_fund_count_attachment": "Adjuntos de arqueo",
         "local_fund_count_correction": "Correcciones",
-        "difference_follow_up": "Seguimiento de diferencias"
+        "difference_follow_up": "Seguimiento de diferencias",
+        "local_fund_count_document": "Documentos de arqueo"
       },
       "fieldCount": "{{count}} campos"
     }
@@ -695,6 +713,8 @@
       "title": "Arqueo del fondo local",
       "description": "La hoja del arqueo para imprimir y firmar: tesorero, pastor y anciano. Una hoja por iglesia; elige una iglesia o todo un distrito."
     },
-    "pickDistrictOrChurch": "Elige un distrito o una iglesia para ver sus arqueos."
+    "pickDistrictOrChurch": "Elige un distrito o una iglesia para ver sus arqueos.",
+    "downloadTxt": "Descargar TXT",
+    "txtError": "No se pudo descargar el TXT."
   }
 }

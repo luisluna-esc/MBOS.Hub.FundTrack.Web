@@ -1,4 +1,4 @@
-// Los 8 reportes de FundTrack. Cada uno dice qué filtros usa y a qué endpoint de /api/reports va;
+// Los reportes de FundTrack. Cada uno dice qué filtros usa y a qué endpoint de /api/reports va;
 // la pantalla (report-page) es la misma para todos. Los datos salen siempre de un procedimiento
 // almacenado sp_report_* del backend, que también limita al Pastor a su distrito.
 
@@ -11,6 +11,7 @@ export type ReportFilter =
   | 'differenceStatus'
   | 'changeType'
   | 'dateRange'
+  | 'periodRange'
   | 'church'
   | 'groupBy';
 
@@ -24,6 +25,8 @@ export interface ReportDefinition {
   filters: ReportFilter[];
   /** Pide un distrito o una iglesia antes de generar (un mes de toda la Misión serían cientos de hojas). */
   needsDistrictOrChurch?: boolean;
+  /** Reporte individual: no se genera hasta elegir la iglesia. */
+  needsChurch?: boolean;
 }
 
 export const REPORTS: ReportDefinition[] = [
@@ -42,6 +45,14 @@ export const REPORTS: ReportDefinition[] = [
   // Agrupar por región o por distrito; la región solo filtra cuando se agrupa por distrito.
   { key: 'region-summary', endpoint: 'region-summary', fileName: 'resumen-regiones', filters: ['year', 'monthRange', 'groupBy', 'region'] },
   { key: 'corrections', endpoint: 'corrections', fileName: 'correcciones', filters: ['year', 'region', 'district', 'church'] },
+  // Individual de una iglesia, con el rango de meses que se elija (por defecto los últimos 12).
+  {
+    key: 'church-statement',
+    endpoint: 'church-statement',
+    fileName: 'reporte-iglesia',
+    filters: ['periodRange', 'region', 'district', 'church'],
+    needsChurch: true,
+  },
   { key: 'church-movements', endpoint: 'church-movements', fileName: 'movimientos-iglesias', filters: ['dateRange', 'changeType', 'region', 'district', 'church'] },
 ];
 

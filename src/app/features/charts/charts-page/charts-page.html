@@ -1,0 +1,197 @@
+<div class="flex flex-col gap-5">
+  <div class="flex flex-col gap-1">
+    <h1 class="text-xl font-semibold text-foreground">{{ 'nav.charts' | translate }}</h1>
+    <p class="text-sm text-muted-foreground">{{ 'charts.subtitle' | translate }}</p>
+  </div>
+
+  <!-- Filtros: misma caja y botón Limpiar que el resto de pantallas -->
+  <div class="flex flex-wrap items-end gap-3 rounded-md border border-border bg-surface p-3">
+    <div class="min-w-[10rem] flex-1">
+      <app-select [label]="'reports.filters.year' | translate" [options]="yearOptions()" [ngModel]="year()" [ngModelOptions]="{ standalone: true }" (ngModelChange)="onYearChange($event)" />
+    </div>
+    <div class="min-w-[10rem] flex-1">
+      <app-select [label]="'funds.filters.region' | translate" [options]="regionOptions()" [ngModel]="regionId() ?? ''" [ngModelOptions]="{ standalone: true }" (ngModelChange)="onRegionChange($event)" />
+    </div>
+    <div class="min-w-[10rem] flex-1">
+      <app-select [label]="'funds.filters.district' | translate" [options]="districtOptions()" [ngModel]="districtId() ?? ''" [ngModelOptions]="{ standalone: true }" (ngModelChange)="onDistrictChange($event)" />
+    </div>
+    <div class="flex flex-col gap-1">
+      <span class="invisible text-sm font-medium">&nbsp;</span>
+      <button type="button" class="rounded-md border border-border px-4 py-2 text-sm text-foreground transition-colors hover:bg-brand-300" (click)="clearFilters()">
+        {{ 'filters.clear' | translate }}
+      </button>
+      <span class="invisible min-h-4 text-xs">&nbsp;</span>
+    </div>
+  </div>
+
+  @if (errorCode()) {
+    <div class="rounded-lg border border-border">
+      <app-error-state [code]="errorCode()!" [actionLabel]="'common.retry' | translate" (action)="load()" />
+    </div>
+  } @else if (loading() && !data()) {
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      @for (i of [1, 2, 3, 4]; track i) {
+        <app-skeleton height="6rem" />
+      }
+    </div>
+    <app-skeleton height="18rem" />
+  } @else if (data(); as charts) {
+    @let total = charts.totals;
+
+    <!-- Lo principal del año -->
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4" [class.opacity-60]="loading()">
+      <div class="flex flex-col gap-1 rounded-lg border border-border bg-chart-surface p-4">
+        <span class="text-sm text-chart-ink-muted">{{ 'charts.tiles.presented' | translate }}</span>
+        <span class="text-2xl font-semibold text-chart-ink">{{ percent(total) }}%</span>
+        <span class="text-xs text-chart-ink-muted">{{ 'charts.tiles.presentedDetail' | translate: { done: presented(total), total: total.expected } }}</span>
+      </div>
+      <div class="flex flex-col gap-1 rounded-lg border border-border bg-chart-surface p-4">
+        <span class="text-sm text-chart-ink-muted">{{ 'charts.tiles.withDifference' | translate }}</span>
+        <span class="text-2xl font-semibold text-chart-ink">{{ total.withDifference }}</span>
+        <span class="text-xs text-chart-ink-muted">{{ 'charts.tiles.withDifferenceDetail' | translate }}</span>
+      </div>
+      <div class="flex flex-col gap-1 rounded-lg border border-border bg-chart-surface p-4">
+        <span class="text-sm text-chart-ink-muted">{{ 'charts.tiles.shortage' | translate }}</span>
+        <span class="text-2xl font-semibold text-chart-ink">Bs {{ total.shortage | money }}</span>
+        <span class="text-xs text-chart-ink-muted">{{ 'charts.tiles.surplusDetail' | translate: { amount: (total.surplus | money) } }}</span>
+      </div>
+      <div class="flex flex-col gap-1 rounded-lg border border-border bg-chart-surface p-4">
+        <span class="text-sm text-chart-ink-muted">{{ 'charts.tiles.missing' | translate }}</span>
+        <span class="text-2xl font-semibold text-chart-ink">{{ total.missing }}</span>
+        <span class="text-xs text-chart-ink-muted">{{ 'charts.tiles.missingDetail' | translate: { notSubmitted: total.notSubmitted } }}</span>
+      </div>
+    </div>
+
+    @if (!months().length) {
+      <div class="rounded-lg border border-border bg-surface px-4 py-10 text-center text-sm text-muted-foreground">{{ 'charts.empty' | translate }}</div>
+    } @else {
+      <div class="flex flex-col gap-4" [class.opacity-60]="loading()">
+        <!-- Estado de los arqueos mes a mes -->
+        <app-chart-card [title]="'charts.status.title' | translate" [subtitle]="'charts.status.subtitle' | translate" [legend]="legendStatus()">
+          <app-column-chart [categories]="monthShort()" [titles]="monthTitles()" [series]="statusSeries()" [totalLabel]="'charts.status.expected' | translate" [ariaLabel]="'charts.status.title' | translate" />
+          <table table class="w-full text-xs">
+            <thead>
+              <tr class="border-b border-border text-left text-chart-ink-muted">
+                <th class="px-2 py-1.5 font-medium">{{ 'charts.month' | translate }}</th>
+                @for (s of statusSeries(); track s.key) {
+                  <th class="px-2 py-1.5 text-right font-medium">{{ s.label }}</th>
+                }
+                <th class="px-2 py-1.5 text-right font-medium">{{ 'charts.status.expected' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (m of months(); track m.month; let i = $index) {
+                <tr class="border-b border-border/60 text-chart-ink">
+                  <td class="px-2 py-1.5">{{ monthTitles()[i] }}</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums">{{ m.noDifference }}</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums">{{ m.withDifference }}</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums">{{ m.notSubmitted }}</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums">{{ m.missing }}</td>
+                  <td class="px-2 py-1.5 text-right font-medium tabular-nums">{{ m.expected }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </app-chart-card>
+
+        <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <!-- Saldo ACMS y total en custodia -->
+          <app-chart-card [title]="'charts.amounts.title' | translate" [subtitle]="'charts.amounts.subtitle' | translate" [legend]="legendAmounts()">
+            <app-line-chart [categories]="monthShort()" [titles]="monthTitles()" [series]="amountSeries()" [emptyLabel]="'charts.noCounts' | translate" [ariaLabel]="'charts.amounts.title' | translate" />
+            <table table class="w-full text-xs">
+              <thead>
+                <tr class="border-b border-border text-left text-chart-ink-muted">
+                  <th class="px-2 py-1.5 font-medium">{{ 'charts.month' | translate }}</th>
+                  <th class="px-2 py-1.5 text-right font-medium">{{ 'charts.amounts.acms' | translate }}</th>
+                  <th class="px-2 py-1.5 text-right font-medium">{{ 'charts.amounts.custody' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (m of months(); track m.month; let i = $index) {
+                  <tr class="border-b border-border/60 text-chart-ink">
+                    <td class="px-2 py-1.5">{{ monthTitles()[i] }}</td>
+                    <td class="px-2 py-1.5 text-right tabular-nums">{{ m.acmsSubmitted | money }}</td>
+                    <td class="px-2 py-1.5 text-right tabular-nums">{{ m.custodyTotal | money }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </app-chart-card>
+
+          <!-- Lo que sobra y lo que falta -->
+          <app-chart-card [title]="'charts.balance.title' | translate" [subtitle]="'charts.balance.subtitle' | translate" [legend]="legendBalance()">
+            <app-column-chart [categories]="monthShort()" [titles]="monthTitles()" [series]="balanceSeries()" [format]="money" [ariaLabel]="'charts.balance.title' | translate" />
+            <table table class="w-full text-xs">
+              <thead>
+                <tr class="border-b border-border text-left text-chart-ink-muted">
+                  <th class="px-2 py-1.5 font-medium">{{ 'charts.month' | translate }}</th>
+                  <th class="px-2 py-1.5 text-right font-medium">{{ 'charts.balance.surplus' | translate }}</th>
+                  <th class="px-2 py-1.5 text-right font-medium">{{ 'charts.balance.shortage' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (m of months(); track m.month; let i = $index) {
+                  <tr class="border-b border-border/60 text-chart-ink">
+                    <td class="px-2 py-1.5">{{ monthTitles()[i] }}</td>
+                    <td class="px-2 py-1.5 text-right tabular-nums">{{ m.surplus | money }}</td>
+                    <td class="px-2 py-1.5 text-right tabular-nums">{{ m.shortage | money }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </app-chart-card>
+
+          <!-- Regiones -->
+          <app-chart-card [title]="'charts.regions.title' | translate" [subtitle]="'charts.regions.subtitle' | translate">
+            <app-bar-list [items]="regionItems()" [max]="100" [format]="formatPercent" [emptyLabel]="'table.empty' | translate" />
+            <table table class="w-full text-xs">
+              <thead>
+                <tr class="border-b border-border text-left text-chart-ink-muted">
+                  <th class="px-2 py-1.5 font-medium">{{ 'funds.filters.region' | translate }}</th>
+                  <th class="px-2 py-1.5 text-right font-medium">{{ 'charts.regions.presented' | translate }}</th>
+                  <th class="px-2 py-1.5 text-right font-medium">{{ 'charts.status.expected' | translate }}</th>
+                  <th class="px-2 py-1.5 text-right font-medium">%</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (r of charts.regions; track r.regionId) {
+                  <tr class="border-b border-border/60 text-chart-ink">
+                    <td class="px-2 py-1.5">{{ r.regionName }}</td>
+                    <td class="px-2 py-1.5 text-right tabular-nums">{{ presented(r) }}</td>
+                    <td class="px-2 py-1.5 text-right tabular-nums">{{ r.expected }}</td>
+                    <td class="px-2 py-1.5 text-right font-medium tabular-nums">{{ percent(r) }}%</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </app-chart-card>
+
+          <!-- Iglesias con más faltante -->
+          <app-chart-card [title]="'charts.shortages.title' | translate" [subtitle]="'charts.shortages.subtitle' | translate">
+            <app-bar-list [items]="shortageItems()" color="var(--color-chart-neg)" [format]="money" [emptyLabel]="'charts.shortages.empty' | translate" />
+            <table table class="w-full text-xs">
+              <thead>
+                <tr class="border-b border-border text-left text-chart-ink-muted">
+                  <th class="px-2 py-1.5 font-medium">{{ 'funds.columns.church' | translate }}</th>
+                  <th class="px-2 py-1.5 font-medium">{{ 'funds.filters.district' | translate }}</th>
+                  <th class="px-2 py-1.5 text-right font-medium">{{ 'charts.shortages.months' | translate }}</th>
+                  <th class="px-2 py-1.5 text-right font-medium">{{ 'charts.balance.shortage' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (c of charts.topShortages; track c.churchCode + c.churchName) {
+                  <tr class="border-b border-border/60 text-chart-ink">
+                    <td class="px-2 py-1.5">{{ c.churchCode }} {{ c.churchName }}</td>
+                    <td class="px-2 py-1.5">{{ c.districtName }}</td>
+                    <td class="px-2 py-1.5 text-right tabular-nums">{{ c.months }}</td>
+                    <td class="px-2 py-1.5 text-right tabular-nums">{{ c.shortage | money }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </app-chart-card>
+        </div>
+      </div>
+    }
+  }
+</div>

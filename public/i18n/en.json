@@ -113,7 +113,9 @@
     "reportRegionSummary": "Summary by region or district",
     "reportCorrections": "Corrections",
     "reportChurchMovements": "Church changes",
-    "reportLocalFundCount": "Local fund count sheet"
+    "reportLocalFundCount": "Local fund count sheet",
+    "reportChurchStatement": "Church report",
+    "charts": "Charts"
   },
   "placeholder": {
     "description": "This screen is still under construction.",
@@ -667,7 +669,11 @@
       "allChurches": "All churches",
       "groupBy": "Group by",
       "byRegion": "Region",
-      "byDistrict": "District"
+      "byDistrict": "District",
+      "periodFrom": "From month",
+      "periodTo": "To month",
+      "pickChurch": "Choose a church",
+      "choose": "Choose"
     },
     "downloadPdf": "Download PDF",
     "downloadExcel": "Download Excel",
@@ -715,6 +721,64 @@
     },
     "pickDistrictOrChurch": "Choose a district or a church to see its counts.",
     "downloadTxt": "Download TXT",
-    "txtError": "The TXT could not be downloaded."
+    "txtError": "The TXT could not be downloaded.",
+    "church-statement": {
+      "title": "Church report",
+      "description": "Individual sheet of a church: its ACMS balance and its count month by month in the range you choose, with the summary and signatures."
+    },
+    "pickChurch": "Choose a church to see its report.",
+    "missingFilters": "Choose {{filters}} to see the report."
+  },
+  "charts": {
+    "subtitle": "How the year's counts are going: month by month, by region and the churches with the largest shortage. Only months already started are counted.",
+    "showTable": "Show table",
+    "showChart": "Show chart",
+    "month": "Month",
+    "noCounts": "No counts",
+    "empty": "No months with data for these filters.",
+    "tiles": {
+      "presented": "Counts submitted",
+      "presentedDetail": "{{done}} of {{total}} this year",
+      "withDifference": "With difference",
+      "withDifferenceDetail": "Counts that did not match ACMS",
+      "shortage": "Shortage this year",
+      "surplusDetail": "Surplus: Bs {{amount}}",
+      "missing": "Not registered",
+      "missingDetail": "Not submitted: {{notSubmitted}}"
+    },
+    "status": {
+      "title": "Count status by month",
+      "subtitle": "How many churches submitted, matched or are still missing each month.",
+      "noDifference": "No difference",
+      "withDifference": "With difference",
+      "notSubmitted": "Not submitted",
+      "missing": "Not registered",
+      "expected": "Expected"
+    },
+    "amounts": {
+      "title": "ACMS balance and total in custody",
+      "subtitle": "Sum of the counts submitted each month. When both lines look like one, the counts match ACMS.",
+      "acms": "ACMS balance",
+      "custody": "Total in custody"
+    },
+    "balance": {
+      "title": "Surplus and shortage",
+      "subtitle": "Sum of each month's differences: up is surplus, down is shortage.",
+      "surplus": "Surplus",
+      "shortage": "Shortage"
+    },
+    "regions": {
+      "title": "Counts submitted by region",
+      "subtitle": "Percentage of counts submitted this year.",
+      "presented": "Submitted",
+      "tooltip": "{{done}} of {{total}} counts"
+    },
+    "shortages": {
+      "title": "Churches with the largest shortage",
+      "subtitle": "The 10 churches with the most money short this year.",
+      "months": "Months",
+      "tooltip": "Money short in {{months}} months",
+      "empty": "No church had a shortage."
+    }
   }
 }

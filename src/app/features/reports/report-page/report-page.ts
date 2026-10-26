@@ -1,7 +1,6 @@
 import { Component, DestroyRef, computed, effect, inject, input, signal, untracked } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { localDateIso } from '../../../core/dates/calendar-date';
 import { apiErrorMessage } from '../../../core/http/api-error';
 import { QueryParams } from '../../../core/http/api.models';
 import { ApiService } from '../../../core/http/api.service';
@@ -46,30 +45,30 @@ export class ReportPage {
   protected readonly definition = computed<ReportDefinition | null>(() => findReport(this.report()));
   protected readonly canPreviewPdf = CAN_PREVIEW_PDF;
 
-  private readonly today = localDateIso();
   private readonly currentYear = new Date().getFullYear();
 
-  protected readonly year = signal<string | null>(String(this.currentYear));
-  protected readonly monthFrom = signal<string | null>('1');
-  protected readonly monthTo = signal<string | null>(String(new Date().getMonth() + 1));
+  // Todos los filtros empiezan vacíos: el reporte se genera recién cuando están elegidos los que
+  // necesita (los opcionales, como región o estado, pueden quedar vacíos y valen "todos").
+  protected readonly year = signal<string | null>(null);
+  protected readonly monthFrom = signal<string | null>(null);
+  protected readonly monthTo = signal<string | null>(null);
   protected readonly periodId = signal<string | null>(null);
+  protected readonly periodFrom = signal<string | null>(null);
+  protected readonly periodTo = signal<string | null>(null);
   protected readonly regionId = signal<string | null>(null);
   protected readonly districtId = signal<string | null>(null);
   protected readonly churchId = signal<string | null>(null);
-  protected readonly groupBy = signal<'region' | 'district'>('region');
+  protected readonly groupBy = signal<string | null>(null);
   protected readonly differenceStatus = signal<string | null>(null);
   protected readonly changeType = signal<string | null>(null);
-  protected readonly dateFrom = signal<string | null>(`${this.currentYear}-01-01`);
-  protected readonly dateTo = signal<string | null>(this.today);
+  protected readonly dateFrom = signal<string | null>(null);
+  protected readonly dateTo = signal<string | null>(null);
 
   protected readonly periods = signal<Period[]>([]);
   protected readonly loading = signal(false);
   protected readonly downloading = signal<'excel' | 'txt' | null>(null);
   protected readonly previewUrl = signal<SafeResourceUrl | null>(null);
   protected readonly errorMessage = signal<string | null>(null);
-
-  /** El usuario ya cambió algún filtro en este reporte: recién ahí se genera. */
-  private readonly touched = signal(false);
 
   private objectUrl: string | null = null;
   private pdfBlob: Blob | null = null;
@@ -97,8 +96,7 @@ export class ReportPage {
   }
 
   protected onGroupByChange(value: string | null): void {
-    this.touch();
-    this.groupBy.set(value === 'district' ? 'district' : 'region');
+    this.groupBy.set(value);
     this.regionId.set(null);
     this.districtId.set(null);
   }
@@ -124,14 +122,14 @@ export class ReportPage {
 
   protected readonly districtOptions = computed<SelectOption[]>(() => [
     { value: '', label: this.languageService.t('funds.filters.allDistricts') },
-    ...this.lookups.districtOptions(this.regionId()),
+    ...this.lookups.districtOptions(this.regionId() || null),
   ]);
 
   /** Iglesias y Grupos (las filiales van dentro del arqueo de su madre) del distrito o la región elegidos. */
   protected readonly churchOptions = computed<SelectOption[]>(() => {
-    const districtIds = new Set(this.lookups.districtOptions(this.regionId()).map((d) => d.value));
+    const districtIds = new Set(this.lookups.districtOptions(this.regionId() || null).map((d) => d.value));
     return [
-      { value: '', label: this.languageService.t('reports.filters.allChurches') },
+      { value: '', label: this.languageService.t(this.definition()?.needsChurch ? 'reports.filters.pickChurch' : 'reports.filters.allChurches') },
       ...this.lookups
         .churches()
         .filter((c) => c.type !== 'Filial' && (this.districtId() ? String(c.districtId) === this.districtId() : districtIds.has(String(c.districtId))))
@@ -140,6 +138,9 @@ export class ReportPage {
   });
 
   /** Un Pastor ya está limitado a su distrito por el backend: no necesita elegirlo. */
+  /** Reporte individual sin iglesia elegida todavía. */
+  protected readonly missingChurch = computed(() => !!this.definition()?.needsChurch && !this.churchId());
+
   protected readonly missingDistrict = computed(
     () => !!this.definition()?.needsDistrictOrChurch && !this.districtId() && !this.churchId() && this.authService.activeRole() !== ROLES.pastor
   );
@@ -158,15 +159,8 @@ export class ReportPage {
     void this.lookups.load('regions', 'districts', 'churches');
     this.periodService
       .all()
-      .then((periods) => {
-        // Abiertos y cerrados, pero no los meses que todavía no empiezan.
-        const sorted = periods.filter((p) => isStartedPeriod(p)).sort((a, b) => b.year - a.year || b.month - a.month);
-        this.periods.set(sorted);
-        // Pendientes: por defecto el mes abierto más antiguo, que es el que se está cerrando.
-        const open = sorted.filter((p) => p.status === 'open' && p.dueDate <= this.today);
-        const initial = open.length ? open[open.length - 1] : sorted[0];
-        if (initial && !this.periodId()) this.periodId.set(String(initial.periodId));
-      })
+      // Abiertos y cerrados, pero no los meses que todavía no empiezan.
+      .then((periods) => this.periods.set(periods.filter((p) => isStartedPeriod(p)).sort((a, b) => b.year - a.year || b.month - a.month)))
       .catch(() => this.periods.set([]));
 
     inject(DestroyRef).onDestroy(() => {
@@ -174,30 +168,31 @@ export class ReportPage {
       if (this.debounceTimer) clearTimeout(this.debounceTimer);
     });
 
-    // Al cambiar de reporte se borra la vista previa y se espera a que el usuario toque un filtro.
+    // Al cambiar de reporte, todos los filtros vuelven a quedar vacíos.
     effect(() => {
       this.definition();
-      untracked(() => {
-        this.touched.set(false);
-        if (this.debounceTimer) clearTimeout(this.debounceTimer);
-        this.revokePreview();
-        this.errorMessage.set(null);
-      });
+      untracked(() => this.clearFilters());
     });
 
-    // Después de la primera interacción, cada cambio de filtro vuelve a generar la vista previa.
+    // Con los filtros obligatorios completos se genera la vista previa; si falta alguno, se quita.
     effect(() => {
-      this.query();
-      if (untracked(() => this.touched())) {
-        untracked(() => this.scheduleGenerate());
-      }
+      const query = this.query();
+      untracked(() => {
+        if (query) {
+          this.scheduleGenerate();
+        } else {
+          if (this.debounceTimer) clearTimeout(this.debounceTimer);
+          this.revokePreview();
+          this.errorMessage.set(null);
+        }
+      });
     });
   }
 
   /** Filtros del reporte con los nombres de su QueryFilter en el backend. */
   protected readonly query = computed<QueryParams | null>(() => {
     const definition = this.definition();
-    if (!definition) return null;
+    if (!definition || this.missingFilters().length) return null;
     const params: QueryParams = {};
     for (const filter of definition.filters) {
       switch (filter) {
@@ -209,82 +204,98 @@ export class ReportPage {
           params['monthTo'] = this.monthTo();
           break;
         case 'period':
-          if (!this.periodId()) return null;
           params['periodId'] = this.periodId();
           break;
         case 'region':
-          if (this.showRegion()) params['regionId'] = this.regionId();
+          if (this.showRegion()) params['regionId'] = this.regionId() || null;
           break;
         case 'groupBy':
           params['groupBy'] = this.groupBy();
           break;
         case 'district':
-          params['districtId'] = this.districtId();
+          params['districtId'] = this.districtId() || null;
           break;
         case 'church':
-          params['churchId'] = this.churchId();
+          params['churchId'] = this.churchId() || null;
           break;
         case 'differenceStatus':
-          params['status'] = this.differenceStatus();
+          params['status'] = this.differenceStatus() || null;
           break;
         case 'changeType':
-          params['changeType'] = this.changeType();
+          params['changeType'] = this.changeType() || null;
           break;
         case 'dateRange':
           params['dateFrom'] = this.dateFrom();
           params['dateTo'] = this.dateTo();
           break;
+        case 'periodRange':
+          params['fromPeriodId'] = this.periodFrom();
+          params['toPeriodId'] = this.periodTo();
+          break;
       }
     }
-    return this.missingDistrict() ? null : params;
+    return this.missingDistrict() || this.missingChurch() ? null : params;
   });
 
-  /** Limpiar: vuelve a los filtros con que abre el reporte y quita la vista previa hasta que se vuelva a elegir. */
+  /** Filtros obligatorios que todavía están vacíos (sus etiquetas, para el aviso). */
+  protected readonly missingFilters = computed<string[]>(() => {
+    const t = (key: string) => this.languageService.t(key);
+    const missing: string[] = [];
+    for (const filter of this.definition()?.filters ?? []) {
+      switch (filter) {
+        case 'year':
+          if (!this.year()) missing.push(t('reports.filters.year'));
+          break;
+        case 'monthRange':
+          if (!this.monthFrom()) missing.push(t('reports.filters.monthFrom'));
+          if (!this.monthTo()) missing.push(t('reports.filters.monthTo'));
+          break;
+        case 'period':
+          if (!this.periodId()) missing.push(t('funds.filters.period'));
+          break;
+        case 'groupBy':
+          if (!this.groupBy()) missing.push(t('reports.filters.groupBy'));
+          break;
+        case 'dateRange':
+          if (!this.dateFrom()) missing.push(t('reports.filters.dateFrom'));
+          if (!this.dateTo()) missing.push(t('reports.filters.dateTo'));
+          break;
+        case 'periodRange':
+          if (!this.periodFrom()) missing.push(t('reports.filters.periodFrom'));
+          if (!this.periodTo()) missing.push(t('reports.filters.periodTo'));
+          break;
+      }
+    }
+    return missing;
+  });
+
+  /** Limpiar: deja todos los filtros vacíos y quita la vista previa. */
   protected clearFilters(): void {
-    this.touched.set(false);
     if (this.debounceTimer) clearTimeout(this.debounceTimer);
     this.revokePreview();
     this.errorMessage.set(null);
-    this.year.set(String(this.currentYear));
-    this.monthFrom.set('1');
-    this.monthTo.set(String(new Date().getMonth() + 1));
-    this.regionId.set(null);
-    this.districtId.set(null);
-    this.churchId.set(null);
-    this.differenceStatus.set(null);
-    this.changeType.set(null);
-    this.groupBy.set('region');
-    this.dateFrom.set(`${this.currentYear}-01-01`);
-    this.dateTo.set(this.today);
-    const open = this.periods().filter((p) => p.status === 'open' && p.dueDate <= this.today);
-    const initial = open.length ? open[open.length - 1] : this.periods()[0];
-    this.periodId.set(initial ? String(initial.periodId) : null);
-  }
-
-  /** Lo llama cada filtro al cambiar: desde ahí el reporte se genera solo. */
-  protected touch(): void {
-    if (!this.touched()) {
-      this.touched.set(true);
-      this.scheduleGenerate();
+    for (const filter of [
+      this.year, this.monthFrom, this.monthTo, this.periodId, this.periodFrom, this.periodTo, this.regionId,
+      this.districtId, this.churchId, this.groupBy, this.differenceStatus, this.changeType, this.dateFrom, this.dateTo,
+    ]) {
+      filter.set(null);
     }
   }
 
   protected onRegionChange(value: string | null): void {
-    this.touch();
-    this.regionId.set(value || null);
+    this.regionId.set(value);
     this.districtId.set(null);
     this.churchId.set(null);
   }
 
   protected onDistrictChange(value: string | null): void {
-    this.touch();
-    this.districtId.set(value || null);
+    this.districtId.set(value);
     this.churchId.set(null);
   }
 
+  /** Los opcionales guardan '' cuando se elige "Todos", así se ve lo elegido en vez de quedar vacío. */
   protected setOptional(target: { set(value: string | null): void }, value: string | null): void {
-    this.touch();
-    target.set(value || null);
+    target.set(value);
   }
 
   private scheduleGenerate(): void {

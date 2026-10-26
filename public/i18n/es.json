@@ -113,7 +113,9 @@
     "reportRegionSummary": "Resumen por región o distrito",
     "reportCorrections": "Correcciones",
     "reportChurchMovements": "Movimientos de iglesias",
-    "reportLocalFundCount": "Arqueo del fondo local"
+    "reportLocalFundCount": "Arqueo del fondo local",
+    "reportChurchStatement": "Reporte por iglesia",
+    "charts": "Gráficas"
   },
   "placeholder": {
     "description": "Esta pantalla todavía está en construcción.",
@@ -667,7 +669,11 @@
       "allChurches": "Todas las iglesias",
       "groupBy": "Agrupar por",
       "byRegion": "Región",
-      "byDistrict": "Distrito"
+      "byDistrict": "Distrito",
+      "periodFrom": "Desde el mes",
+      "periodTo": "Hasta el mes",
+      "pickChurch": "Elige una iglesia",
+      "choose": "Elegir"
     },
     "downloadPdf": "Descargar PDF",
     "downloadExcel": "Descargar Excel",
@@ -715,6 +721,64 @@
     },
     "pickDistrictOrChurch": "Elige un distrito o una iglesia para ver sus arqueos.",
     "downloadTxt": "Descargar TXT",
-    "txtError": "No se pudo descargar el TXT."
+    "txtError": "No se pudo descargar el TXT.",
+    "church-statement": {
+      "title": "Reporte por iglesia",
+      "description": "Hoja individual de una iglesia: su saldo ACMS y su arqueo mes a mes en el rango que elijas, con el resumen y las firmas."
+    },
+    "pickChurch": "Elige una iglesia para ver su reporte.",
+    "missingFilters": "Elige {{filters}} para ver el reporte."
+  },
+  "charts": {
+    "subtitle": "Cómo van los arqueos del año: mes a mes, por región y las iglesias con más faltante. Solo cuentan los meses que ya empezaron.",
+    "showTable": "Ver tabla",
+    "showChart": "Ver gráfica",
+    "month": "Mes",
+    "noCounts": "Sin arqueos",
+    "empty": "No hay meses con datos para estos filtros.",
+    "tiles": {
+      "presented": "Arqueos presentados",
+      "presentedDetail": "{{done}} de {{total}} en el año",
+      "withDifference": "Con diferencia",
+      "withDifferenceDetail": "Arqueos que no cuadraron con el ACMS",
+      "shortage": "Faltante del año",
+      "surplusDetail": "Sobrante: Bs {{amount}}",
+      "missing": "Sin registrar",
+      "missingDetail": "No presentaron: {{notSubmitted}}"
+    },
+    "status": {
+      "title": "Estado de los arqueos por mes",
+      "subtitle": "Cuántas iglesias presentaron, cuadraron o faltan registrar cada mes.",
+      "noDifference": "Sin diferencia",
+      "withDifference": "Con diferencia",
+      "notSubmitted": "No presentó",
+      "missing": "Sin registrar",
+      "expected": "Debían presentar"
+    },
+    "amounts": {
+      "title": "Saldo ACMS y total en custodia",
+      "subtitle": "Suma de los arqueos presentados en cada mes. Si las dos líneas se ven como una sola, es porque el arqueo cuadra con el ACMS.",
+      "acms": "Saldo ACMS",
+      "custody": "Total en custodia"
+    },
+    "balance": {
+      "title": "Lo que sobra y lo que falta",
+      "subtitle": "Suma de las diferencias de cada mes: arriba sobra, abajo falta.",
+      "surplus": "Sobrante",
+      "shortage": "Faltante"
+    },
+    "regions": {
+      "title": "Arqueos presentados por región",
+      "subtitle": "Porcentaje de arqueos presentados en el año.",
+      "presented": "Presentados",
+      "tooltip": "{{done}} de {{total}} arqueos"
+    },
+    "shortages": {
+      "title": "Iglesias con más faltante",
+      "subtitle": "Las 10 iglesias que más dinero faltante sumaron en el año.",
+      "months": "Meses",
+      "tooltip": "Faltó dinero en {{months}} meses",
+      "empty": "Ninguna iglesia tuvo faltante."
+    }
   }
 }

@@ -75,7 +75,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/admin/audit-logs/audit-logs-list/audit-logs-list').then((m) => m.AuditLogsList),
       },
       {
-        // Los 8 reportes usan la misma pantalla; :report dice cuál (features/reports/report-definitions.ts).
+        path: 'charts',
+        loadComponent: () => import('./features/charts/charts-page/charts-page').then((m) => m.ChartsPage),
+      },
+      {
+        // Los reportes usan la misma pantalla; :report dice cuál (features/reports/report-definitions.ts).
         path: 'reports/:report',
         loadComponent: () => import('./features/reports/report-page/report-page').then((m) => m.ReportPage),
       },

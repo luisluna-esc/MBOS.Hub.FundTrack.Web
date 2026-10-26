@@ -7,37 +7,41 @@
 
     <div class="flex flex-wrap items-end gap-3 rounded-md border border-border bg-surface p-3">
       @if (has('year')) {
-        <div class="min-w-[10rem] flex-1"><app-select [label]="'reports.filters.year' | translate" [options]="yearOptions()" [ngModel]="year()" (ngModelChange)="touch(); year.set($event)" /></div>
+        <div class="min-w-[10rem] flex-1"><app-select [placeholder]="'reports.filters.choose' | translate" [label]="'reports.filters.year' | translate" [options]="yearOptions()" [ngModel]="year()" (ngModelChange)="year.set($event)" /></div>
       }
       @if (has('monthRange')) {
-        <div class="min-w-[10rem] flex-1"><app-select [label]="'reports.filters.monthFrom' | translate" [options]="monthOptions()" [ngModel]="monthFrom()" (ngModelChange)="touch(); monthFrom.set($event)" /></div>
-        <div class="min-w-[10rem] flex-1"><app-select [label]="'reports.filters.monthTo' | translate" [options]="monthOptions()" [ngModel]="monthTo()" (ngModelChange)="touch(); monthTo.set($event)" /></div>
+        <div class="min-w-[10rem] flex-1"><app-select [placeholder]="'reports.filters.choose' | translate" [label]="'reports.filters.monthFrom' | translate" [options]="monthOptions()" [ngModel]="monthFrom()" (ngModelChange)="monthFrom.set($event)" /></div>
+        <div class="min-w-[10rem] flex-1"><app-select [placeholder]="'reports.filters.choose' | translate" [label]="'reports.filters.monthTo' | translate" [options]="monthOptions()" [ngModel]="monthTo()" (ngModelChange)="monthTo.set($event)" /></div>
       }
       @if (has('period')) {
-        <div class="min-w-[10rem] flex-1"><app-select [label]="'funds.filters.period' | translate" [options]="periodOptions()" [ngModel]="periodId()" (ngModelChange)="touch(); periodId.set($event)" /></div>
+        <div class="min-w-[10rem] flex-1"><app-select [placeholder]="'reports.filters.choose' | translate" [label]="'funds.filters.period' | translate" [options]="periodOptions()" [ngModel]="periodId()" (ngModelChange)="periodId.set($event)" /></div>
+      }
+      @if (has('periodRange')) {
+        <div class="min-w-[10rem] flex-1"><app-select [placeholder]="'reports.filters.choose' | translate" [label]="'reports.filters.periodFrom' | translate" [options]="periodOptions()" [ngModel]="periodFrom()" (ngModelChange)="periodFrom.set($event)" /></div>
+        <div class="min-w-[10rem] flex-1"><app-select [placeholder]="'reports.filters.choose' | translate" [label]="'reports.filters.periodTo' | translate" [options]="periodOptions()" [ngModel]="periodTo()" (ngModelChange)="periodTo.set($event)" /></div>
       }
       @if (has('dateRange')) {
-        <div class="min-w-[10rem] flex-1"><app-date-picker [label]="'reports.filters.dateFrom' | translate" [ngModel]="dateFrom()" (ngModelChange)="touch(); dateFrom.set($event)" /></div>
-        <div class="min-w-[10rem] flex-1"><app-date-picker [label]="'reports.filters.dateTo' | translate" [ngModel]="dateTo()" (ngModelChange)="touch(); dateTo.set($event)" /></div>
+        <div class="min-w-[10rem] flex-1"><app-date-picker [label]="'reports.filters.dateFrom' | translate" [ngModel]="dateFrom()" (ngModelChange)="dateFrom.set($event)" /></div>
+        <div class="min-w-[10rem] flex-1"><app-date-picker [label]="'reports.filters.dateTo' | translate" [ngModel]="dateTo()" (ngModelChange)="dateTo.set($event)" /></div>
       }
       @if (has('differenceStatus')) {
-        <div class="min-w-[10rem] flex-1"><app-select
+        <div class="min-w-[10rem] flex-1"><app-select [placeholder]="'reports.filters.choose' | translate"
           [label]="'funds.columns.status' | translate"
           [options]="statusOptions()"
-          [ngModel]="differenceStatus() ?? ''"
+          [ngModel]="differenceStatus()"
           (ngModelChange)="setOptional(differenceStatus, $event)"
         /></div>
       }
       @if (has('changeType')) {
-        <div class="min-w-[10rem] flex-1"><app-select
+        <div class="min-w-[10rem] flex-1"><app-select [placeholder]="'reports.filters.choose' | translate"
           [label]="'reports.filters.changeType' | translate"
           [options]="changeTypeOptions()"
-          [ngModel]="changeType() ?? ''"
+          [ngModel]="changeType()"
           (ngModelChange)="setOptional(changeType, $event)"
         /></div>
       }
       @if (has('groupBy')) {
-        <div class="min-w-[10rem] flex-1"><app-select
+        <div class="min-w-[10rem] flex-1"><app-select [placeholder]="'reports.filters.choose' | translate"
           [label]="'reports.filters.groupBy' | translate"
           [options]="groupByOptions()"
           [ngModel]="groupBy()"
@@ -45,21 +49,21 @@
         /></div>
       }
       @if (showRegion()) {
-        <div class="min-w-[10rem] flex-1"><app-select [label]="'funds.filters.region' | translate" [options]="regionOptions()" [ngModel]="regionId() ?? ''" (ngModelChange)="onRegionChange($event)" /></div>
+        <div class="min-w-[10rem] flex-1"><app-select [placeholder]="'reports.filters.choose' | translate" [label]="'funds.filters.region' | translate" [options]="regionOptions()" [ngModel]="regionId()" (ngModelChange)="onRegionChange($event)" /></div>
       }
       @if (has('district')) {
-        <div class="min-w-[10rem] flex-1"><app-select
+        <div class="min-w-[10rem] flex-1"><app-select [placeholder]="'reports.filters.choose' | translate"
           [label]="'funds.filters.district' | translate"
           [options]="districtOptions()"
-          [ngModel]="districtId() ?? ''"
+          [ngModel]="districtId()"
           (ngModelChange)="onDistrictChange($event)"
         /></div>
       }
       @if (has('church')) {
-        <div class="min-w-[10rem] flex-1"><app-select
+        <div class="min-w-[10rem] flex-1"><app-select [placeholder]="'reports.filters.choose' | translate"
           [label]="'funds.columns.church' | translate"
           [options]="churchOptions()"
-          [ngModel]="churchId() ?? ''"
+          [ngModel]="churchId()"
           (ngModelChange)="setOptional(churchId, $event)"
         /></div>
       }
@@ -131,7 +135,11 @@
     } @else if (errorMessage(); as message) {
       <p class="rounded-md border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger">{{ message }}</p>
     } @else {
-      <p class="text-sm text-muted-foreground">{{ (missingDistrict() ? 'reports.pickDistrictOrChurch' : 'reports.selectPrompt') | translate }}</p>
+      <p class="text-sm text-muted-foreground">@if (missingFilters().length) {
+        {{ 'reports.missingFilters' | translate: { filters: missingFilters().join(', ') } }}
+      } @else {
+        {{ (missingChurch() ? 'reports.pickChurch' : missingDistrict() ? 'reports.pickDistrictOrChurch' : 'reports.selectPrompt') | translate }}
+      }</p>
     }
   </div>
 } @else {

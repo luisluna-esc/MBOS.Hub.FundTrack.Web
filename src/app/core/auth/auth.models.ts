@@ -1,4 +1,4 @@
-// Mismos formatos que /api/auth (LoginDto, AuthResponseDto, ChangePasswordRequestDto).
+// Mismos formatos que /api/auth (LoginDto, AuthResponseDto).
 
 export interface LoginRequest {
   /** nombre.apellido */
@@ -15,11 +15,6 @@ export interface AuthSession {
   refreshToken: string;
   refreshTokenExpiresAt: string;
   roles: string[];
-}
-
-export interface ChangePasswordRequest {
-  currentPassword: string;
-  newPassword: string;
 }
 
 /** Mismos nombres que RoleNames del backend. */

@@ -12,6 +12,7 @@ import { Input as AppInput } from '../../../../shared/components/input/input';
 import { Select, SelectOption } from '../../../../shared/components/select/select';
 import { Skeleton } from '../../../../shared/components/skeleton/skeleton';
 import { Switch } from '../../../../shared/components/switch/switch';
+import { ShortcutDirective } from '../../../../shared/directives/shortcut.directive';
 import { MoneyPipe } from '../../../../shared/pipes/money.pipe';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { CatalogLookups } from '../../../catalogs/catalog-lookups';
@@ -38,7 +39,7 @@ interface DistrictGroup {
 // los meses cerrados se ven aparte, con "Ver meses cerrados", y solo para consulta.
 @Component({
   selector: 'app-counts-month',
-  imports: [FormsModule, AppInput, Badge, ErrorState, Select, Skeleton, Switch, MoneyPipe, TranslatePipe],
+  imports: [FormsModule, AppInput, Badge, ErrorState, Select, Skeleton, Switch, ShortcutDirective, MoneyPipe, TranslatePipe],
   templateUrl: './counts-month.html',
 })
 export class CountsMonth {

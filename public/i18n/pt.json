@@ -618,14 +618,6 @@
       "fieldCount": "{{count}} campos"
     }
   },
-  "account": {
-    "changePassword": "Alterar senha",
-    "currentPassword": "Senha atual",
-    "newPassword": "Nova senha",
-    "confirmPassword": "Repita a nova senha",
-    "mismatch": "As senhas não coincidem.",
-    "changed": "Senha atualizada."
-  },
   "errorState": {
     "400": {
       "title": "Solicitação inválida",
@@ -805,5 +797,47 @@
       "mission": "Toda a Missão",
       "church": "Igreja: {{name}}"
     }
+  },
+  "shortcuts": {
+    "keySpace": "Espaço",
+    "filterEnter": "Nos filtros: buscar na hora",
+    "switchToggle": "Interruptor (Sim / Não): alterá-lo",
+    "dateOpen": "Data: abrir o calendário (percorre-se com as setas)",
+    "dateMonth": "Calendário aberto: mês anterior ou seguinte",
+    "dateDay": "Data: um dia a mais ou a menos",
+    "dateToday": "Data: hoje",
+    "dateType": "Data: digitá-la (13102026, 13/10/26 ou 13/10)",
+    "selectPick": "Lista aberta: escolher (com Tab, também passa ao próximo campo)",
+    "selectMove": "Lista aberta: mover-se entre as opções",
+    "selectType": "Lista de opções: digitar as primeiras letras para escolher",
+    "selectOpen": "Lista de opções: abri-la",
+    "prevField": "Voltar ao campo anterior",
+    "nextField": "Ir para o próximo campo",
+    "groupFields": "Campos e filtros",
+    "or": "ou",
+    "title": "Atalhos de teclado",
+    "onMac": "Teclas do Mac",
+    "onWindows": "Teclas do Windows",
+    "then": "e depois",
+    "footer": "Os atalhos de letras não funcionam enquanto você digita em um campo; Salvar, Esc e os de Ctrl/⌘ sim.",
+    "groupGeneral": "Geral",
+    "groupForms": "Formulários",
+    "groupLists": "Listas",
+    "groupGoTo": "Ir para",
+    "palette": "Buscar uma tela e ir até ela",
+    "help": "Ver esta lista de atalhos",
+    "sidebar": "Mostrar ou ocultar o menu lateral",
+    "cancel": "Fechar a janela aberta",
+    "save": "Salvar",
+    "search": "Ir para a busca da lista",
+    "goHome": "Início",
+    "paletteSearch": "Digite o nome de uma tela...",
+    "paletteEmpty": "Não há telas com esse nome.",
+    "paletteHint": "↑ ↓ para escolher, Enter para abrir, Esc para fechar",
+    "goCounts": "Registro de contagens",
+    "goDifferences": "Diferenças",
+    "goCharts": "Gráficos",
+    "goChurchReport": "Relatório por igreja",
+    "goChurches": "Igrejas"
   }
 }

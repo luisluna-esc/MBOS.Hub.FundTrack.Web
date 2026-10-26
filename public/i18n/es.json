@@ -618,14 +618,6 @@
       "fieldCount": "{{count}} campos"
     }
   },
-  "account": {
-    "changePassword": "Cambiar contraseña",
-    "currentPassword": "Contraseña actual",
-    "newPassword": "Nueva contraseña",
-    "confirmPassword": "Repite la nueva contraseña",
-    "mismatch": "Las contraseñas no coinciden.",
-    "changed": "Contraseña actualizada."
-  },
   "errorState": {
     "400": {
       "title": "Solicitud inválida",
@@ -805,5 +797,47 @@
       "mission": "Toda la Misión",
       "church": "Iglesia: {{name}}"
     }
+  },
+  "shortcuts": {
+    "keySpace": "Espacio",
+    "filterEnter": "En los filtros: buscar al instante",
+    "switchToggle": "Interruptor (Sí / No): cambiarlo",
+    "dateOpen": "Fecha: abrir el calendario (se recorre con flechas)",
+    "dateMonth": "Calendario abierto: mes anterior o siguiente",
+    "dateDay": "Fecha: un día más o menos",
+    "dateToday": "Fecha: hoy",
+    "dateType": "Fecha: escribirla (13102026, 13/10/26 o 13/10)",
+    "selectPick": "Lista abierta: elegir (con Tab, además pasa al siguiente campo)",
+    "selectMove": "Lista abierta: moverse entre opciones",
+    "selectType": "Lista de opciones: escribir las primeras letras para elegir",
+    "selectOpen": "Lista de opciones: abrirla",
+    "prevField": "Volver al campo anterior",
+    "nextField": "Pasar al siguiente campo",
+    "groupFields": "Campos y filtros",
+    "or": "o",
+    "title": "Atajos de teclado",
+    "onMac": "Teclas de Mac",
+    "onWindows": "Teclas de Windows",
+    "then": "y luego",
+    "footer": "Los atajos de letras no funcionan mientras escribes en un campo; Guardar, Esc y los de Ctrl/⌘ sí.",
+    "groupGeneral": "General",
+    "groupForms": "Formularios",
+    "groupLists": "Listas",
+    "groupGoTo": "Ir a",
+    "palette": "Buscar una pantalla e ir a ella",
+    "help": "Ver esta lista de atajos",
+    "sidebar": "Mostrar u ocultar el menú lateral",
+    "cancel": "Cerrar la ventana abierta",
+    "save": "Guardar",
+    "search": "Ir al buscador de la lista",
+    "goHome": "Inicio",
+    "paletteSearch": "Escribe el nombre de una pantalla...",
+    "paletteEmpty": "No hay pantallas con ese nombre.",
+    "paletteHint": "↑ ↓ para elegir, Enter para abrir, Esc para cerrar",
+    "goCounts": "Registro de arqueos",
+    "goDifferences": "Diferencias",
+    "goCharts": "Gráficas",
+    "goChurchReport": "Reporte por iglesia",
+    "goChurches": "Iglesias"
   }
 }

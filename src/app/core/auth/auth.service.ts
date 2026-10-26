@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { Observable, firstValueFrom, map, of, tap } from 'rxjs';
+import { Observable, map, of, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../http/api.models';
-import { AuthSession, ChangePasswordRequest, LoginRequest, ROLES, WRITER_ROLES } from './auth.models';
+import { AuthSession, LoginRequest, ROLES, WRITER_ROLES } from './auth.models';
 
 const STORAGE_KEY = 'auth';
 const ACTIVE_ROLE_STORAGE_KEY = 'activeRole';
@@ -46,10 +46,6 @@ export class AuthService {
       return of(undefined);
     }
     return this.http.post<void>(`${environment.apiUrl}/auth/logout`, { refreshToken }).pipe(map(() => undefined));
-  }
-
-  async changePassword(request: ChangePasswordRequest): Promise<void> {
-    await firstValueFrom(this.http.post(`${environment.apiUrl}/auth/change-password`, request));
   }
 
   getAccessToken(): string | null {

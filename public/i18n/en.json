@@ -618,14 +618,6 @@
       "fieldCount": "{{count}} fields"
     }
   },
-  "account": {
-    "changePassword": "Change password",
-    "currentPassword": "Current password",
-    "newPassword": "New password",
-    "confirmPassword": "Repeat the new password",
-    "mismatch": "The passwords do not match.",
-    "changed": "Password updated."
-  },
   "errorState": {
     "400": {
       "title": "Invalid request",
@@ -805,5 +797,47 @@
       "mission": "Whole Mission",
       "church": "Church: {{name}}"
     }
+  },
+  "shortcuts": {
+    "keySpace": "Space",
+    "filterEnter": "In filters: search right away",
+    "switchToggle": "Switch (Yes / No): toggle it",
+    "dateOpen": "Date: open the calendar (move with arrows)",
+    "dateMonth": "Open calendar: previous or next month",
+    "dateDay": "Date: one day more or less",
+    "dateToday": "Date: today",
+    "dateType": "Date: type it (13102026, 13/10/26 or 13/10)",
+    "selectPick": "Open list: choose (Tab also moves to the next field)",
+    "selectMove": "Open list: move between options",
+    "selectType": "Option list: type the first letters to choose",
+    "selectOpen": "Option list: open it",
+    "prevField": "Go back to the previous field",
+    "nextField": "Go to the next field",
+    "groupFields": "Fields and filters",
+    "or": "or",
+    "title": "Keyboard shortcuts",
+    "onMac": "Mac keys",
+    "onWindows": "Windows keys",
+    "then": "then",
+    "footer": "Letter shortcuts do not work while typing in a field; Save, Esc and Ctrl/⌘ shortcuts do.",
+    "groupGeneral": "General",
+    "groupForms": "Forms",
+    "groupLists": "Lists",
+    "groupGoTo": "Go to",
+    "palette": "Search a screen and go to it",
+    "help": "Show this shortcut list",
+    "sidebar": "Show or hide the side menu",
+    "cancel": "Close the open window",
+    "save": "Save",
+    "search": "Go to the list search box",
+    "goHome": "Home",
+    "paletteSearch": "Type the name of a screen...",
+    "paletteEmpty": "No screens with that name.",
+    "paletteHint": "↑ ↓ to choose, Enter to open, Esc to close",
+    "goCounts": "Count register",
+    "goDifferences": "Differences",
+    "goCharts": "Charts",
+    "goChurchReport": "Church report",
+    "goChurches": "Churches"
   }
 }

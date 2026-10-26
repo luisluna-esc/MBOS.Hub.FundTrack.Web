@@ -183,11 +183,13 @@
 
         <button
           type="button"
-          class="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-surface"
-          (click)="openChangePassword()"
+          class="hidden items-center justify-between gap-2 rounded-md px-2 py-1.5 text-sm text-foreground transition-colors hover:bg-surface md:flex"
+          (click)="openShortcutsHelp()"
         >
-          <app-icon name="shield" />
-          {{ 'account.changePassword' | translate }}
+          {{ 'shortcuts.title' | translate }}
+          <kbd class="rounded border border-border border-b-2 bg-surface px-1.5 text-xs text-muted-foreground">{{
+            shortcuts.label('help')
+          }}</kbd>
         </button>
 
         <button

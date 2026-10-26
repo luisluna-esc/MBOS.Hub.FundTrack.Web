@@ -10,10 +10,10 @@
       <app-select [label]="'reports.filters.year' | translate" [options]="yearOptions()" [ngModel]="year()" [ngModelOptions]="{ standalone: true }" (ngModelChange)="onYearChange($event)" />
     </div>
     <div class="min-w-[10rem] flex-1">
-      <app-select [label]="'funds.filters.region' | translate" [options]="regionOptions()" [ngModel]="regionId() ?? ''" [ngModelOptions]="{ standalone: true }" (ngModelChange)="onRegionChange($event)" />
-    </div>
-    <div class="min-w-[10rem] flex-1">
       <app-select [label]="'funds.filters.district' | translate" [options]="districtOptions()" [ngModel]="districtId() ?? ''" [ngModelOptions]="{ standalone: true }" (ngModelChange)="onDistrictChange($event)" />
+    </div>
+    <div class="min-w-[14rem] flex-[2]">
+      <app-select [label]="'funds.columns.church' | translate" [options]="churchOptions()" [ngModel]="churchId() ?? ''" [ngModelOptions]="{ standalone: true }" (ngModelChange)="onChurchChange($event)" />
     </div>
     <div class="flex flex-col gap-1">
       <span class="invisible text-sm font-medium">&nbsp;</span>
@@ -35,6 +35,128 @@
       }
     </div>
     <app-skeleton height="18rem" />
+  } @else if (church(); as c) {
+    <!-- Una iglesia: su fondo local mes a mes -->
+    <div class="flex flex-col gap-4" [class.opacity-60]="loading()">
+      <div class="flex flex-col gap-1 rounded-lg border border-border bg-chart-surface p-4">
+        <p class="text-lg font-semibold text-chart-ink">{{ c.churchCode }} · {{ c.churchName }} <span class="text-sm font-normal text-chart-ink-muted">{{ c.churchType }}</span></p>
+        <p class="text-sm text-chart-ink-muted">
+          {{ 'funds.filters.district' | translate }} {{ c.districtName }} · {{ c.regionName }}
+          @if (c.pastorName) {
+            · {{ 'funds.counts.pastor' | translate }}: {{ c.pastorName }}
+          }
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div class="flex flex-col gap-1 rounded-lg border border-border bg-chart-surface p-4">
+          <span class="text-sm text-chart-ink-muted">{{ 'charts.tiles.presented' | translate }}</span>
+          <span class="text-2xl font-semibold text-chart-ink">{{ churchSubmitted().length }} / {{ churchMonths().length }}</span>
+          <span class="text-xs text-chart-ink-muted">{{ 'charts.church.monthsDetail' | translate }}</span>
+        </div>
+        <div class="flex flex-col gap-1 rounded-lg border border-border bg-chart-surface p-4">
+          <span class="text-sm text-chart-ink-muted">{{ 'charts.church.highest' | translate }}</span>
+          <span class="text-2xl font-semibold text-chart-ink">{{ churchHighest() ? 'Bs ' + (churchHighest()!.acmsBalance | money) : '' }}</span>
+          <span class="text-xs text-chart-ink-muted">{{ churchHighest() ? title(churchHighest()!.month) : ('charts.noCounts' | translate) }}</span>
+        </div>
+        <div class="flex flex-col gap-1 rounded-lg border border-border bg-chart-surface p-4">
+          <span class="text-sm text-chart-ink-muted">{{ 'charts.church.lowest' | translate }}</span>
+          <span class="text-2xl font-semibold text-chart-ink">{{ churchLowest() ? 'Bs ' + (churchLowest()!.acmsBalance | money) : '' }}</span>
+          <span class="text-xs text-chart-ink-muted">{{ churchLowest() ? title(churchLowest()!.month) : ('charts.noCounts' | translate) }}</span>
+        </div>
+        <div class="flex flex-col gap-1 rounded-lg border border-border bg-chart-surface p-4">
+          <span class="text-sm text-chart-ink-muted">{{ 'charts.tiles.shortage' | translate }}</span>
+          <span class="text-2xl font-semibold text-chart-ink">Bs {{ churchShortage() | money }}</span>
+          <span class="text-xs text-chart-ink-muted">{{ 'charts.tiles.surplusDetail' | translate: { amount: (churchSurplus() | money) } }}</span>
+        </div>
+      </div>
+
+      <app-chart-card [title]="'charts.church.fundTitle' | translate" [subtitle]="'charts.church.fundSubtitle' | translate" [legend]="churchLegendAmounts()" [report]="churchFundReport()">
+        <app-line-chart [categories]="churchShort()" [titles]="churchTitles()" [series]="churchAmountSeries()" [markers]="true" [emptyLabel]="'charts.noCounts' | translate" [ariaLabel]="'charts.church.fundTitle' | translate" />
+        <table table class="w-full text-xs">
+          <thead>
+            <tr class="border-b border-border text-left text-chart-ink-muted">
+              <th class="px-2 py-1.5 font-medium">{{ 'charts.month' | translate }}</th>
+              <th class="px-2 py-1.5 text-right font-medium">{{ 'charts.amounts.acms' | translate }}</th>
+              <th class="px-2 py-1.5 text-right font-medium">{{ 'charts.amounts.custody' | translate }}</th>
+              <th class="px-2 py-1.5 text-right font-medium">{{ 'funds.columns.difference' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (m of churchMonths(); track m.month; let i = $index) {
+              <tr class="border-b border-border/60 text-chart-ink">
+                <td class="px-2 py-1.5">{{ churchTitles()[i] }}</td>
+                @if (m.submitted) {
+                  <td class="px-2 py-1.5 text-right tabular-nums">{{ m.acmsBalance | money }}</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums">{{ m.totalAmount | money }}</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums">{{ m.difference | money: true }}</td>
+                } @else {
+                  <td colspan="3" class="px-2 py-1.5 text-center text-chart-ink-muted">{{ 'funds.status.' + m.status | translate }}</td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </app-chart-card>
+
+      <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+        <app-chart-card [title]="'charts.balance.title' | translate" [subtitle]="'charts.church.balanceSubtitle' | translate" [legend]="churchLegendBalance()" [report]="churchBalanceReport()">
+          <app-column-chart [categories]="churchShort()" [titles]="churchTitles()" [series]="churchBalanceSeries()" [format]="money" [ariaLabel]="'charts.balance.title' | translate" />
+          <table table class="w-full text-xs">
+            <thead>
+              <tr class="border-b border-border text-left text-chart-ink-muted">
+                <th class="px-2 py-1.5 font-medium">{{ 'charts.month' | translate }}</th>
+                <th class="px-2 py-1.5 text-right font-medium">{{ 'funds.columns.difference' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (m of churchMonths(); track m.month; let i = $index) {
+                <tr class="border-b border-border/60 text-chart-ink">
+                  <td class="px-2 py-1.5">{{ churchTitles()[i] }}</td>
+                  <td class="px-2 py-1.5 text-right tabular-nums">{{ m.submitted ? (m.difference | money: true) : '' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </app-chart-card>
+
+        <app-chart-card [title]="'charts.church.statusTitle' | translate" [subtitle]="'charts.church.statusSubtitle' | translate" [report]="churchStatusReport()">
+          <ul class="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            @for (m of churchMonths(); track m.month; let i = $index) {
+              <li class="flex flex-col gap-1 rounded-md border border-border px-3 py-2">
+                <span class="text-xs font-medium text-chart-ink">{{ churchTitles()[i] }}</span>
+                <app-badge class="self-start" [tone]="statusTone(m)">{{ 'funds.status.' + m.status | translate }}</app-badge>
+                @if (m.summaryOnly) {
+                  <span class="text-[11px] text-chart-ink-muted">{{ 'funds.counts.summaryBadge' | translate }}</span>
+                }
+              </li>
+            }
+          </ul>
+          <table table class="w-full text-xs">
+            <tbody>
+              @for (m of churchMonths(); track m.month; let i = $index) {
+                <tr class="border-b border-border/60 text-chart-ink">
+                  <td class="px-2 py-1.5">{{ churchTitles()[i] }}</td>
+                  <td class="px-2 py-1.5">{{ 'funds.status.' + m.status | translate }}</td>
+                  <td class="px-2 py-1.5 text-chart-ink-muted">{{ m.observation ?? '' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </app-chart-card>
+      </div>
+
+      @if (churchObservations().length) {
+        <div class="flex flex-col gap-1 rounded-lg border border-border bg-chart-surface p-4 text-sm">
+          <p class="font-semibold text-chart-ink">{{ 'charts.church.observations' | translate }}</p>
+          @for (m of churchObservations(); track m.month) {
+            <p class="text-chart-ink-muted"><span class="font-medium text-chart-ink">{{ title(m.month) }}:</span> {{ m.observation }}</p>
+          }
+        </div>
+      }
+    </div>
+  } @else if (churchId() && !loading()) {
+    <div class="rounded-lg border border-border bg-surface px-4 py-10 text-center text-sm text-muted-foreground">{{ 'charts.church.empty' | translate }}</div>
   } @else if (data(); as charts) {
     @let total = charts.totals;
 
@@ -67,7 +189,7 @@
     } @else {
       <div class="flex flex-col gap-4" [class.opacity-60]="loading()">
         <!-- Estado de los arqueos mes a mes -->
-        <app-chart-card [title]="'charts.status.title' | translate" [subtitle]="'charts.status.subtitle' | translate" [legend]="legendStatus()">
+        <app-chart-card [title]="'charts.status.title' | translate" [subtitle]="'charts.status.subtitle' | translate" [legend]="legendStatus()" [report]="statusReport()">
           <app-column-chart [categories]="monthShort()" [titles]="monthTitles()" [series]="statusSeries()" [totalLabel]="'charts.status.expected' | translate" [ariaLabel]="'charts.status.title' | translate" />
           <table table class="w-full text-xs">
             <thead>
@@ -96,7 +218,7 @@
 
         <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
           <!-- Saldo ACMS y total en custodia -->
-          <app-chart-card [title]="'charts.amounts.title' | translate" [subtitle]="'charts.amounts.subtitle' | translate" [legend]="legendAmounts()">
+          <app-chart-card [title]="'charts.amounts.title' | translate" [subtitle]="'charts.amounts.subtitle' | translate" [legend]="legendAmounts()" [report]="amountsReport()">
             <app-line-chart [categories]="monthShort()" [titles]="monthTitles()" [series]="amountSeries()" [emptyLabel]="'charts.noCounts' | translate" [ariaLabel]="'charts.amounts.title' | translate" />
             <table table class="w-full text-xs">
               <thead>
@@ -119,7 +241,7 @@
           </app-chart-card>
 
           <!-- Lo que sobra y lo que falta -->
-          <app-chart-card [title]="'charts.balance.title' | translate" [subtitle]="'charts.balance.subtitle' | translate" [legend]="legendBalance()">
+          <app-chart-card [title]="'charts.balance.title' | translate" [subtitle]="'charts.balance.subtitle' | translate" [legend]="legendBalance()" [report]="balanceReport()">
             <app-column-chart [categories]="monthShort()" [titles]="monthTitles()" [series]="balanceSeries()" [format]="money" [ariaLabel]="'charts.balance.title' | translate" />
             <table table class="w-full text-xs">
               <thead>
@@ -142,7 +264,7 @@
           </app-chart-card>
 
           <!-- Regiones -->
-          <app-chart-card [title]="'charts.regions.title' | translate" [subtitle]="'charts.regions.subtitle' | translate">
+          <app-chart-card [title]="'charts.regions.title' | translate" [subtitle]="'charts.regions.subtitle' | translate" [report]="regionsReport()">
             <app-bar-list [items]="regionItems()" [max]="100" [format]="formatPercent" [emptyLabel]="'table.empty' | translate" />
             <table table class="w-full text-xs">
               <thead>
@@ -167,7 +289,7 @@
           </app-chart-card>
 
           <!-- Iglesias con más faltante -->
-          <app-chart-card [title]="'charts.shortages.title' | translate" [subtitle]="'charts.shortages.subtitle' | translate">
+          <app-chart-card [title]="'charts.shortages.title' | translate" [subtitle]="'charts.shortages.subtitle' | translate" [report]="shortagesReport()">
             <app-bar-list [items]="shortageItems()" color="var(--color-chart-neg)" [format]="money" [emptyLabel]="'charts.shortages.empty' | translate" />
             <table table class="w-full text-xs">
               <thead>

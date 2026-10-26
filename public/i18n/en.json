@@ -730,7 +730,7 @@
     "missingFilters": "Choose {{filters}} to see the report."
   },
   "charts": {
-    "subtitle": "How the year's counts are going: month by month, by region and the churches with the largest shortage. Only months already started are counted.",
+    "subtitle": "How the year's counts are going. Choose a church to see its local fund month by month. Only months already started are counted.",
     "showTable": "Show table",
     "showChart": "Show chart",
     "month": "Month",
@@ -779,6 +779,31 @@
       "months": "Months",
       "tooltip": "Money short in {{months}} months",
       "empty": "No church had a shortage."
+    },
+    "church": {
+      "monthsDetail": "Months with a count submitted this year",
+      "highest": "Highest month (ACMS balance)",
+      "lowest": "Lowest month (ACMS balance)",
+      "fundTitle": "Local fund month by month",
+      "fundSubtitle": "ACMS balance and total in custody of each month with a submitted count: its highs and lows.",
+      "balanceSubtitle": "Difference of each month: up is surplus, down is shortage.",
+      "statusTitle": "How each month ended",
+      "statusSubtitle": "Whether the count was submitted and matched ACMS.",
+      "observations": "Notes",
+      "empty": "That church has no data this year."
+    },
+    "report": "Report",
+    "reportError": "The chart report could not be generated.",
+    "reportFormats": {
+      "pdf": "PDF (chart and table)",
+      "excel": "Excel",
+      "txt": "TXT"
+    },
+    "reportFilters": {
+      "year": "Year {{year}}",
+      "district": "District: {{name}}",
+      "mission": "Whole Mission",
+      "church": "Church: {{name}}"
     }
   }
 }

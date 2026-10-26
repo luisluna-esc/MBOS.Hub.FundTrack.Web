@@ -29,7 +29,7 @@ const MARGIN = { top: 12, right: 12, bottom: 26, left: 52 };
       @for (s of series(); track s.key) {
         <path [attr.d]="linePath(s)" fill="none" [attr.stroke]="s.color" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
         @for (point of points(s); track point.index) {
-          @if (point.index === index || point.alone) {
+          @if (markers() || point.index === index || point.alone) {
             <circle [attr.cx]="point.x" [attr.cy]="point.y" r="4" [attr.fill]="s.color" stroke="var(--color-chart-surface)" stroke-width="2" />
           }
         }
@@ -62,6 +62,8 @@ export class LineChart {
   readonly height = input(260);
   readonly format = input<ValueFormat>(formatMoney);
   readonly axisFormat = input<ValueFormat>(formatCompact);
+  /** Punto en cada mes con dato (para pocas series y pocos meses, como una sola iglesia). */
+  readonly markers = input(false);
   /** Texto del cuadro para un mes sin dato. */
   readonly emptyLabel = input('');
   readonly ariaLabel = input('');

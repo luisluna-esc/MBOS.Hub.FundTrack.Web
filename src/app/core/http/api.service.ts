@@ -48,6 +48,11 @@ export class ApiService {
     return firstValueFrom(this.http.get(this.url(path), { params: this.params(params), responseType: 'blob' }));
   }
 
+  /** POST que devuelve un archivo (reportes armados con datos que manda la pantalla). */
+  downloadPost(path: string, body: unknown): Promise<Blob> {
+    return firstValueFrom(this.http.post(this.url(path), body, { responseType: 'blob' }));
+  }
+
   private url(path: string): string {
     return `${environment.apiUrl}${path}`;
   }

@@ -31,11 +31,37 @@ export interface ChartChurch {
   shortage: number;
 }
 
-/** ChartsDto de GET /api/charts. */
+export type ChurchMonthStatus = 'missing' | 'notSubmitted' | 'noDifference' | 'withDifference' | 'resolved';
+
+/** Un mes de la iglesia elegida. */
+export interface ChartChurchMonth {
+  month: number;
+  status: ChurchMonthStatus;
+  submitted: boolean;
+  summaryOnly: boolean;
+  acmsBalance: number;
+  totalAmount: number;
+  difference: number;
+  observation: string | null;
+}
+
+/** ChartChurchDetailDto: la iglesia elegida, con cada mes del año. */
+export interface ChartChurchDetail {
+  churchCode: string;
+  churchName: string;
+  churchType: string;
+  districtName: string;
+  regionName: string;
+  pastorName: string | null;
+  months: ChartChurchMonth[];
+}
+
+/** ChartsDto de GET /api/charts. Con iglesia elegida solo viene church. */
 export interface Charts {
   year: number;
   totals: ChartCounts;
   months: ChartMonth[];
   regions: ChartRegion[];
   topShortages: ChartChurch[];
+  church: ChartChurchDetail | null;
 }

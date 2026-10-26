@@ -288,6 +288,18 @@ export class ReportPage {
     this.churchId.set(null);
   }
 
+  /** Al elegir una iglesia se llenan solos su distrito y, si el reporte la pide, su región. */
+  protected onChurchChange(value: string | null): void {
+    this.churchId.set(value);
+    const church = value ? this.lookups.churches().find((c) => String(c.churchId) === value) : null;
+    if (!church) return;
+    this.districtId.set(String(church.districtId));
+    if (this.showRegion()) {
+      const district = this.lookups.districts().find((d) => d.districtId === church.districtId);
+      if (district) this.regionId.set(String(district.regionId));
+    }
+  }
+
   protected onDistrictChange(value: string | null): void {
     this.districtId.set(value);
     this.churchId.set(null);

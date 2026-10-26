@@ -50,7 +50,8 @@ export const REPORTS: ReportDefinition[] = [
     key: 'church-statement',
     endpoint: 'church-statement',
     fileName: 'reporte-iglesia',
-    filters: ['periodRange', 'region', 'district', 'church'],
+    // Sin región: la iglesia sola ya dice su distrito (se llena solo al elegirla).
+    filters: ['periodRange', 'district', 'church'],
     needsChurch: true,
   },
   { key: 'church-movements', endpoint: 'church-movements', fileName: 'movimientos-iglesias', filters: ['dateRange', 'changeType', 'region', 'district', 'church'] },

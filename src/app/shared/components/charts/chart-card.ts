@@ -1,5 +1,10 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
+import { ApiService } from '../../../core/http/api.service';
+import { saveBlob } from '../../../core/http/save-blob';
+import { LanguageService } from '../../../core/i18n/language.service';
+import { ToastService } from '../../../core/toast/toast.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { ChartReport, ChartReportFormat } from './chart-report';
 
 export interface LegendItem {
   label: string;
@@ -8,9 +13,13 @@ export interface LegendItem {
   shape?: 'box' | 'line';
 }
 
-// Tarjeta de una gráfica: título, descripción, leyenda (siempre que haya 2 series o más) y el botón
-// Ver tabla / Ver gráfica. La tabla es la misma información en números, para quien no distingue los
-// colores o necesita el valor exacto. La gráfica va en el contenido y la tabla en [table].
+const EXTENSIONS: Record<ChartReportFormat, string> = { pdf: 'pdf', excel: 'xlsx', txt: 'txt' };
+
+// Tarjeta de una gráfica: título, descripción, leyenda (siempre que haya 2 series o más) y los
+// botones Reporte y Ver tabla / Ver gráfica. Reporte descarga esa misma gráfica en PDF (con la
+// gráfica y su tabla), Excel o TXT, con los filtros elegidos. La tabla es la misma información en
+// números, para quien no distingue los colores o necesita el valor exacto. La gráfica va en el
+// contenido y la tabla en [table].
 @Component({
   selector: 'app-chart-card',
   imports: [TranslatePipe],
@@ -24,13 +33,39 @@ export interface LegendItem {
             <p class="text-xs text-chart-ink-muted">{{ subtitle() }}</p>
           }
         </div>
-        <button
-          type="button"
-          class="shrink-0 rounded-md border border-border px-2.5 py-1 text-xs font-medium text-chart-ink transition-colors hover:bg-background"
-          (click)="showTable.set(!showTable())"
-        >
-          {{ (showTable() ? 'charts.showChart' : 'charts.showTable') | translate }}
-        </button>
+        <div class="flex shrink-0 items-center gap-2">
+          @if (report()) {
+            <div class="relative">
+              <button
+                type="button"
+                class="rounded-md border border-border px-2.5 py-1 text-xs font-medium text-chart-ink transition-colors hover:bg-background disabled:opacity-60"
+                [disabled]="downloading()"
+                [attr.aria-expanded]="menuOpen()"
+                (click)="menuOpen.set(!menuOpen())"
+              >
+                {{ (downloading() ? 'reports.downloading' : 'charts.report') | translate }}
+              </button>
+              @if (menuOpen()) {
+                <ul class="absolute right-0 z-20 mt-1 min-w-36 overflow-hidden rounded-md border border-border bg-chart-surface py-1 text-xs shadow-md">
+                  @for (format of formats; track format) {
+                    <li>
+                      <button type="button" class="w-full px-3 py-1.5 text-left text-chart-ink hover:bg-background" (click)="download(format)">
+                        {{ 'charts.reportFormats.' + format | translate }}
+                      </button>
+                    </li>
+                  }
+                </ul>
+              }
+            </div>
+          }
+          <button
+            type="button"
+            class="rounded-md border border-border px-2.5 py-1 text-xs font-medium text-chart-ink transition-colors hover:bg-background"
+            (click)="showTable.set(!showTable())"
+          >
+            {{ (showTable() ? 'charts.showChart' : 'charts.showTable') | translate }}
+          </button>
+        </div>
       </div>
 
       @if (legend().length > 1 && !showTable()) {
@@ -59,9 +94,32 @@ export interface LegendItem {
   `,
 })
 export class ChartCard {
+  private readonly api = inject(ApiService);
+  private readonly toastService = inject(ToastService);
+  private readonly languageService = inject(LanguageService);
+
   readonly title = input.required<string>();
   readonly subtitle = input('');
   readonly legend = input<LegendItem[]>([]);
+  /** Los datos para el botón Reporte; sin esto el botón no aparece. */
+  readonly report = input<ChartReport | null>(null);
 
   protected readonly showTable = signal(false);
+  protected readonly menuOpen = signal(false);
+  protected readonly downloading = signal(false);
+  protected readonly formats: ChartReportFormat[] = ['pdf', 'excel', 'txt'];
+
+  protected async download(format: ChartReportFormat): Promise<void> {
+    const report = this.report();
+    this.menuOpen.set(false);
+    if (!report || this.downloading()) return;
+    this.downloading.set(true);
+    try {
+      saveBlob(await this.api.downloadPost(`/reports/chart/${format}`, report), `${report.fileName}.${EXTENSIONS[format]}`);
+    } catch {
+      this.toastService.show(this.languageService.t('charts.reportError'));
+    } finally {
+      this.downloading.set(false);
+    }
+  }
 }

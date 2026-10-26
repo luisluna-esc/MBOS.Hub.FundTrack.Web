@@ -730,7 +730,7 @@
     "missingFilters": "Elige {{filters}} para ver el reporte."
   },
   "charts": {
-    "subtitle": "Cómo van los arqueos del año: mes a mes, por región y las iglesias con más faltante. Solo cuentan los meses que ya empezaron.",
+    "subtitle": "Cómo van los arqueos del año. Elige una iglesia para ver su fondo local mes a mes. Solo cuentan los meses que ya empezaron.",
     "showTable": "Ver tabla",
     "showChart": "Ver gráfica",
     "month": "Mes",
@@ -779,6 +779,31 @@
       "months": "Meses",
       "tooltip": "Faltó dinero en {{months}} meses",
       "empty": "Ninguna iglesia tuvo faltante."
+    },
+    "church": {
+      "monthsDetail": "Meses con arqueo presentado en el año",
+      "highest": "Mes más alto (saldo ACMS)",
+      "lowest": "Mes más bajo (saldo ACMS)",
+      "fundTitle": "Fondo local mes a mes",
+      "fundSubtitle": "Saldo ACMS y total en custodia de cada mes con arqueo presentado: sus altas y bajas.",
+      "balanceSubtitle": "Diferencia de cada mes: arriba sobró, abajo faltó.",
+      "statusTitle": "Cómo quedó cada mes",
+      "statusSubtitle": "Si presentó su arqueo y si cuadró con el ACMS.",
+      "observations": "Observaciones",
+      "empty": "Esa iglesia no tiene datos en este año."
+    },
+    "report": "Reporte",
+    "reportError": "No se pudo generar el reporte de la gráfica.",
+    "reportFormats": {
+      "pdf": "PDF (gráfica y tabla)",
+      "excel": "Excel",
+      "txt": "TXT"
+    },
+    "reportFilters": {
+      "year": "Año {{year}}",
+      "district": "Distrito: {{name}}",
+      "mission": "Toda la Misión",
+      "church": "Iglesia: {{name}}"
     }
   }
 }

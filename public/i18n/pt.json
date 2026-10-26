@@ -730,7 +730,7 @@
     "missingFilters": "Escolha {{filters}} para ver o relatório."
   },
   "charts": {
-    "subtitle": "Como estão as contagens do ano: mês a mês, por região e as igrejas com maior falta. Só contam os meses já iniciados.",
+    "subtitle": "Como estão as contagens do ano. Escolha uma igreja para ver seu fundo local mês a mês. Só contam os meses já iniciados.",
     "showTable": "Ver tabela",
     "showChart": "Ver gráfico",
     "month": "Mês",
@@ -779,6 +779,31 @@
       "months": "Meses",
       "tooltip": "Faltou dinheiro em {{months}} meses",
       "empty": "Nenhuma igreja teve falta."
+    },
+    "church": {
+      "monthsDetail": "Meses com contagem apresentada no ano",
+      "highest": "Mês mais alto (saldo ACMS)",
+      "lowest": "Mês mais baixo (saldo ACMS)",
+      "fundTitle": "Fundo local mês a mês",
+      "fundSubtitle": "Saldo ACMS e total em custódia de cada mês com contagem apresentada: seus altos e baixos.",
+      "balanceSubtitle": "Diferença de cada mês: acima sobrou, abaixo faltou.",
+      "statusTitle": "Como ficou cada mês",
+      "statusSubtitle": "Se apresentou a contagem e se bateu com o ACMS.",
+      "observations": "Observações",
+      "empty": "Essa igreja não tem dados neste ano."
+    },
+    "report": "Relatório",
+    "reportError": "Não foi possível gerar o relatório do gráfico.",
+    "reportFormats": {
+      "pdf": "PDF (gráfico e tabela)",
+      "excel": "Excel",
+      "txt": "TXT"
+    },
+    "reportFilters": {
+      "year": "Ano {{year}}",
+      "district": "Distrito: {{name}}",
+      "mission": "Toda a Missão",
+      "church": "Igreja: {{name}}"
     }
   }
 }

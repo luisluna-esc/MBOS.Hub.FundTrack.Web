@@ -64,7 +64,7 @@
           [label]="'funds.columns.church' | translate"
           [options]="churchOptions()"
           [ngModel]="churchId()"
-          (ngModelChange)="setOptional(churchId, $event)"
+          (ngModelChange)="onChurchChange($event)"
         /></div>
       }
       <div class="flex flex-col gap-1">
